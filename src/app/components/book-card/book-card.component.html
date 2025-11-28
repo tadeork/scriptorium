@@ -1,0 +1,68 @@
+<div class="book-card" [ngClass]="statusClass">
+  <div class="book-card__header">
+    <h3 class="book-card__title">{{ book.title }}</h3>
+    <div class="book-card__actions">
+      <button class="book-card__edit-btn" (click)="onEditClick()" title="Editar libro">
+        ✎
+      </button>
+      <button class="book-card__delete-btn" (click)="onDeleteClick()" title="Eliminar libro">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <div class="book-card__body">
+    <p class="book-card__author">{{ book.author }}</p>
+
+    <div *ngIf="book.coverImageUrl" class="book-card__cover">
+      <img [src]="book.coverImageUrl" [alt]="book.title" />
+    </div>
+
+    <p *ngIf="book.isbn" class="book-card__isbn">ISBN: {{ book.isbn }}</p>
+    <p *ngIf="book.pages" class="book-card__pages">{{ book.pages }} páginas</p>
+    <p *ngIf="book.description" class="book-card__description">{{ book.description }}</p>
+
+    <div class="book-card__status">
+      <label for="status-{{ book.id }}">Estado:</label>
+      <select
+        [id]="'status-' + book.id"
+        [value]="book.status"
+        (change)="onStatusChange($event.target)"
+      >
+        <option value="to-read">Por leer</option>
+        <option value="reading">Leyendo</option>
+        <option value="read">Leído</option>
+        <option value="borrowed">Prestado</option>
+        <option value="not-interested">No voy a leer</option>
+      </select>
+    </div>
+
+    <div *ngIf="book.status === 'read' || book.status === 'reading'" class="book-card__progress">
+      <div class="progress-info">
+        <span class="progress-percentage">{{ book.readProgress || 0 }}%</span>
+        <span class="progress-pages" *ngIf="book.pages">
+          {{ calculatePagesRead() }} / {{ book.pages }} páginas
+        </span>
+      </div>
+      <div class="progress-controls">
+        <button
+          class="progress-btn progress-btn--minus"
+          (click)="decrementProgress()"
+          title="Disminuir progreso"
+        >
+          −
+        </button>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="book.readProgress || 0"></div>
+        </div>
+        <button
+          class="progress-btn progress-btn--plus"
+          (click)="incrementProgress()"
+          title="Aumentar progreso"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,263 @@
+.book-card {
+  border: 2px solid #2d5016;
+  background-color: #f5f5f5;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(45, 80, 22, 0.3);
+  }
+
+  &.status-read {
+    border-color: #558b2f;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e9 100%);
+  }
+
+  &.status-reading {
+    border-color: #9ccc65;
+    background: linear-gradient(135deg, #f5f5f5 0%, #f1f8e9 100%);
+  }
+
+  &.status-to-read {
+    border-color: #7cb342;
+    background: linear-gradient(135deg, #f5f5f5 0%, #f1f8e9 100%);
+  }
+
+  &.status-borrowed {
+    border-color: #fbc02d;
+    background: linear-gradient(135deg, #f5f5f5 0%, #fffde7 100%);
+  }
+
+  &.status-not-interested {
+    border-color: #9e9e9e;
+    background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+    opacity: 0.8;
+  }
+}
+
+.book-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #2d5016;
+  padding-bottom: 0.75rem;
+}
+
+.book-card__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #1b5e20;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.book-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.book-card__edit-btn {
+  background-color: #2d5016;
+  color: #fff;
+  border: 2px solid #2d5016;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 1.3rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #558b2f;
+    border-color: #558b2f;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.book-card__delete-btn {
+  background-color: #d32f2f;
+  color: #fff;
+  border: 2px solid #d32f2f;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #c62828;
+    border-color: #c62828;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.book-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.book-card__author {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #558b2f;
+  font-style: italic;
+}
+
+.book-card__cover {
+  align-self: flex-start;
+  max-width: 100px;
+  margin: 0.5rem 0;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #2d5016;
+    display: block;
+  }
+}
+
+.book-card__isbn,
+.book-card__pages,
+.book-card__description {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #424242;
+}
+
+.book-card__isbn {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.book-card__description {
+  line-height: 1.5;
+  max-height: 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-card__status {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  label {
+    font-weight: 700;
+    color: #1b5e20;
+    font-size: 0.9rem;
+  }
+
+  select {
+    flex: 1;
+    border: 2px solid #2d5016;
+    background-color: #fff;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1b5e20;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover,
+    &:focus {
+      background-color: #f1f8e9;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    }
+  }
+}
+
+.book-card__progress {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #2d5016;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.progress-percentage {
+  color: #1b5e20;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.progress-pages {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.progress-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.progress-btn {
+  background-color: #2d5016;
+  color: #fff;
+  border: 2px solid #2d5016;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: #558b2f;
+    border-color: #558b2f;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.progress-bar {
+  flex: 1;
+  height: 32px;
+  border: 2px solid #2d5016;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #558b2f, #7cb342);
+  transition: width 0.3s ease;
+}

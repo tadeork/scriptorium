@@ -1,0 +1,209 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+.app-header {
+  background-color: #2d5016;
+  color: #fff;
+  padding: 1rem;
+  border-bottom: 4px solid #1b5e20;
+  box-shadow: 0 4px 0 rgba(27, 94, 32, 0.3);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.header-title {
+  flex: 1;
+}
+
+.app-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  color: #fff;
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 0.05em;
+}
+
+.toggle-form-btn {
+  background-color: #fbc02d;
+  color: #1b5e20;
+  border: 3px solid #1b5e20;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 3px 3px 0 rgba(27, 94, 32, 0.3);
+  flex-shrink: 0;
+  align-self: flex-start;
+
+  &:hover {
+    background-color: #f9a825;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 rgba(27, 94, 32, 0.4);
+  }
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 rgba(27, 94, 32, 0.2);
+  }
+}
+
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.form-modal {
+  background-color: #f5f5f5;
+  border: 4px solid #2d5016;
+  padding: 1.5rem;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 8px 8px 0 rgba(45, 80, 22, 0.3);
+  animation: slideInMobile 0.3s ease;
+  border-radius: 0;
+}
+
+@keyframes slideInMobile {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #d32f2f;
+  color: #fff;
+  border: 2px solid #d32f2f;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+
+  &:hover {
+    background-color: #c62828;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .app-header {
+    padding: 1.5rem;
+  }
+
+  .header-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .app-title {
+    font-size: 2.5rem;
+  }
+
+  .app-subtitle {
+    font-size: 1rem;
+  }
+
+  .toggle-form-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+  }
+
+  .form-modal {
+    width: 90%;
+    height: auto;
+    max-width: 600px;
+    max-height: 90vh;
+    padding: 2rem;
+    border-radius: 0;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .app-main {
+    max-width: 1200px;
+    padding: 2rem 1rem;
+  }
+}
+

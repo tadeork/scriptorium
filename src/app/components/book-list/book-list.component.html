@@ -1,0 +1,22 @@
+<app-search-filter
+  [searchQuery]="searchQuery()"
+  [selectedStatus]="selectedStatus()"
+  (searchQueryChange)="onSearchQueryChange($event)"
+  (statusFilterChange)="onStatusFilterChange($event)"
+></app-search-filter>
+
+<div *ngIf="filteredBooks().length > 0" class="book-list">
+  <app-book-card
+    *ngFor="let book of filteredBooks()"
+    [book]="book"
+    (deleteBook)="onDeleteBook($event)"
+    (updateStatus)="onUpdateStatus($event)"
+    (updateProgress)="onUpdateProgress($event)"
+    (editBook)="onEditBook($event)"
+  ></app-book-card>
+</div>
+
+<div *ngIf="filteredBooks().length === 0" class="empty-state">
+  <div class="empty-icon">📚</div>
+  <p class="empty-message">{{ emptyMessage }}</p>
+</div>
