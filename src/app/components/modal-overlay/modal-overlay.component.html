@@ -1,0 +1,11 @@
+<div *ngIf="isOpen" class="modal-overlay" [ngClass]="'modal-' + size" (click)="onOverlayClick()">
+  <div class="modal-content" (click)="onContentClick($event)">
+    <div *ngIf="title" class="modal-header">
+      <h3 class="modal-title">{{ title }}</h3>
+      <button class="modal-close-btn" (click)="onCloseClick()" aria-label="Cerrar modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

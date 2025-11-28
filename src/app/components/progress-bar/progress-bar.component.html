@@ -1,0 +1,34 @@
+<div class="progress-bar-container" [ngClass]="'progress-' + variant">
+  <div class="progress-info">
+    <span class="progress-percentage">{{ progress }}%</span>
+    <span class="progress-pages" *ngIf="pages > 0">
+      {{ pagesRead }} / {{ pages }} páginas
+    </span>
+  </div>
+
+  <div *ngIf="variant === 'display'" class="progress-bar-display">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <div *ngIf="variant === 'editable'" class="progress-bar-editable">
+    <button
+      class="progress-btn progress-btn--minus"
+      (click)="onDecrement()"
+      title="Disminuir progreso"
+    >
+      −
+    </button>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+    <button
+      class="progress-btn progress-btn--plus"
+      (click)="onIncrement()"
+      title="Aumentar progreso"
+    >
+      +
+    </button>
+  </div>
+</div>

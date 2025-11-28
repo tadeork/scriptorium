@@ -1,0 +1,13 @@
+<div class="book-item" [ngClass]="'book-item--' + variant" (click)="onClick()" [class.has-image]="book.coverImageUrl">
+  <div *ngIf="book.coverImageUrl" class="book-item__image">
+    <img [src]="book.coverImageUrl" [alt]="book.title" />
+  </div>
+  <div class="book-item__content">
+    <div class="book-item__title">{{ book.title }}</div>
+    <div *ngIf="book.author" class="book-item__author">{{ book.author }}</div>
+    <div *ngIf="book.pages || book.isbn" class="book-item__meta">
+      <span *ngIf="book.pages" class="book-item__pages">{{ book.pages }} págs</span>
+      <span *ngIf="book.isbn" class="book-item__isbn">ISBN: {{ book.isbn }}</span>
+    </div>
+  </div>
+</div>

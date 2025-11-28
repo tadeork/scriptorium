@@ -22,47 +22,20 @@
     <p *ngIf="book.pages" class="book-card__pages">{{ book.pages }} páginas</p>
     <p *ngIf="book.description" class="book-card__description">{{ book.description }}</p>
 
-    <div class="book-card__status">
-      <label for="status-{{ book.id }}">Estado:</label>
-      <select
-        [id]="'status-' + book.id"
-        [value]="book.status"
-        (change)="onStatusChange($event.target)"
-      >
-        <option value="to-read">Por leer</option>
-        <option value="reading">Leyendo</option>
-        <option value="read">Leído</option>
-        <option value="borrowed">Prestado</option>
-        <option value="not-interested">No voy a leer</option>
-      </select>
-    </div>
+    <app-status-selector
+      [status]="book.status"
+      [id]="'status-' + book.id"
+      [label]="'Estado:'"
+      (statusChange)="updateStatus.emit({ id: book.id, status: $event })"
+    ></app-status-selector>
 
-    <div *ngIf="book.status === 'read' || book.status === 'reading'" class="book-card__progress">
-      <div class="progress-info">
-        <span class="progress-percentage">{{ book.readProgress || 0 }}%</span>
-        <span class="progress-pages" *ngIf="book.pages">
-          {{ calculatePagesRead() }} / {{ book.pages }} páginas
-        </span>
-      </div>
-      <div class="progress-controls">
-        <button
-          class="progress-btn progress-btn--minus"
-          (click)="decrementProgress()"
-          title="Disminuir progreso"
-        >
-          −
-        </button>
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="book.readProgress || 0"></div>
-        </div>
-        <button
-          class="progress-btn progress-btn--plus"
-          (click)="incrementProgress()"
-          title="Aumentar progreso"
-        >
-          +
-        </button>
-      </div>
-    </div>
+    <app-progress-bar
+      *ngIf="book.status === 'read' || book.status === 'reading'"
+      [progress]="book.readProgress || 0"
+      [pages]="book.pages || 0"
+      variant="editable"
+      (increment)="incrementProgress()"
+      (decrement)="decrementProgress()"
+    ></app-progress-bar>
   </div>
 </div>

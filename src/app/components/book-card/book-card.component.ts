@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../models/book';
+import { StatusSelectorComponent } from '../status-selector/status-selector.component';
+import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-book-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [StatusSelectorComponent, ProgressBarComponent, CommonModule],
   templateUrl: './book-card.component.html',
   styleUrl: './book-card.component.scss'
 })

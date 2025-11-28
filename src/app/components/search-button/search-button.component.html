@@ -1,0 +1,14 @@
+<button
+  type="button"
+  class="search-button"
+  [disabled]="isDisabled || isLoading"
+  (click)="onClick()"
+  [class.is-loading]="isLoading"
+>
+  <span *ngIf="!isLoading" class="btn-content">
+    {{ icon }} {{ text }}
+  </span>
+  <span *ngIf="isLoading" class="btn-content">
+    <span class="spinner"></span> Buscando...
+  </span>
+</button>

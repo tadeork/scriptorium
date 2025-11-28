@@ -4,29 +4,15 @@
 
     <div class="form-group">
       <label for="title" class="form-label">Título *</label>
-      <div class="input-wrapper">
-        <input
-          type="text"
-          id="title"
-          [(ngModel)]="title"
-          name="title"
-          placeholder="Ej: Cien años de soledad"
-          class="form-input"
-          autocomplete="off"
-        />
-        <div *ngIf="showSuggestions && suggestions.length > 0" class="suggestions">
-          <div
-            *ngFor="let suggestion of suggestions"
-            class="suggestion-item"
-            (click)="selectSuggestion(suggestion)"
-          >
-            <div class="suggestion-title">{{ suggestion.title }}</div>
-            <div class="suggestion-author" *ngIf="suggestion.author">
-              {{ suggestion.author }}
-            </div>
-          </div>
-        </div>
-      </div>
+      <input
+        type="text"
+        id="title"
+        [(ngModel)]="title"
+        name="title"
+        placeholder="Ej: Cien años de soledad"
+        class="form-input"
+        autocomplete="off"
+      />
     </div>
 
     <div class="form-group">
@@ -41,54 +27,32 @@
       />
     </div>
 
-    <button
-      type="button"
-      class="search-library-btn"
-      [disabled]="isSearchButtonDisabled"
-      (click)="searchLibrary()"
-    >
-      <span *ngIf="!isSearching" class="btn-content">
-        🔍 Buscar en librería
-      </span>
-      <span *ngIf="isSearching" class="btn-content">
-        <span class="spinner"></span> Buscando...
-      </span>
-    </button>
+    <app-search-button
+      [isLoading]="isSearching"
+      [isDisabled]="isSearchButtonDisabled"
+      text="Buscar en librería"
+      (clicked)="searchLibrary()"
+    ></app-search-button>
 
     <div *ngIf="searchError && noResultsMessage" class="search-error-message">
       {{ noResultsMessage }}
     </div>
 
-    <div *ngIf="showResultsModal && suggestions.length > 0" class="results-modal-overlay" (click)="closeResultsModal()">
-      <div class="results-modal" (click)="$event.stopPropagation()">
-        <div class="results-header">
-          <h3 class="results-title">Resultados de búsqueda</h3>
-          <button class="results-close-btn" (click)="closeResultsModal()">✕</button>
-        </div>
-        <div class="results-list">
-          <div
-            *ngFor="let suggestion of suggestions"
-            class="result-item"
-            [class.has-image]="suggestion.coverImageUrl"
-            (click)="selectSuggestion(suggestion)"
-          >
-            <div class="result-image" *ngIf="suggestion.coverImageUrl">
-              <img [src]="suggestion.coverImageUrl" [alt]="suggestion.title" />
-            </div>
-            <div class="result-content">
-              <div class="result-title">{{ suggestion.title }}</div>
-              <div class="result-author" *ngIf="suggestion.author">
-                {{ suggestion.author }}
-              </div>
-              <div class="result-info" *ngIf="suggestion.pages || suggestion.isbn">
-                <span *ngIf="suggestion.pages" class="result-pages">{{ suggestion.pages }} págs</span>
-                <span *ngIf="suggestion.isbn" class="result-isbn">ISBN: {{ suggestion.isbn }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <app-modal-overlay
+      [isOpen]="showResultsModal"
+      title="Resultados de búsqueda"
+      size="medium"
+      (close)="closeResultsModal()"
+    >
+      <div class="results-list">
+        <app-book-item
+          *ngFor="let suggestion of suggestions"
+          [book]="suggestion"
+          variant="compact"
+          (selected)="selectSuggestion($event)"
+        ></app-book-item>
       </div>
-    </div>
+    </app-modal-overlay>
 
     <div class="form-row">
       <div class="form-group">
@@ -129,30 +93,20 @@
       ></textarea>
     </div>
 
-    <div class="form-group">
-      <label for="status" class="form-label">Estado *</label>
-      <select id="status" [(ngModel)]="status" name="status" class="form-input">
-        <option value="to-read">Por leer</option>
-        <option value="reading">Leyendo</option>
-        <option value="read">Leído</option>
-        <option value="borrowed">Prestado</option>
-        <option value="not-interested">No voy a leer</option>
-      </select>
-    </div>
+    <app-status-selector
+      [status]="status"
+      id="book-status"
+      (statusChange)="status = $event"
+    ></app-status-selector>
 
-    <div *ngIf="status === 'read' || status === 'reading'" class="form-group">
-      <label for="progress" class="form-label">Progreso (%)</label>
-      <input
-        type="range"
-        id="progress"
-        [(ngModel)]="readProgress"
-        name="readProgress"
-        class="form-range"
-        min="0"
-        max="100"
-      />
-      <span class="progress-value">{{ readProgress }}%</span>
-    </div>
+    <app-progress-bar
+      *ngIf="status === 'read' || status === 'reading'"
+      [progress]="readProgress"
+      [pages]="pages ? parseInt(pages) : 0"
+      variant="editable"
+      (increment)="onProgressIncrement()"
+      (decrement)="onProgressDecrement()"
+    ></app-progress-bar>
 
     <button type="submit" class="submit-btn">{{ editingBook ? 'Guardar cambios' : 'Agregar libro' }}</button>
   </fieldset>

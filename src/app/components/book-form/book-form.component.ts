@@ -4,11 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
 import { debounceTime, Subject } from 'rxjs';
+import { SearchButtonComponent } from '../search-button/search-button.component';
+import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component';
+import { BookItemComponent } from '../book-item/book-item.component';
+import { StatusSelectorComponent } from '../status-selector/status-selector.component';
+import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-book-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SearchButtonComponent,
+    ModalOverlayComponent,
+    BookItemComponent,
+    StatusSelectorComponent,
+    ProgressBarComponent
+  ],
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.scss'
 })
@@ -16,6 +29,9 @@ export class BookFormComponent implements OnInit, OnChanges {
   @Input() editingBook: Book | null = null;
   @Output() bookAdded = new EventEmitter<Omit<Book, 'id' | 'createdAt' | 'updatedAt'>>();
   @Output() bookUpdated = new EventEmitter<Book>();
+
+  // Exponer parseInt para usarlo en el template
+  parseInt = parseInt;
 
   title = '';
   author = '';
@@ -138,6 +154,16 @@ export class BookFormComponent implements OnInit, OnChanges {
 
   closeResultsModal(): void {
     this.showResultsModal = false;
+  }
+
+  onProgressIncrement(): void {
+    const pageIncrement = this.pages ? 100 / parseInt(this.pages) : 0;
+    this.readProgress = Math.min(100, this.readProgress + pageIncrement);
+  }
+
+  onProgressDecrement(): void {
+    const pageIncrement = this.pages ? 100 / parseInt(this.pages) : 0;
+    this.readProgress = Math.max(0, this.readProgress - pageIncrement);
   }
 
   onSubmit(): void {

@@ -1,0 +1,13 @@
+<div class="status-selector">
+  <label [for]="id" class="status-label">{{ label }}</label>
+  <select
+    [id]="id"
+    [value]="status"
+    (change)="onStatusChange($any($event.target).value)"
+    class="status-select"
+  >
+    <option *ngFor="let opt of statusOptions" [value]="opt.value">
+      {{ opt.label }}
+    </option>
+  </select>
+</div>

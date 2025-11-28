@@ -1,0 +1,37 @@
+.status-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #1b5e20;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-select {
+  border: 2px solid #2d5016;
+  background-color: #fff;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f1f8e9;
+    border-color: #558b2f;
+  }
+
+  &:focus {
+    outline: none;
+    background-color: #f1f8e9;
+    border-color: #558b2f;
+    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.15);
+  }
+}
