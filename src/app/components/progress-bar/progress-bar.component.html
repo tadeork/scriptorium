@@ -1,34 +1,46 @@
-<div class="progress-bar-container" [ngClass]="'progress-' + variant">
+<div class="progress-bar-container" [class]="'progress-' + variant" [class.disabled]="disabled">
   <div class="progress-info">
-    <span class="progress-percentage">{{ progress }}%</span>
-    <span class="progress-pages" *ngIf="pages > 0">
-      {{ pagesRead }} / {{ pages }} páginas
-    </span>
+    <span class="progress-percentage">{{ displayProgress }}%</span>
+    @if (pages > 0) {
+      <span class="progress-pages">
+        @if (disabled) {
+          {{ pages }} / {{ pages }} páginas
+        } @else {
+          {{ pagesReadDisplay }} / {{ pages }} páginas
+        }
+      </span>
+    }
   </div>
 
-  <div *ngIf="variant === 'display'" class="progress-bar-display">
-    <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="progress"></div>
+  @if (variant === 'display') {
+    <div class="progress-bar-display">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="displayProgress"></div>
+      </div>
     </div>
-  </div>
+  }
 
-  <div *ngIf="variant === 'editable'" class="progress-bar-editable">
-    <button
-      class="progress-btn progress-btn--minus"
-      (click)="onDecrement()"
-      title="Disminuir progreso"
-    >
-      −
-    </button>
-    <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="progress"></div>
+  @if (variant === 'editable') {
+    <div class="progress-bar-editable" [class.disabled]="disabled">
+      <button
+        class="progress-btn progress-btn--minus"
+        (click)="onDecrement()"
+        [disabled]="disabled"
+        title="Disminuir progreso"
+      >
+        −
+      </button>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="displayProgress"></div>
+      </div>
+      <button
+        class="progress-btn progress-btn--plus"
+        (click)="onIncrement()"
+        [disabled]="disabled"
+        title="Aumentar progreso"
+      >
+        +
+      </button>
     </div>
-    <button
-      class="progress-btn progress-btn--plus"
-      (click)="onIncrement()"
-      title="Aumentar progreso"
-    >
-      +
-    </button>
-  </div>
+  }
 </div>

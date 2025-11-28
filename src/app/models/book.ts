@@ -7,7 +7,7 @@ export interface Book {
   isbn?: string;
   coverImageUrl?: string;
   status: BookStatus;
-  readProgress?: number; // 0-100
+  pagesRead?: number; // páginas leídas (no porcentaje)
   pages?: number;
   publishedDate?: string;
   description?: string;

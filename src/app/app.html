@@ -11,22 +11,26 @@
     </div>
   </header>
 
-  <div *ngIf="showFormModal" class="form-modal-overlay" (click)="toggleFormModal()">
-    <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleFormModal()">✕</button>
-      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"></app-book-form>
+  @if (showFormModal) {
+    <div class="form-modal-overlay" (click)="toggleFormModal()">
+      <div class="form-modal" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="toggleFormModal()">✕</button>
+        <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"></app-book-form>
+      </div>
     </div>
-  </div>
+  }
 
-  <div *ngIf="showEditModal" class="form-modal-overlay" (click)="toggleEditModal()">
-    <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleEditModal()">✕</button>
-      <app-book-form
-        [editingBook]="editingBook"
-        (bookUpdated)="onBookUpdated($event); toggleEditModal()"
-      ></app-book-form>
+  @if (showEditModal) {
+    <div class="form-modal-overlay" (click)="toggleEditModal()">
+      <div class="form-modal" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="toggleEditModal()">✕</button>
+        <app-book-form
+          [editingBook]="editingBook"
+          (bookUpdated)="onBookUpdated($event); toggleEditModal()"
+        ></app-book-form>
+      </div>
     </div>
-  </div>
+  }
 
   <main class="app-main">
     <app-book-list (editBook)="openEditModal($event)"></app-book-list>

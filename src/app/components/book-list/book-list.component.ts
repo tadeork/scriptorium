@@ -1,5 +1,4 @@
 import { Component, OnInit, signal, computed, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BookService } from '../../services/book.service';
 import { Book, BookStatus } from '../../models/book';
 import { BookCardComponent } from '../book-card/book-card.component';
@@ -8,13 +7,14 @@ import { SearchFilterComponent } from '../search-filter/search-filter.component'
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [CommonModule, BookCardComponent, SearchFilterComponent],
+  imports: [BookCardComponent, SearchFilterComponent],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss'
 })
 export class BookListComponent implements OnInit {
   searchQuery = signal('');
   selectedStatus = signal<BookStatus | 'all'>('all');
+  sortBy = signal<'newest' | 'oldest' | 'title' | 'author'>('newest');
   editingBookId = signal<string | null>(null);
   @Output() editBook = new EventEmitter<Book>();
 
@@ -22,6 +22,7 @@ export class BookListComponent implements OnInit {
     let books = this.bookService.books$();
     const query = this.searchQuery();
     const status = this.selectedStatus();
+    const sort = this.sortBy();
 
     // Apply search filter
     if (query.trim()) {
@@ -31,6 +32,17 @@ export class BookListComponent implements OnInit {
     // Apply status filter
     if (status !== 'all') {
       books = books.filter((b) => b.status === status);
+    }
+
+    // Apply sorting
+    if (sort === 'newest') {
+      books = [...books].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    } else if (sort === 'oldest') {
+      books = [...books].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    } else if (sort === 'title') {
+      books = [...books].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sort === 'author') {
+      books = [...books].sort((a, b) => a.author.localeCompare(b.author));
     }
 
     return books;
@@ -46,6 +58,10 @@ export class BookListComponent implements OnInit {
 
   onStatusFilterChange(status: BookStatus | 'all'): void {
     this.selectedStatus.set(status);
+  }
+
+  onSortByChange(sort: 'newest' | 'oldest' | 'title' | 'author'): void {
+    this.sortBy.set(sort);
   }
 
   onDeleteBook(id: string): void {

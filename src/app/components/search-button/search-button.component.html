@@ -5,10 +5,14 @@
   (click)="onClick()"
   [class.is-loading]="isLoading"
 >
-  <span *ngIf="!isLoading" class="btn-content">
-    {{ icon }} {{ text }}
-  </span>
-  <span *ngIf="isLoading" class="btn-content">
-    <span class="spinner"></span> Buscando...
-  </span>
+  @if (!isLoading) {
+    <span class="btn-content">
+      {{ icon }} {{ text }}
+    </span>
+  }
+  @if (isLoading) {
+    <span class="btn-content">
+      <span class="spinner"></span> Buscando...
+    </span>
+  }
 </button>

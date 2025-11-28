@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BookService } from './services/book.service';
@@ -8,7 +7,7 @@ import { Book } from './models/book';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BookFormComponent, BookListComponent],
+  imports: [BookFormComponent, BookListComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

@@ -38,6 +38,11 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 - Controles: botones +/- para incrementar/decrementar
 - Incremento: exacto por página (100 / total_páginas)
 - Display: barra de progreso visual
+- **Cuando libro está "Leído"**:
+  - Mostrar 100% automáticamente
+  - Botones +/- deshabilitados (gris, cursor: not-allowed)
+  - Display: "X / X páginas" (total/total)
+  - Feedback visual: opacity reducida, botones inactivos
 
 ### 5. Búsqueda en Librería
 - Búsqueda MANUAL (sin autocompletar)
@@ -70,11 +75,12 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 ## Arquitectura Técnica
 
 ### Stack
-- **Framework**: Angular 20.3.0 (Standalone Components)
+- **Framework**: Angular 20.3.0 (Standalone Components, @if/@for control flow)
 - **HTTP**: HttpClient nativo
-- **State Management**: Angular Signals
+- **State Management**: Angular Signals con computed properties
 - **Storage**: localStorage
 - **Styling**: SCSS puro (sin frameworks)
+- **Layout**: CSS Grid responsivo + Flexbox
 
 ### Estructura de Componentes (Reutilizables)
 
@@ -105,10 +111,11 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 
 5. **ProgressBarComponent** (`progress-bar/`)
    - Barra de progreso visual
-   - Inputs: `progress`, `pages`, `variant` ('display' | 'editable')
+   - Inputs: `progress`, `pages`, `pagesRead`, `disabled`, `variant` ('display' | 'editable')
    - Outputs: `increment`, `decrement` events
    - Muestra: %, páginas leídas/total
-   - Variante editable: botones +/-
+   - Variante editable: botones +/- (deshabilitados cuando disabled=true)
+   - Cuando disabled: muestra 100%, "X / X páginas", botones inactivos (gris, opacity 0.6)
 
 #### Componentes Complejos
 6. **BookFormComponent** (`book-form/`)
@@ -118,20 +125,28 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
    - Modal de resultados con priorización por imágenes
 
 7. **BookCardComponent** (`book-card/`)
-   - Visualización de libro en lista
+   - Visualización de libro en lista (grid responsivo)
+   - Layout: flex-direction: column, height: 100%, min-height: 450px
+   - Actions al fondo: margin-top: auto
    - Integra: StatusSelector, ProgressBar
-   - Botones: editar, eliminar
-   - Estilos por estado del libro
+   - ProgressBar con [disabled]="isBookRead()" cuando status === 'read'
+   - Botones: editar (✎), eliminar (🗑)
+   - Estilos por estado: colores y gradients únicos por status
 
 8. **BookListComponent** (`book-list/`)
-   - Lista de libros con filtros
+   - Lista de libros con grid responsivo
+   - Signals: books, selectedStatus, searchQuery, sortBy (newest/oldest/title/author)
+   - Computed: filteredBooks (aplica filtros de estado, búsqueda y ordenamiento)
    - Integra: SearchFilterComponent, BookCardComponent
-   - Filtro por estado + búsqueda por texto
+   - CSS Grid: 3-4 columns desktop, 2 tablet, 1 mobile
+   - Gap: 1rem
 
 9. **SearchFilterComponent** (`search-filter/`)
    - Barra de búsqueda + selector de estado
-   - Inputs: `searchQuery`, `selectedStatus`
-   - Outputs: `searchQueryChange`, `statusFilterChange`
+   - Selector de ordenamiento (newest, oldest, title, author)
+   - Inputs: `searchQuery`, `selectedStatus`, `sortBy`
+   - Outputs: `searchQueryChange`, `statusFilterChange`, `sortByChange`
+   - Integra: StatusSelector reutilizable
 
 ### Servicios
 
@@ -189,6 +204,25 @@ interface CombinedSearchResult {
 
 ## Características de UX
 
+### Diseño de Cards
+- **Layout Flex**: Cards con display: flex, flex-direction: column, altura 100%
+- **Altura Uniforme**: min-height: 450px para que todas las cards tengan el mismo tamaño
+- **Acciones al Fondo**: Body con flex: 1 para llenar espacio disponible, actions con margin-top: auto
+- **Estados Visuales**: Color de border y gradient según status del libro
+- **Sombra Neobrutalism**: 3px 3px 0 en reposo, 5px 5px 0 en hover
+
+### Grid Responsivo
+- **Desktop** (1200px+): 3-4 columns con grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))
+- **Tablet** (768px-1199px): 2-3 columns con minmax(280px, 1fr)
+- **Mobile** (<768px): 1 column (100% ancho)
+- Gap: 1rem entre cards
+
+### Filtros y Ordenamiento
+- **Filtro por Estado**: Dropdown con 5 opciones (todos, por leer, leyendo, leído, prestado, no voy a leer)
+- **Búsqueda por Texto**: Input que filtra por título, autor, ISBN
+- **Ordenamiento**: Sort por fecha (más nuevo/más antiguo), título A-Z, autor A-Z
+- **Aplicación**: Se aplica al signal filteredBooks computed
+
 ### Mobile-First
 - Formulario ocupa 100% ancho en móvil
 - Modal sin border-radius en móvil
@@ -205,8 +239,9 @@ interface CombinedSearchResult {
 - Hover effects en botones y cards
 - Transiciones suaves (0.3s)
 - Confirmación antes de eliminar
-- Estados disabled con visual feedback
+- Estados disabled con visual feedback (opacity, cursor: not-allowed)
 - Spinner durante carga
+- Botones deshabilitados cuando libro está leído
 
 ### Validación
 - Título y Autor requeridos
@@ -325,11 +360,16 @@ ng build
 10. Social: compartir reseñas
 
 ## Notas Técnicas
-- Angular 20.3.0 usa sintaxis nueva de control flow (@if, @for)
+- Angular 20.3.0 usa sintaxis nueva de control flow (@if, @for, sin *ngIf/*ngFor)
+- No se usa CommonModule (Standalone components)
 - Signals mejoran performance vs ChangeDetection manual
+- Computed properties para estados derivados (filteredBooks)
 - localStorage limita a ~5-10MB (suficiente para miles de libros)
 - CORS: Google Books y OpenLibrary permiten requests desde navegador
 - Spinner CSS puro: border + transform, no SVG ni img
+- CSS Grid responsivo con auto-fill y minmax
+- Flexbox para layout interno de cards
+- ProgressBar desactiva eventos click en handlers cuando disabled=true
 
 ## Conclusión
 Esta aplicación es un ejemplo completo de:

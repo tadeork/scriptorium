@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export type BookStatus = 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed';
@@ -7,7 +6,7 @@ export type BookStatus = 'read' | 'reading' | 'to-read' | 'not-interested' | 'bo
 @Component({
   selector: 'app-status-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './status-selector.component.html',
   styleUrl: './status-selector.component.scss'
 })

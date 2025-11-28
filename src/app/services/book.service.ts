@@ -75,16 +75,19 @@ export class BookService {
     );
   }
 
-  updateProgress(id: string, progress: number): void {
-    const clamped = Math.max(0, Math.min(100, progress));
-    this.updateBook(id, { readProgress: clamped });
+  updateProgress(id: string, pagesRead: number): void {
+    const book = this.getBookById(id);
+    if (book && book.pages) {
+      const clamped = Math.max(0, Math.min(book.pages, pagesRead));
+      this.updateBook(id, { pagesRead: clamped });
+    }
   }
 
-  incrementProgress(id: string, increment: number = 1): void {
+  incrementPages(id: string, increment: number = 1): void {
     const book = this.getBookById(id);
     if (book) {
-      const currentProgress = book.readProgress || 0;
-      this.updateProgress(id, currentProgress + increment);
+      const currentPages = book.pagesRead || 0;
+      this.updateProgress(id, currentPages + increment);
     }
   }
 

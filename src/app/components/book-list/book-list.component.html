@@ -1,22 +1,29 @@
 <app-search-filter
   [searchQuery]="searchQuery()"
   [selectedStatus]="selectedStatus()"
+  [sortBy]="sortBy()"
   (searchQueryChange)="onSearchQueryChange($event)"
   (statusFilterChange)="onStatusFilterChange($event)"
+  (sortByChange)="onSortByChange($event)"
 ></app-search-filter>
 
-<div *ngIf="filteredBooks().length > 0" class="book-list">
-  <app-book-card
-    *ngFor="let book of filteredBooks()"
-    [book]="book"
-    (deleteBook)="onDeleteBook($event)"
-    (updateStatus)="onUpdateStatus($event)"
-    (updateProgress)="onUpdateProgress($event)"
-    (editBook)="onEditBook($event)"
-  ></app-book-card>
-</div>
+@if (filteredBooks().length > 0) {
+  <div class="book-list">
+    @for (book of filteredBooks(); track book.id) {
+      <app-book-card
+        [book]="book"
+        (deleteBook)="onDeleteBook($event)"
+        (updateStatus)="onUpdateStatus($event)"
+        (updateProgress)="onUpdateProgress($event)"
+        (editBook)="onEditBook($event)"
+      ></app-book-card>
+    }
+  </div>
+}
 
-<div *ngIf="filteredBooks().length === 0" class="empty-state">
-  <div class="empty-icon">📚</div>
-  <p class="empty-message">{{ emptyMessage }}</p>
-</div>
+@if (filteredBooks().length === 0) {
+  <div class="empty-state">
+    <div class="empty-icon">📚</div>
+    <p class="empty-message">{{ emptyMessage }}</p>
+  </div>
+}

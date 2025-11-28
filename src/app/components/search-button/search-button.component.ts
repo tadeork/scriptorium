@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-search-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './search-button.component.html',
   styleUrl: './search-button.component.scss'
 })

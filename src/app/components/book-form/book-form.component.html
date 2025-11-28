@@ -34,9 +34,11 @@
       (clicked)="searchLibrary()"
     ></app-search-button>
 
-    <div *ngIf="searchError && noResultsMessage" class="search-error-message">
-      {{ noResultsMessage }}
-    </div>
+    @if (searchError && noResultsMessage) {
+      <div class="search-error-message">
+        {{ noResultsMessage }}
+      </div>
+    }
 
     <app-modal-overlay
       [isOpen]="showResultsModal"
@@ -45,12 +47,13 @@
       (close)="closeResultsModal()"
     >
       <div class="results-list">
-        <app-book-item
-          *ngFor="let suggestion of suggestions"
-          [book]="suggestion"
-          variant="compact"
-          (selected)="selectSuggestion($event)"
-        ></app-book-item>
+        @for (suggestion of suggestions; track suggestion.title) {
+          <app-book-item
+            [book]="suggestion"
+            variant="compact"
+            (selected)="selectSuggestion($event)"
+          ></app-book-item>
+        }
       </div>
     </app-modal-overlay>
 
@@ -99,14 +102,15 @@
       (statusChange)="status = $event"
     ></app-status-selector>
 
-    <app-progress-bar
-      *ngIf="status === 'read' || status === 'reading'"
-      [progress]="readProgress"
-      [pages]="pages ? parseInt(pages) : 0"
-      variant="editable"
-      (increment)="onProgressIncrement()"
-      (decrement)="onProgressDecrement()"
-    ></app-progress-bar>
+    @if (status === 'read' || status === 'reading') {
+      <app-progress-bar
+        [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
+        [pages]="pages ? parseInt(pages) : 0"
+        variant="editable"
+        (increment)="onProgressIncrement()"
+        (decrement)="onProgressDecrement()"
+      ></app-progress-bar>
+    }
 
     <button type="submit" class="submit-btn">{{ editingBook ? 'Guardar cambios' : 'Agregar libro' }}</button>
   </fieldset>

@@ -6,8 +6,10 @@
     (change)="onStatusChange($any($event.target).value)"
     class="status-select"
   >
-    <option *ngFor="let opt of statusOptions" [value]="opt.value">
-      {{ opt.label }}
-    </option>
+    @for (opt of statusOptions; track opt.value) {
+      <option [value]="opt.value">
+        {{ opt.label }}
+      </option>
+    }
   </select>
 </div>

@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modal-overlay',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './modal-overlay.component.html',
   styleUrl: './modal-overlay.component.scss'
 })

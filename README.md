@@ -1,59 +1,181 @@
-# Bookyman
+# Bookyman 📚
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+**Gestor de biblioteca personal con diseño neobrutalism, búsqueda multi-API y seguimiento de progreso de lectura.**
 
-## Development server
+Una aplicación Angular moderna y responsiva para gestionar tu colección de libros, rastrear tu progreso de lectura y descubrir nuevos títulos a través de Google Books y OpenLibrary.
 
-To start a local development server, run:
+## Características
+
+### 📖 Gestión de Libros
+- ✅ Crear, leer, actualizar y eliminar libros (CRUD completo)
+- ✅ 5 estados: Por leer, Leyendo, Leído, Prestado, No voy a leer
+- ✅ Seguimiento de progreso por páginas (no porcentaje)
+- ✅ Portadas de libros desde APIs externas
+- ✅ Almacenamiento local con localStorage
+
+### 🔍 Búsqueda Inteligente
+- ✅ Búsqueda manual en Google Books API + OpenLibrary
+- ✅ Merge inteligente de resultados (deduplicación, score de completitud)
+- ✅ Priorización visual por disponibilidad de portadas
+- ✅ Validación de campos requeridos (título + autor)
+- ✅ Loading state con spinner CSS
+
+### 📊 Seguimiento de Progreso
+- ✅ Barra de progreso visual interactiva
+- ✅ Incremento exacto por página (+/- botones)
+- ✅ Display: "X / Y páginas" y porcentaje
+- ✅ 100% automático cuando libro está "Leído"
+- ✅ Botones deshabilitados para libros leídos
+
+### 🎨 Interfaz Neobrutalism
+- ✅ Paleta verde + amarillo con bordes sólidos
+- ✅ Sombras desplazadas (3px 3px / 5px 5px)
+- ✅ Tipografía Courier New monospace
+- ✅ Mobile-first responsive design
+- ✅ CSS Grid (3-4 cols desktop → 1 col mobile)
+
+### 🔄 Filtros y Ordenamiento
+- ✅ Filtro por estado del libro
+- ✅ Búsqueda por texto (título, autor, ISBN)
+- ✅ Ordenamiento: Más nuevo, Más antiguo, Título A-Z, Autor A-Z
+
+## Stack Técnico
+
+- **Framework**: Angular 20.3.0 (Standalone Components)
+- **Control Flow**: @if / @for (sintaxis moderna Angular 20+)
+- **State**: Signals + Computed Properties
+- **HTTP**: HttpClient nativo
+- **Storage**: localStorage
+- **Styling**: SCSS puro
+- **Layout**: CSS Grid responsivo + Flexbox
+
+## Instalación
 
 ```bash
-ng serve
+# Clonar repositorio
+git clone <repo-url>
+cd bookyman
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Uso
 
-## Code scaffolding
+### Agregar un Libro
+1. Click en botón **"+"** en el header
+2. Llenar título y autor
+3. Click en **"🔍 Buscar en librería"**
+4. Seleccionar resultado (auto-completa campos)
+5. Click en **"Agregar libro"**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Rastrear Progreso
+1. Cambiar estado a "Leyendo"
+2. Usar botones **+/-** para incrementar/decrementar páginas
+3. Ver progreso en tiempo real (% y páginas)
+4. Cambiar a "Leído" cuando termines (100% automático)
+
+### Filtrar y Buscar
+- **Filtro por estado**: Dropdown con 5 opciones
+- **Búsqueda rápida**: Input que filtra por título/autor/ISBN
+- **Ordenar**: Seleccionar orden (más nuevo/antiguo/título/autor)
+
+## Estructura del Proyecto
+
+```
+src/app/
+├── components/
+│   ├── book-card/              # Card individual del libro (grid responsive)
+│   ├── book-form/              # Formulario crear/editar
+│   ├── book-list/              # Lista con filtros y ordenamiento
+│   ├── modal-overlay/          # Modal genérico reutilizable
+│   ├── progress-bar/           # Barra de progreso con controles
+│   ├── search-button/          # Botón búsqueda con spinner
+│   ├── search-filter/          # Filtros y búsqueda
+│   ├── book-item/              # Card compacta para resultados
+│   └── status-selector/        # Select de estados
+├── services/
+│   ├── book.service.ts         # CRUD de libros
+│   ├── google-books.service.ts # Búsqueda Google Books
+│   ├── open-library.service.ts # Búsqueda OpenLibrary
+│   ├── combined-search.service.ts # Merge de resultados
+│   └── local-storage.service.ts # Persistencia
+└── models/
+    └── book.ts                 # Interface Book
+```
+
+## Comandos Disponibles
 
 ```bash
-ng generate component component-name
+# Desarrollo
+npm start              # Inicia dev server (puerto 4200)
+npm run build          # Build para producción
+npm test              # Ejecutar unit tests
+npm run lint          # Linting
+
+# Utilidades
+ng generate component nombre  # Crear componente
+ng generate service nombre    # Crear servicio
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Configuración
 
-```bash
-ng generate --help
-```
+### Google Books API
+- Endpoint: `https://www.googleapis.com/books/v1/volumes`
+- Key: Ya incluida en el código (para desarrollo)
+- Límite: 40 requests/segundo
 
-## Building
+### OpenLibrary API
+- Endpoint: `https://openlibrary.org/search.json`
+- Pública (sin API key)
+- Límite: Sin restricción conocida
 
-To build the project run:
+## Características de UX
 
-```bash
-ng build
-```
+### Cards Uniformes
+- Todas las cards tienen altura mínima de 450px
+- Actions (botones) siempre al fondo
+- Hover effects con transform y shadow mejorado
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Mobile-First
+- 100% ancho en móvil
+- Stack vertical de controles
+- Botones tappable size (40x40px mínimo)
 
-## Running unit tests
+### Accessibilidad
+- aria-labels en botones
+- Labels en inputs
+- Estados disabled con feedback visual
+- Contraste de colores suficiente
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Mejoras Futuras
 
-```bash
-ng test
-```
+- [ ] Exportar/importar biblioteca (JSON/CSV)
+- [ ] Estadísticas: libros leídos, páginas totales, velocidad de lectura
+- [ ] Categorías/tags personalizados
+- [ ] Sincronización cloud (Firebase)
+- [ ] Integración Goodreads API
+- [ ] Dark mode
+- [ ] Recomendaciones basadas en libros leídos
 
-## Running end-to-end tests
+## Contribuir
 
-For end-to-end (e2e) testing, run:
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
-```bash
-ng e2e
-```
+## Licencia
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Este proyecto está bajo la licencia MIT.
 
-## Additional Resources
+## Recursos
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular CLI](https://github.com/angular/angular-cli)
+- [Angular Documentation](https://angular.dev)
+- [Google Books API](https://developers.google.com/books)
+- [OpenLibrary API](https://openlibrary.org/developers/api)

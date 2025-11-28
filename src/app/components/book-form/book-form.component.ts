@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
@@ -14,7 +13,6 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   selector: 'app-book-form',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     SearchButtonComponent,
     ModalOverlayComponent,
@@ -30,8 +28,9 @@ export class BookFormComponent implements OnInit, OnChanges {
   @Output() bookAdded = new EventEmitter<Omit<Book, 'id' | 'createdAt' | 'updatedAt'>>();
   @Output() bookUpdated = new EventEmitter<Book>();
 
-  // Exponer parseInt para usarlo en el template
+  // Exponer parseInt y Math para usarlos en el template
   parseInt = parseInt;
+  Math = Math;
 
   title = '';
   author = '';
@@ -40,7 +39,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   description = '';
   coverImageUrl = '';
   status: 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed' = 'to-read';
-  readProgress = 0;
+  pagesRead = 0;
 
   suggestions: CombinedSearchResult[] = [];
   showSuggestions = false;
@@ -114,7 +113,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.description = this.editingBook.description || '';
     this.coverImageUrl = this.editingBook.coverImageUrl || '';
     this.status = this.editingBook.status;
-    this.readProgress = this.editingBook.readProgress || 0;
+    this.pagesRead = this.editingBook.pagesRead || 0;
   }
 
   get isSearchButtonDisabled(): boolean {
@@ -157,13 +156,21 @@ export class BookFormComponent implements OnInit, OnChanges {
   }
 
   onProgressIncrement(): void {
-    const pageIncrement = this.pages ? 100 / parseInt(this.pages) : 0;
-    this.readProgress = Math.min(100, this.readProgress + pageIncrement);
+    if (!this.pages) return;
+
+    // Cambiar estado automáticamente a "reading" si está en "to-read"
+    if (this.status === 'to-read') {
+      this.status = 'reading';
+    }
+
+    const maxPages = parseInt(this.pages);
+    this.pagesRead = Math.min(maxPages, this.pagesRead + 1);
   }
 
   onProgressDecrement(): void {
-    const pageIncrement = this.pages ? 100 / parseInt(this.pages) : 0;
-    this.readProgress = Math.max(0, this.readProgress - pageIncrement);
+    if (!this.pages) return;
+
+    this.pagesRead = Math.max(0, this.pagesRead - 1);
   }
 
   onSubmit(): void {
@@ -183,7 +190,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         pages: this.pages ? parseInt(this.pages) : undefined,
         description: this.description.trim() || undefined,
         status: this.status,
-        readProgress: (this.status === 'read' || this.status === 'reading') ? parseInt(this.readProgress.toString()) || 0 : undefined,
+        pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined,
         updatedAt: Date.now()
       };
       this.bookUpdated.emit(updatedBook);
@@ -197,7 +204,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         pages: this.pages ? parseInt(this.pages) : undefined,
         description: this.description.trim() || undefined,
         status: this.status,
-        readProgress: (this.status === 'read' || this.status === 'reading') ? parseInt(this.readProgress.toString()) || 0 : undefined
+        pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined
       };
       this.bookAdded.emit(newBook);
     }
@@ -212,7 +219,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.description = '';
     this.coverImageUrl = '';
     this.status = 'to-read';
-    this.readProgress = 0;
+    this.pagesRead = 0;
     this.suggestions = [];
     this.showSuggestions = false;
   }
