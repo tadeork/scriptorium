@@ -1,4 +1,4 @@
-# Bookyman 📚
+# Scriptorium 📚
 
 **Gestor de biblioteca personal con diseño neobrutalism, búsqueda multi-API y seguimiento de progreso de lectura.**
 

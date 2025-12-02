@@ -1,4 +1,4 @@
-# Bookyman - Gestor de Biblioteca Personal
+# Scriptorium - Gestor de Biblioteca Personal
 
 ## Visión General
 Crear una aplicación Angular para gestionar una biblioteca personal con un diseño neobrutalism, capacidad de búsqueda en múltiples APIs, seguimiento de progreso de lectura y persistencia local.
@@ -14,7 +14,7 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
   - Mobile-first: 100% ancho en móvil, max-width 500-600px en desktop
 
 - **Componente Principal (App)**:
-  - Header con título "Bookyman - Tu biblioteca personal"
+  - Header con título "Scriptorium - Tu biblioteca personal"
   - Botón "+" para agregar libros en la esquina del header
   - Área principal con lista de libros
   - Modal overlay para formulario de agregar/editar

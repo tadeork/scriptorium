@@ -12,7 +12,7 @@ import { Book } from './models/book';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('Bookyman');
+  protected readonly title = signal('Scriptorium');
   protected readonly currentView = signal<'library' | 'wishlist'>('library');
   showFormModal = false;
   showEditModal = false;
