@@ -1,10 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, switchMap, tap } from 'rxjs';
 import { SearchButtonComponent } from '../search-button/search-button.component';
-import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component';
 import { BookItemComponent } from '../book-item/book-item.component';
 import { StatusSelectorComponent } from '../status-selector/status-selector.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
@@ -15,7 +14,6 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
   imports: [
     FormsModule,
     SearchButtonComponent,
-    ModalOverlayComponent,
     BookItemComponent,
     StatusSelectorComponent,
     ProgressBarComponent
@@ -44,13 +42,15 @@ export class BookFormComponent implements OnInit, OnChanges {
 
   suggestions: CombinedSearchResult[] = [];
   showSuggestions = false;
-  showResultsModal = false;
   searchQuery$ = new Subject<string>();
   isSearching = false;
   searchError = false;
   noResultsMessage = '';
 
-  constructor(private combinedSearchService: CombinedSearchService) { }
+  constructor(
+    private combinedSearchService: CombinedSearchService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     if (this.editingBook) {
@@ -58,39 +58,40 @@ export class BookFormComponent implements OnInit, OnChanges {
     }
 
     this.searchQuery$
-      .pipe(debounceTime(300))
-      .subscribe((query) => {
-        if (query.trim()) {
-          this.isSearching = true;
+      .pipe(
+        debounceTime(300),
+        tap(() => {
           this.searchError = false;
           this.noResultsMessage = '';
+          // Note: isSearching is already set to true in searchLibrary()
+        }),
+        switchMap((query) => {
+          if (!query.trim()) {
+            return [];
+          }
+          return this.combinedSearchService.searchBothLibraries(query);
+        })
+      )
+      .subscribe((results) => {
+        this.isSearching = false;
 
-          this.combinedSearchService.searchBothLibraries(query).subscribe((results) => {
-            this.isSearching = false;
-
-            if (results.length === 0) {
-              this.searchError = true;
-              this.noResultsMessage = 'No se encontraron coincidencias en la búsqueda';
-              this.suggestions = [];
-              this.showSuggestions = false;
-              this.showResultsModal = false;
-            } else {
-              // Priorizar resultados con imágenes
-              const resultsWithImages = results.filter(r => r.coverImageUrl);
-              const resultsWithoutImages = results.filter(r => !r.coverImageUrl);
-
-              this.suggestions = [...resultsWithImages, ...resultsWithoutImages];
-              this.searchError = false;
-              this.noResultsMessage = '';
-              this.showSuggestions = false;
-              this.showResultsModal = true;
-            }
-          });
-        } else {
+        if (results.length === 0) {
+          this.searchError = true;
+          this.noResultsMessage = 'No se encontraron coincidencias en la búsqueda';
           this.suggestions = [];
           this.showSuggestions = false;
+        } else {
+          // Priorizar resultados con imágenes
+          const resultsWithImages = results.filter(r => r.coverImageUrl);
+          const resultsWithoutImages = results.filter(r => !r.coverImageUrl);
+
+          this.suggestions = [...resultsWithImages, ...resultsWithoutImages];
+          console.log(this.suggestions);
+
           this.searchError = false;
           this.noResultsMessage = '';
+          this.showSuggestions = true;
+          this.cdr.detectChanges(); // Force view update
         }
       });
   }
@@ -129,6 +130,7 @@ export class BookFormComponent implements OnInit, OnChanges {
       return;
     }
     const searchQuery = `${this.title.trim()} ${this.author.trim()}`;
+    this.isSearching = true; // Set loading state immediately
     this.searchQuery$.next(searchQuery);
   }
 
@@ -150,11 +152,11 @@ export class BookFormComponent implements OnInit, OnChanges {
 
     this.showSuggestions = false;
     this.suggestions = [];
-    this.showResultsModal = false;
   }
 
-  closeResultsModal(): void {
-    this.showResultsModal = false;
+  clearSuggestions(): void {
+    this.showSuggestions = false;
+    this.suggestions = [];
   }
 
   onProgressIncrement(): void {

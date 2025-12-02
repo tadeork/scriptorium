@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { GoogleBooksService, BookSearchResult as GoogleBookResult } from './google-books.service';
 
 export interface OpenLibraryVolume {
@@ -33,7 +33,7 @@ export class CombinedSearchService {
   constructor(
     private googleBooksService: GoogleBooksService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   /**
    * Busca en ambas APIs (Google Books y OpenLibrary)
@@ -44,17 +44,23 @@ export class CombinedSearchService {
       return of([]);
     }
 
-    return forkJoin({
-      google: this.googleBooksService.searchBooks(query).pipe(
-        catchError(() => of([]))
-      ),
-      openlibrary: this.searchOpenLibrary(query).pipe(
-        catchError(() => of([]))
-      )
-    }).pipe(
-      map(({ google, openlibrary }) => {
-        const combinedResults = this.mergeResults(google, openlibrary);
-        return combinedResults.sort((a, b) => (b.completeness || 0) - (a.completeness || 0));
+    return this.googleBooksService.searchBooks(query).pipe(
+      catchError(() => of([])),
+      switchMap((googleResults) => {
+        if (googleResults && googleResults.length > 0) {
+          // Si Google encuentra resultados, los usamos y no buscamos en OpenLibrary
+          const mappedResults: CombinedSearchResult[] = googleResults.map((r) => ({
+            ...r,
+            source: 'google' as const,
+            completeness: this.calculateCompleteness(r as CombinedSearchResult)
+          }));
+          return of(mappedResults.sort((a, b) => (b.completeness || 0) - (a.completeness || 0)));
+        } else {
+          // Si Google no encuentra nada, buscamos en OpenLibrary
+          return this.searchOpenLibrary(query).pipe(
+            map(results => results.sort((a, b) => (b.completeness || 0) - (a.completeness || 0)))
+          );
+        }
       })
     );
   }
@@ -73,7 +79,8 @@ export class CombinedSearchService {
             return [];
           }
           return response.docs.map((doc) => this.mapOpenLibraryVolume(doc));
-        })
+        }),
+        catchError(() => of([]))
       );
   }
 

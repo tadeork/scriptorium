@@ -25,8 +25,8 @@
         class="form-input" />
     </div>
 
-    <app-search-button [isLoading]="isSearching" [isDisabled]="isSearchButtonDisabled" text="Buscar en librería"
-      (clicked)="searchLibrary()"></app-search-button>
+    <app-search-button [isLoading]="isSearching" [isDisabled]="isSearchButtonDisabled"
+      [text]="isSearching ? 'Buscando...' : 'Buscar en librería'" (clicked)="searchLibrary()"></app-search-button>
 
     @if (searchError && noResultsMessage) {
     <div class="search-error-message">
@@ -34,14 +34,17 @@
     </div>
     }
 
-    <app-modal-overlay [isOpen]="showResultsModal" title="Resultados de búsqueda" size="medium"
-      (close)="closeResultsModal()">
-      <div class="results-list">
+    @if (showSuggestions) {
+    <div class="inline-results-list">
+      <h4 class="results-title">Resultados sugeridos:</h4>
+      <div class="results-scroll-container">
         @for (suggestion of suggestions; track $index) {
         <app-book-item [book]="suggestion" variant="compact" (selected)="selectSuggestion($event)"></app-book-item>
         }
       </div>
-    </app-modal-overlay>
+      <button type="button" class="close-results-btn" (click)="clearSuggestions()">Cerrar resultados</button>
+    </div>
+    }
 
     <div class="form-row">
       <div class="form-group">

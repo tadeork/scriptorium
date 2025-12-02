@@ -11,6 +11,7 @@ export class ModalOverlayComponent {
   @Input() isOpen = false;
   @Input() title: string | null = null;
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
+  @Input() zIndex = 1000;
   @Output() close = new EventEmitter<void>();
 
   onOverlayClick(): void {
