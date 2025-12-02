@@ -88,7 +88,16 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 - localStorage con clave "bookyman_library"
 - Estructura de datos: Array de libros con id único, timestamp de creación/actualización
 
-### 8. PWA (Progressive Web App)
+### 8. Importación y Exportación
+- **Formato**: CSV (Comma Separated Values)
+- **Exportar**: Descarga completa de la colección incluyendo todos los campos del libro.
+- **Importar**:
+  - Lectura de archivo CSV.
+  - Estrategia de Upsert: Actualiza libros existentes (por ID) y agrega nuevos.
+  - Validación básica de formato.
+- **UI**: Modal dedicado "Administrar biblioteca" accesible desde el header.
+
+### 9. PWA (Progressive Web App)
 - **Instalable**: Manifiesto web configurado.
 - **Offline**: Service Worker para caché de assets y shell de la aplicación.
 - **Branding**: Iconos y colores definidos en `manifest.webmanifest`.
@@ -168,6 +177,14 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
    - Inputs: `searchQuery`, `selectedStatus`, `sortBy`
    - Outputs: `searchQueryChange`, `statusFilterChange`, `sortByChange`
    - Integra: StatusSelector reutilizable
+
+10. **LibraryAdminComponent** (`library-admin/`)
+    - Modal para administración de la biblioteca
+    - Funcionalidades:
+      - Exportar biblioteca a CSV ("Guardar biblioteca")
+      - Importar biblioteca desde CSV ("Cargar biblioteca")
+    - Estilos: Botones consistentes con SearchButton (verde/amarillo, neobrutalism)
+    - Layout: Header con descripción, contenido central, footer con botones alineados
 
 ### Servicios
 

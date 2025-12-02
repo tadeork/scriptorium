@@ -40,6 +40,12 @@ Una aplicación Angular moderna y responsiva para gestionar tu colección de lib
 - ✅ Búsqueda por texto (título, autor, ISBN)
 - ✅ Ordenamiento: Más nuevo, Más antiguo, Título A-Z, Autor A-Z
 
+### 💾 Importación y Exportación
+- ✅ Exportar colección completa a CSV
+- ✅ Importar/Restaurar desde archivo CSV
+- ✅ Estrategia de fusión inteligente (actualiza existentes, agrega nuevos)
+- ✅ Interfaz de administración dedicada
+
 ### 📱 PWA (Progressive Web App)
 - ✅ Instalable en dispositivos móviles y escritorio
 - ✅ Funciona offline (Service Worker)
@@ -109,7 +115,8 @@ src/app/
 │   ├── search-button/          # Botón búsqueda con spinner
 │   ├── search-filter/          # Filtros y búsqueda
 │   ├── book-item/              # Card compacta para resultados
-│   └── status-selector/        # Select de estados
+│   ├── status-selector/        # Select de estados
+│   └── library-admin/          # Modal de importación/exportación
 ├── services/
 │   ├── book.service.ts         # CRUD de libros
 │   ├── google-books.service.ts # Búsqueda Google Books
@@ -172,7 +179,7 @@ ng generate service nombre    # Crear servicio
 
 ## Mejoras Futuras
 
-- [ ] Exportar/importar biblioteca (JSON/CSV)
+- [x] Exportar/importar biblioteca (JSON/CSV)
 - [ ] Estadísticas: libros leídos, páginas totales, velocidad de lectura
 - [ ] Categorías/tags personalizados
 - [ ] Sincronización cloud (Firebase)
