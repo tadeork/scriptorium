@@ -40,6 +40,12 @@ Una aplicación Angular moderna y responsiva para gestionar tu colección de lib
 - ✅ Búsqueda por texto (título, autor, ISBN)
 - ✅ Ordenamiento: Más nuevo, Más antiguo, Título A-Z, Autor A-Z
 
+### 📱 PWA (Progressive Web App)
+- ✅ Instalable en dispositivos móviles y escritorio
+- ✅ Funciona offline (Service Worker)
+- ✅ Iconos y colores de marca personalizados
+- ✅ Experiencia nativa (standalone)
+
 ## Stack Técnico
 
 - **Framework**: Angular 20.3.0 (Standalone Components)

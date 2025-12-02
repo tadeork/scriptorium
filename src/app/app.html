@@ -13,9 +13,14 @@
           </button>
         </div>
       </div>
-      <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
-        +
-      </button>
+      <div class="header-actions">
+        <button class="icon-btn" (click)="toggleAdminModal()" title="Administrar biblioteca">
+          ⚙️
+        </button>
+        <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
+          +
+        </button>
+      </div>
     </div>
   </header>
 
@@ -34,6 +39,15 @@
       <button class="close-btn" (click)="toggleEditModal()">✕</button>
       <app-book-form [editingBook]="editingBook"
         (bookUpdated)="onBookUpdated($event); toggleEditModal()"></app-book-form>
+    </div>
+  </div>
+  }
+
+  @if (showAdminModal) {
+  <div class="form-modal-overlay" (click)="toggleAdminModal()">
+    <div class="form-modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="toggleAdminModal()">✕</button>
+      <app-library-admin (close)="toggleAdminModal()"></app-library-admin>
     </div>
   </div>
   }

@@ -91,6 +91,27 @@ export class BookService {
     }
   }
 
+  importBooks(newBooks: Book[]): void {
+    const currentBooks = this.books();
+    const bookMap = new Map(currentBooks.map((b) => [b.id, b]));
+
+    newBooks.forEach((book) => {
+      // Ensure required fields are present
+      if (!book.id) {
+        book.id = this.generateId();
+      }
+      if (!book.createdAt) {
+        book.createdAt = Date.now();
+      }
+      book.updatedAt = Date.now();
+      
+      bookMap.set(book.id, book);
+    });
+
+    this.books.set(Array.from(bookMap.values()));
+    this.saveBooksToStorage();
+  }
+
   private saveBooksToStorage(): void {
     this.storageService.saveBooks(this.books());
   }

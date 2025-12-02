@@ -1,0 +1,33 @@
+<div class="admin-container">
+    <div class="admin-header">
+        <h2 class="admin-title">Administrar biblioteca</h2>
+        <p class="admin-description">
+            Aquí puedes guardar una copia de seguridad de tu biblioteca o cargar una existente.
+        </p>
+    </div>
+
+    <div class="admin-content">
+        <div class="info-group">
+            <h3>Guardar</h3>
+            <p>Descarga tu colección completa en un archivo CSV.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="info-group">
+            <h3>Cargar</h3>
+            <p>Importa libros desde un archivo CSV. Esto agregará nuevos libros y actualizará los existentes.</p>
+        </div>
+    </div>
+
+    <div class="admin-footer">
+        <button class="btn-primary" (click)="downloadLibrary()">
+            Guardar biblioteca
+        </button>
+
+        <button class="btn-secondary" (click)="triggerUpload()">
+            Cargar biblioteca
+        </button>
+        <input type="file" id="csvUpload" accept=".csv" style="display: none" (change)="onFileSelected($event)">
+    </div>
+</div>

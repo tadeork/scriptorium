@@ -88,6 +88,11 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 - localStorage con clave "bookyman_library"
 - Estructura de datos: Array de libros con id único, timestamp de creación/actualización
 
+### 8. PWA (Progressive Web App)
+- **Instalable**: Manifiesto web configurado.
+- **Offline**: Service Worker para caché de assets y shell de la aplicación.
+- **Branding**: Iconos y colores definidos en `manifest.webmanifest`.
+
 ## Arquitectura Técnica
 
 ### Stack
