@@ -12,11 +12,12 @@ Una aplicación Angular moderna y responsiva para gestionar tu colección de lib
 - ✅ Seguimiento de progreso por páginas (no porcentaje)
 - ✅ Portadas de libros desde APIs externas
 - ✅ Almacenamiento local con localStorage
+- ✅ **Nueva:** Lista de Deseados (Wishlist) separada de la biblioteca principal
 
 ### 🔍 Búsqueda Inteligente
-- ✅ Búsqueda manual en Google Books API + OpenLibrary
-- ✅ Merge inteligente de resultados (deduplicación, score de completitud)
-- ✅ Priorización visual por disponibilidad de portadas
+- ✅ Búsqueda secuencial: Google Books (prioridad) -> OpenLibrary (fallback)
+- ✅ Resultados inline integrados en el formulario
+- ✅ Feedback inmediato y manejo de errores robusto
 - ✅ Validación de campos requeridos (título + autor)
 - ✅ Loading state con spinner CSS
 
@@ -58,6 +59,12 @@ cd bookyman
 
 # Instalar dependencias
 npm install
+
+# Configurar Variables de Entorno
+1. Crear un archivo `.env` en la raíz del proyecto.
+2. Agregar tu API Key de Google Books:
+   `GOOGLE_BOOKS_API_KEY=tu_api_key_aqui`
+   (El script `set-env.js` generará automáticamente los archivos de entorno al iniciar)
 
 # Iniciar servidor de desarrollo
 npm start
@@ -101,11 +108,17 @@ src/app/
 │   ├── book.service.ts         # CRUD de libros
 │   ├── google-books.service.ts # Búsqueda Google Books
 │   ├── open-library.service.ts # Búsqueda OpenLibrary
-│   ├── combined-search.service.ts # Merge de resultados
+│   ├── combined-search.service.ts # Orquestación de búsqueda
 │   └── local-storage.service.ts # Persistencia
-└── models/
-    └── book.ts                 # Interface Book
+├── models/
+│   └── book.ts                 # Interface Book
+└── environments/           # Generados dinámicamente
+    ├── environment.ts
+    └── environment.prod.ts
 ```
+
+### Scripts
+- `scripts/set-env.js`: Genera archivos de entorno desde `.env` antes del build/serve.
 
 ## Comandos Disponibles
 
@@ -125,7 +138,7 @@ ng generate service nombre    # Crear servicio
 
 ### Google Books API
 - Endpoint: `https://www.googleapis.com/books/v1/volumes`
-- Key: Ya incluida en el código (para desarrollo)
+- Key: Gestionada vía `.env` (seguridad mejorada)
 - Límite: 40 requests/segundo
 
 ### OpenLibrary API

@@ -32,6 +32,17 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 - Prestado
 - No voy a leer
 
+### 4. Lista de Deseados (Wishlist)
+- **Separación de Vistas**:
+  - Vista "Biblioteca": Libros propios.
+  - Vista "Lista de Deseados": Libros que se quieren adquirir.
+- **Navegación**: Botones en el header para alternar entre vistas.
+- **Características de Wishlist**:
+  - Cards más compactas.
+  - Sin selector de estado.
+  - Muestra fecha de agregado ("Agregado el...").
+  - No se muestra el filtro de búsqueda avanzado.
+
 ### 4. Seguimiento de Progreso
 - Solo visible para libros en estado "Leyendo" o "Leído"
 - Mostrar: porcentaje, páginas leídas / total de páginas
@@ -54,19 +65,24 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 
 ### 6. Integración APIs
 - **Google Books API** (prioritaria para portadas)
-  - Endpoint: `https://www.googleapis.com/books/v1/volumes?q=query&key=AIzaSyD_-CajPeP4r25TZW5V5RYxaEfIq2SnWuI`
+  - Endpoint: `https://www.googleapis.com/books/v1/volumes?q=query&key=${GOOGLE_BOOKS_API_KEY}`
   - Mapeo: volumeInfo.title, authors[0], imageLinks.thumbnail, pageCount
 
 - **OpenLibrary API** (fallback/complemento)
   - Endpoint: `https://openlibrary.org/search.json?q=query&limit=10`
   - Mapeo: title, author_name[0], isbn[0], number_of_pages, first_sentence, cover_i
 
-- **Estrategia de Merge**:
-  - Ejecutar ambas búsquedas en paralelo (forkJoin)
-  - Deduplicar por título + autor
-  - Calcular score de completitud (0-100%) basado en campos presentes
-  - Priorizar resultados con coverImageUrl en el modal
-  - Ordenar por completitud descendente
+- **Estrategia de Búsqueda**:
+  - **Secuencial**: Primero busca en Google Books.
+  - **Fallback**: Si Google no devuelve resultados, busca en OpenLibrary.
+  - **Resultados Inline**:
+    - Los resultados se muestran directamente en el formulario (debajo del botón de búsqueda).
+    - Lista con scroll vertical.
+    - Botón para cerrar/limpiar resultados.
+  - **UX**:
+    - Feedback inmediato ("Buscando...").
+    - Manejo de Race Conditions con `switchMap`.
+    - Detección de cambios forzada para evitar lag en la UI.
 
 ### 7. Persistencia
 - localStorage con clave "bookyman_library"
@@ -343,9 +359,12 @@ ng serve --port 4201
 ng build
 ```
 
-## Variables de Entorno
-- Google Books API Key: `AIzaSyD_-CajPeP4r25TZW5V5RYxaEfIq2SnWuI`
-- OpenLibrary: API pública sin key
+## Variables de Entorno y Seguridad
+- **Google Books API Key**:
+  - Almacenada en archivo `.env` (no commiteado).
+  - Inyectada en tiempo de build mediante script `scripts/set-env.js`.
+  - Archivos `environment.ts` y `environment.prod.ts` generados dinámicamente e ignorados por git.
+- **OpenLibrary**: API pública sin key.
 
 ## Posibles Mejoras Futuras
 1. Exportar/importar biblioteca (JSON/CSV)
