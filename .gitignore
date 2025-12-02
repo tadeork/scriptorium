@@ -41,6 +41,9 @@ __screenshots__/
 # System files
 .DS_Store
 
+
 # Environment variables
 .env
+src/environments/environment.ts
+src/environments/environment.prod.ts
 
