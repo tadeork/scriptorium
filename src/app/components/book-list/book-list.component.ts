@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, signal, computed, Output, EventEmitter, Input } from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { Book, BookStatus } from '../../models/book';
 import { BookCardComponent } from '../book-card/book-card.component';
@@ -16,6 +16,10 @@ export class BookListComponent implements OnInit {
   selectedStatus = signal<BookStatus | 'all'>('all');
   sortBy = signal<'newest' | 'oldest' | 'title' | 'author'>('newest');
   editingBookId = signal<string | null>(null);
+  collection = signal<'library' | 'wishlist'>('library');
+  @Input('collection') set collectionInput(value: 'library' | 'wishlist') {
+    this.collection.set(value);
+  }
   @Output() editBook = new EventEmitter<Book>();
 
   filteredBooks = computed(() => {
@@ -23,10 +27,16 @@ export class BookListComponent implements OnInit {
     const query = this.searchQuery();
     const status = this.selectedStatus();
     const sort = this.sortBy();
+    const currentCollection = this.collection();
+
+    // Filter by collection
+    books = books.filter(b => (b.collection || 'library') === currentCollection);
 
     // Apply search filter
     if (query.trim()) {
       books = this.bookService.searchBooks(query);
+      // Re-apply collection filter after search (since searchBooks might return all matches)
+      books = books.filter(b => (b.collection || 'library') === currentCollection);
     }
 
     // Apply status filter
@@ -48,9 +58,9 @@ export class BookListComponent implements OnInit {
     return books;
   });
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSearchQueryChange(query: string): void {
     this.searchQuery.set(query);

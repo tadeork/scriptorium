@@ -3,7 +3,15 @@
     <div class="header-content">
       <div class="header-title">
         <h1 class="app-title">{{ title() }}</h1>
-        <p class="app-subtitle">Tu biblioteca personal</p>
+        <div class="header-nav">
+          <button class="nav-btn" [class.active]="currentView() === 'library'" (click)="setView('library')">
+            Biblioteca
+          </button>
+          <button class="nav-btn nav-btn--wishlist" [class.active]="currentView() === 'wishlist'"
+            (click)="setView('wishlist')">
+            Lista de Deseados
+          </button>
+        </div>
       </div>
       <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
         +
@@ -12,27 +20,25 @@
   </header>
 
   @if (showFormModal) {
-    <div class="form-modal-overlay" (click)="toggleFormModal()">
-      <div class="form-modal" (click)="$event.stopPropagation()">
-        <button class="close-btn" (click)="toggleFormModal()">✕</button>
-        <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"></app-book-form>
-      </div>
+  <div class="form-modal-overlay" (click)="toggleFormModal()">
+    <div class="form-modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="toggleFormModal()">✕</button>
+      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"></app-book-form>
     </div>
+  </div>
   }
 
   @if (showEditModal) {
-    <div class="form-modal-overlay" (click)="toggleEditModal()">
-      <div class="form-modal" (click)="$event.stopPropagation()">
-        <button class="close-btn" (click)="toggleEditModal()">✕</button>
-        <app-book-form
-          [editingBook]="editingBook"
-          (bookUpdated)="onBookUpdated($event); toggleEditModal()"
-        ></app-book-form>
-      </div>
+  <div class="form-modal-overlay" (click)="toggleEditModal()">
+    <div class="form-modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="toggleEditModal()">✕</button>
+      <app-book-form [editingBook]="editingBook"
+        (bookUpdated)="onBookUpdated($event); toggleEditModal()"></app-book-form>
     </div>
+  </div>
   }
 
   <main class="app-main">
-    <app-book-list (editBook)="openEditModal($event)"></app-book-list>
+    <app-book-list [collection]="currentView()" (editBook)="openEditModal($event)"></app-book-list>
   </main>
 </div>

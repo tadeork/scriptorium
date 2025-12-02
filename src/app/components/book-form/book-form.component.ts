@@ -38,6 +38,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   pages = '';
   description = '';
   coverImageUrl = '';
+  collection: 'library' | 'wishlist' = 'library';
   status: 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed' = 'to-read';
   pagesRead = 0;
 
@@ -49,7 +50,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   searchError = false;
   noResultsMessage = '';
 
-  constructor(private combinedSearchService: CombinedSearchService) {}
+  constructor(private combinedSearchService: CombinedSearchService) { }
 
   ngOnInit(): void {
     if (this.editingBook) {
@@ -112,6 +113,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.pages = this.editingBook.pages?.toString() || '';
     this.description = this.editingBook.description || '';
     this.coverImageUrl = this.editingBook.coverImageUrl || '';
+    this.collection = this.editingBook.collection || 'library';
     this.status = this.editingBook.status;
     this.pagesRead = this.editingBook.pagesRead || 0;
   }
@@ -189,6 +191,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         coverImageUrl: this.coverImageUrl.trim() || undefined,
         pages: this.pages ? parseInt(this.pages) : undefined,
         description: this.description.trim() || undefined,
+        collection: this.collection,
         status: this.status,
         pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined,
         updatedAt: Date.now()
@@ -203,6 +206,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         coverImageUrl: this.coverImageUrl.trim() || undefined,
         pages: this.pages ? parseInt(this.pages) : undefined,
         description: this.description.trim() || undefined,
+        collection: this.collection,
         status: this.status,
         pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined
       };
@@ -218,6 +222,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.pages = '';
     this.description = '';
     this.coverImageUrl = '';
+    this.collection = 'library';
     this.status = 'to-read';
     this.pagesRead = 0;
     this.suggestions = [];

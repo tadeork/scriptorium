@@ -34,12 +34,48 @@
   color: #fff;
 }
 
-.app-subtitle {
-  margin: 0;
+.header-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.nav-btn {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 2px solid transparent;
+  padding: 0.5rem 1rem;
   font-size: 0.9rem;
-  font-weight: 600;
-  opacity: 0.9;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    color: #1b5e20;
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+.nav-btn--wishlist {
+  &.active {
+    background-color: #fbc02d;
+    /* Amarillo */
+    border-color: #fbc02d;
+    color: #1b5e20;
+  }
+
+  &:hover:not(.active) {
+    color: #fbc02d;
+  }
 }
 
 .toggle-form-btn {
@@ -88,6 +124,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -112,6 +149,7 @@
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -195,6 +233,7 @@
       transform: scale(0.9);
       opacity: 0;
     }
+
     to {
       transform: scale(1);
       opacity: 1;
@@ -206,4 +245,3 @@
     padding: 2rem 1rem;
   }
 }
-

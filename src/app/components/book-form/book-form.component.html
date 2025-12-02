@@ -2,57 +2,43 @@
   <fieldset class="book-form__fieldset">
     <legend class="book-form__legend">{{ editingBook ? 'Editar libro' : 'Agregar nuevo libro' }}</legend>
 
+    <div class="form-group collection-selector">
+      <label class="radio-label">
+        <input type="radio" name="collection" [(ngModel)]="collection" value="library">
+        Biblioteca
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="collection" [(ngModel)]="collection" value="wishlist">
+        Lista de Deseados
+      </label>
+    </div>
+
     <div class="form-group">
       <label for="title" class="form-label">Título *</label>
-      <input
-        type="text"
-        id="title"
-        [(ngModel)]="title"
-        name="title"
-        placeholder="Ej: Cien años de soledad"
-        class="form-input"
-        autocomplete="off"
-      />
+      <input type="text" id="title" [(ngModel)]="title" name="title" placeholder="Ej: Cien años de soledad"
+        class="form-input" autocomplete="off" />
     </div>
 
     <div class="form-group">
       <label for="author" class="form-label">Autor *</label>
-      <input
-        type="text"
-        id="author"
-        [(ngModel)]="author"
-        name="author"
-        placeholder="Ej: Gabriel García Márquez"
-        class="form-input"
-      />
+      <input type="text" id="author" [(ngModel)]="author" name="author" placeholder="Ej: Gabriel García Márquez"
+        class="form-input" />
     </div>
 
-    <app-search-button
-      [isLoading]="isSearching"
-      [isDisabled]="isSearchButtonDisabled"
-      text="Buscar en librería"
-      (clicked)="searchLibrary()"
-    ></app-search-button>
+    <app-search-button [isLoading]="isSearching" [isDisabled]="isSearchButtonDisabled" text="Buscar en librería"
+      (clicked)="searchLibrary()"></app-search-button>
 
     @if (searchError && noResultsMessage) {
-      <div class="search-error-message">
-        {{ noResultsMessage }}
-      </div>
+    <div class="search-error-message">
+      {{ noResultsMessage }}
+    </div>
     }
 
-    <app-modal-overlay
-      [isOpen]="showResultsModal"
-      title="Resultados de búsqueda"
-      size="medium"
-      (close)="closeResultsModal()"
-    >
+    <app-modal-overlay [isOpen]="showResultsModal" title="Resultados de búsqueda" size="medium"
+      (close)="closeResultsModal()">
       <div class="results-list">
-        @for (suggestion of suggestions; track suggestion.title) {
-          <app-book-item
-            [book]="suggestion"
-            variant="compact"
-            (selected)="selectSuggestion($event)"
-          ></app-book-item>
+        @for (suggestion of suggestions; track $index) {
+        <app-book-item [book]="suggestion" variant="compact" (selected)="selectSuggestion($event)"></app-book-item>
         }
       </div>
     </app-modal-overlay>
@@ -60,56 +46,31 @@
     <div class="form-row">
       <div class="form-group">
         <label for="isbn" class="form-label">ISBN</label>
-        <input
-          type="text"
-          id="isbn"
-          [(ngModel)]="isbn"
-          name="isbn"
-          placeholder="Ej: 978-0-123456-78-9"
-          class="form-input"
-        />
+        <input type="text" id="isbn" [(ngModel)]="isbn" name="isbn" placeholder="Ej: 978-0-123456-78-9"
+          class="form-input" />
       </div>
 
       <div class="form-group">
         <label for="pages" class="form-label">Páginas</label>
-        <input
-          type="number"
-          id="pages"
-          [(ngModel)]="pages"
-          name="pages"
-          placeholder="Ej: 428"
-          class="form-input"
-          min="0"
-        />
+        <input type="number" id="pages" [(ngModel)]="pages" name="pages" placeholder="Ej: 428" class="form-input"
+          min="0" />
       </div>
     </div>
 
     <div class="form-group">
       <label for="description" class="form-label">Descripción</label>
-      <textarea
-        id="description"
-        [(ngModel)]="description"
-        name="description"
-        placeholder="Opcional: Notas o sinopsis"
-        class="form-input form-textarea"
-        rows="3"
-      ></textarea>
+      <textarea id="description" [(ngModel)]="description" name="description" placeholder="Opcional: Notas o sinopsis"
+        class="form-input form-textarea" rows="3"></textarea>
     </div>
 
-    <app-status-selector
-      [status]="status"
-      id="book-status"
-      (statusChange)="status = $event"
-    ></app-status-selector>
+    @if (collection === 'library') {
+    <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
+    }
 
     @if (status === 'read' || status === 'reading') {
-      <app-progress-bar
-        [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
-        [pages]="pages ? parseInt(pages) : 0"
-        variant="editable"
-        (increment)="onProgressIncrement()"
-        (decrement)="onProgressDecrement()"
-      ></app-progress-bar>
+    <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
+      [pages]="pages ? parseInt(pages) : 0" variant="editable" (increment)="onProgressIncrement()"
+      (decrement)="onProgressDecrement()"></app-progress-bar>
     }
 
     <button type="submit" class="submit-btn">{{ editingBook ? 'Guardar cambios' : 'Agregar libro' }}</button>

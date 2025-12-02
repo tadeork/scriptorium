@@ -13,14 +13,22 @@ import { Book } from './models/book';
 })
 export class App {
   protected readonly title = signal('Bookyman');
+  protected readonly currentView = signal<'library' | 'wishlist'>('library');
   showFormModal = false;
   showEditModal = false;
   editingBook: Book | null = null;
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService) { }
 
   onBookAdded(book: Omit<Book, 'id' | 'createdAt' | 'updatedAt'>): void {
+    // Ensure the new book has the correct collection based on current view, 
+    // unless the user explicitly changed it in the form (which BookForm handles)
+    // Actually BookForm handles the collection selection, so we just pass it through.
     this.bookService.addBook(book);
+  }
+
+  setView(view: 'library' | 'wishlist'): void {
+    this.currentView.set(view);
   }
 
   toggleFormModal(): void {

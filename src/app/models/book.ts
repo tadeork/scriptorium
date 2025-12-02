@@ -6,6 +6,7 @@ export interface Book {
   author: string;
   isbn?: string;
   coverImageUrl?: string;
+  collection?: 'library' | 'wishlist';
   status: BookStatus;
   pagesRead?: number; // páginas leídas (no porcentaje)
   pages?: number;

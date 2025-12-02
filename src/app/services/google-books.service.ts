@@ -34,14 +34,16 @@ export interface BookSearchResult {
   publishedDate?: string;
 }
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleBooksService {
   private readonly API_BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
-  private readonly API_KEY = 'AIzaSyBS2xIQ12CTLHdrwzkTbFaWhqmtKBPLmGc';
+  private readonly API_KEY = environment.googleBooksApiKey;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   searchBooks(query: string): Observable<BookSearchResult[]> {
     if (!query || query.trim().length === 0) {
