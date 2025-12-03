@@ -119,4 +119,24 @@ export class BookService {
   private generateId(): string {
     return `book-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
+  checkDuplicate(title: string, author: string, isbn?: string): boolean {
+    const lowerTitle = title.toLowerCase().trim();
+    const lowerAuthor = author.toLowerCase().trim();
+    // Remove dashes for ISBN comparison if present
+    const cleanIsbn = isbn ? isbn.replace(/-/g, '').trim() : '';
+
+    return this.books().some((book) => {
+      // Check ISBN if available on both sides
+      if (cleanIsbn && book.isbn) {
+        const bookIsbn = book.isbn.replace(/-/g, '').trim();
+        if (bookIsbn === cleanIsbn) return true;
+      }
+
+      // Check Title and Author
+      const bookTitle = book.title.toLowerCase().trim();
+      const bookAuthor = book.author.toLowerCase().trim();
+
+      return bookTitle === lowerTitle && bookAuthor === lowerAuthor;
+    });
+  }
 }

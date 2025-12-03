@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
+import { BookService } from '../../services/book.service';
 import { debounceTime, Subject, switchMap, tap } from 'rxjs';
 import { SearchButtonComponent } from '../search-button/search-button.component';
 import { BookItemComponent } from '../book-item/book-item.component';
@@ -51,7 +52,8 @@ export class BookFormComponent implements OnInit, OnChanges {
 
   constructor(
     private combinedSearchService: CombinedSearchService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private bookService: BookService
   ) { }
 
   ngOnInit(): void {
@@ -196,6 +198,20 @@ export class BookFormComponent implements OnInit, OnChanges {
       return;
     }
 
+    // Check for duplicates only when adding a new book
+    if (!this.editingBook) {
+      const isDuplicate = this.bookService.checkDuplicate(
+        this.title.trim(),
+        this.author.trim(),
+        this.isbn.trim() || undefined
+      );
+
+      if (isDuplicate) {
+        alert('Este libro ya existe en tu biblioteca.');
+        return;
+      }
+    }
+
     if (this.editingBook) {
       // Actualizar libro existente
       const updatedBook: Book = {
@@ -247,4 +263,3 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.showSuggestions = false;
   }
 }
-
