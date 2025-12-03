@@ -1,15 +1,10 @@
 <div class="status-selector">
   <label [for]="id" class="status-label">{{ label }}</label>
-  <select
-    [id]="id"
-    [value]="status"
-    (change)="onStatusChange($any($event.target).value)"
-    class="status-select"
-  >
+  <select [id]="id" [ngModel]="status" (ngModelChange)="onStatusChange($event)" class="status-select">
     @for (opt of statusOptions; track opt.value) {
-      <option [value]="opt.value">
-        {{ opt.label }}
-      </option>
+    <option [value]="opt.value">
+      {{ opt.label }}
+    </option>
     }
   </select>
 </div>

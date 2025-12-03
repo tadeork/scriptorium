@@ -8,7 +8,7 @@ export interface Book {
   coverImageUrl?: string;
   collection?: 'library' | 'wishlist';
   status: BookStatus;
-  pagesRead?: number; // páginas leídas (no porcentaje)
+  pagesRead?: number;
   pages?: number;
   publishedDate?: string;
   description?: string;
