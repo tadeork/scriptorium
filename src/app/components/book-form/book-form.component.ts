@@ -188,6 +188,11 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.pagesRead = Math.max(0, this.pagesRead - 1);
   }
 
+  moveToLibrary(): void {
+    this.collection = 'library';
+    this.status = 'to-read'; // Default status when moving to library
+  }
+
   onSubmit(targetCollection?: 'library' | 'wishlist'): void {
     if (targetCollection) {
       this.collection = targetCollection;

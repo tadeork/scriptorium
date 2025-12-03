@@ -71,7 +71,16 @@
         class="form-input form-textarea" rows="3"></textarea>
     </div>
 
-    @if (collection === 'library') {
+    @if (editingBook && collection === 'wishlist') {
+    <div class="form-group checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" [ngModel]="false" (change)="moveToLibrary()">
+        Ya tengo este libro (Mover a Biblioteca)
+      </label>
+    </div>
+    }
+
+    @if (!editingBook || collection === 'library') {
     <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
     }
 

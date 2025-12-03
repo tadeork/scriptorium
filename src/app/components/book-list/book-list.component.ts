@@ -109,6 +109,13 @@ export class BookListComponent implements OnInit {
     this.bookService.updateProgress(payload.id, payload.progress);
   }
 
+  onMoveToLibrary(book: Book): void {
+    this.bookService.updateBook(book.id, {
+      collection: 'library',
+      status: 'to-read'
+    });
+  }
+
   onEditBook(book: Book): void {
     this.editingBookId.set(book.id);
     this.editBook.emit(book);

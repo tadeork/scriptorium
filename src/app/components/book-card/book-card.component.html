@@ -86,6 +86,14 @@
       </div>
       }
 
+      @if (book.collection === 'wishlist') {
+      <div class="book-details__row">
+        <button class="btn-move-to-library" (click)="onMoveToLibraryClick()">
+          📖 Mover a Biblioteca (Por leer)
+        </button>
+      </div>
+      }
+
       @if (book.createdAt) {
       <div class="book-details__row">
         <label>Agregado:</label>

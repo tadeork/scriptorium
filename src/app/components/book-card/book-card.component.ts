@@ -18,6 +18,7 @@ export class BookCardComponent {
   @Output() updateStatus = new EventEmitter<{ id: string; status: string }>();
   @Output() updateProgress = new EventEmitter<{ id: string; progress: number }>();
   @Output() editBook = new EventEmitter<Book>();
+  @Output() moveToLibrary = new EventEmitter<Book>();
 
   showDetails = false;
 
@@ -37,6 +38,10 @@ export class BookCardComponent {
 
   onEditClick(): void {
     this.editBook.emit(this.book);
+  }
+
+  onMoveToLibraryClick(): void {
+    this.moveToLibrary.emit(this.book);
   }
 
   onStatusChange(target: EventTarget | null): void {
