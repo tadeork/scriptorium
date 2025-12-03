@@ -202,7 +202,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         description: this.description.trim() || undefined,
         collection: this.collection,
         status: this.status,
-        pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined,
+        pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
         updatedAt: Date.now()
       };
       this.bookUpdated.emit(updatedBook);
@@ -217,7 +217,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         description: this.description.trim() || undefined,
         collection: this.collection,
         status: this.status,
-        pagesRead: (this.status === 'read' || this.status === 'reading') ? this.pagesRead : undefined
+        pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined)
       };
       this.bookAdded.emit(newBook);
     }

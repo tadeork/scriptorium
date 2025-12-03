@@ -70,10 +70,17 @@
     <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
     }
 
-    @if (status === 'read' || status === 'reading') {
+    @if (status === 'reading') {
     <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
       [pages]="pages ? parseInt(pages) : 0" variant="editable" (increment)="onProgressIncrement()"
       (decrement)="onProgressDecrement()"></app-progress-bar>
+    }
+
+    @if (status === 'read') {
+    <div class="read-status-label">
+      <span class="read-status-icon">✓</span>
+      100% LEÍDO
+    </div>
     }
 
     <button type="submit" class="submit-btn">{{ editingBook ? 'Guardar cambios' : 'Agregar libro' }}</button>

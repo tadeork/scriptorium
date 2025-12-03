@@ -2,45 +2,41 @@
   <div class="progress-info">
     <span class="progress-percentage">{{ displayProgress }}%</span>
     @if (pages > 0) {
-      <span class="progress-pages">
-        @if (disabled) {
-          {{ pages }} / {{ pages }} páginas
-        } @else {
-          {{ pagesReadDisplay }} / {{ pages }} páginas
-        }
-      </span>
+    <span class="progress-pages">
+      @if (disabled) {
+      {{ pages }} / {{ pages }} páginas
+      } @else {
+      {{ pagesReadDisplay }} / {{ pages }} páginas
+      }
+    </span>
     }
   </div>
 
   @if (variant === 'display') {
-    <div class="progress-bar-display">
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="displayProgress"></div>
-      </div>
+  <div class="progress-bar-display">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="displayProgress"></div>
     </div>
+  </div>
   }
 
   @if (variant === 'editable') {
-    <div class="progress-bar-editable" [class.disabled]="disabled">
-      <button
-        class="progress-btn progress-btn--minus"
-        (click)="onDecrement()"
-        [disabled]="disabled"
-        title="Disminuir progreso"
-      >
-        −
-      </button>
-      <div class="progress-bar">
-        <div class="progress-fill" [style.width.%]="displayProgress"></div>
-      </div>
-      <button
-        class="progress-btn progress-btn--plus"
-        (click)="onIncrement()"
-        [disabled]="disabled"
-        title="Aumentar progreso"
-      >
-        +
-      </button>
+  <div class="progress-bar-editable" [class.disabled]="disabled">
+    <button class="progress-btn progress-btn--minus" (mousedown)="startRepeating('decrement', $event)"
+      (touchstart)="startRepeating('decrement', $event)" (mouseup)="stopRepeating()" (mouseleave)="stopRepeating()"
+      (touchend)="stopRepeating()" (touchcancel)="stopRepeating()" (keydown.enter)="onDecrement()"
+      (keydown.space)="onDecrement()" [disabled]="disabled" title="Disminuir progreso">
+      −
+    </button>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="displayProgress"></div>
     </div>
+    <button class="progress-btn progress-btn--plus" (mousedown)="startRepeating('increment', $event)"
+      (touchstart)="startRepeating('increment', $event)" (mouseup)="stopRepeating()" (mouseleave)="stopRepeating()"
+      (touchend)="stopRepeating()" (touchcancel)="stopRepeating()" (keydown.enter)="onIncrement()"
+      (keydown.space)="onIncrement()" [disabled]="disabled" title="Aumentar progreso">
+      +
+    </button>
+  </div>
   }
 </div>
