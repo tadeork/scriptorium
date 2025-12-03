@@ -65,8 +65,11 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
 
 ### 6. Integración APIs
 - **Google Books API** (prioritaria para portadas)
-  - Endpoint: `https://www.googleapis.com/books/v1/volumes?q=query&key=${GOOGLE_BOOKS_API_KEY}`
+  - Endpoint: `https://us-central1-scriptorium-app.cloudfunctions.net/searchBooks`
+  - Método: POST
+  - Payload: `{ data: { query: string } }`
   - Mapeo: volumeInfo.title, authors[0], imageLinks.thumbnail, pageCount
+
 
 - **OpenLibrary API** (fallback/complemento)
   - Endpoint: `https://openlibrary.org/search.json?q=query&limit=10`

@@ -58,13 +58,14 @@ Una aplicación Angular moderna y responsiva para gestionar tu colección de lib
 - **Control Flow**: @if / @for (sintaxis moderna Angular 20+)
 - **State**: Signals + Computed Properties
 - **HTTP**: HttpClient nativo
+- **Backend**: Firebase Functions (Node.js)
+- **Integration**: @angular/fire
 - **Storage**: localStorage
 - **Styling**: SCSS puro
 - **Layout**: CSS Grid responsivo + Flexbox
 
 ## Instalación
 
-```bash
 # Clonar repositorio
 git clone <repo-url>
 cd bookyman
@@ -72,15 +73,14 @@ cd bookyman
 # Instalar dependencias
 npm install
 
-# Configurar Variables de Entorno
-1. Crear un archivo `.env` en la raíz del proyecto.
-2. Agregar tu API Key de Google Books:
-   `GOOGLE_BOOKS_API_KEY=tu_api_key_aqui`
-   (El script `set-env.js` generará automáticamente los archivos de entorno al iniciar)
+# Configurar Firebase
+1. Asegúrate de tener las credenciales de Firebase configuradas.
+2. La aplicación utiliza Firebase Functions para la búsqueda de libros.
+3. El proyecto está configurado para usar el proyecto `scriptorium-app`.
 
 # Iniciar servidor de desarrollo
 npm start
-```
+
 
 ## Uso
 
@@ -130,8 +130,10 @@ src/app/
     └── environment.prod.ts
 ```
 
-### Scripts
-- `scripts/set-env.js`: Genera archivos de entorno desde `.env` antes del build/serve.
+- `npm start`: Inicia el servidor de desarrollo.
+- `npm run build`: Construye la aplicación para producción.
+- `firebase deploy`: Despliega la aplicación y las funciones a Firebase.
+
 
 ## Comandos Disponibles
 
@@ -151,8 +153,8 @@ ng generate service nombre    # Crear servicio
 
 ### Google Books API
 - Endpoint: `https://www.googleapis.com/books/v1/volumes`
-- Key: Gestionada vía `.env` (seguridad mejorada)
-- Límite: 40 requests/segundo
+- Key: Gestionada de forma segura en Firebase Functions (Secret Manager).
+- Proxy: `searchBooks` Cloud Function.
 
 ### OpenLibrary API
 - Endpoint: `https://openlibrary.org/search.json`
