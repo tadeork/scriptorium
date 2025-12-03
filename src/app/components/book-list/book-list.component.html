@@ -8,7 +8,7 @@
   @for (book of filteredBooks(); track book.id) {
   <app-book-card [book]="book" (deleteBook)="onDeleteBook($event)" (updateStatus)="onUpdateStatus($event)"
     (updateProgress)="onUpdateProgress($event)" (editBook)="onEditBook($event)"
-    (moveToLibrary)="onMoveToLibrary($event)"></app-book-card>
+    (moveToLibrary)="onMoveToLibrary($event)" (moveToWishlist)="onMoveToWishlist($event)"></app-book-card>
   }
 </div>
 }

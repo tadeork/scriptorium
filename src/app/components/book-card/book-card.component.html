@@ -21,7 +21,7 @@
     }
   </div>
 
-  @if (book.status === 'reading' || book.status === 'read') {
+  @if (book.status === 'reading') {
   <div class="book-card__progress-bar">
     <div class="book-card__progress-fill" [style.width.%]="getProgressPercentage()"></div>
   </div>
@@ -90,6 +90,12 @@
       <div class="book-details__row">
         <button class="btn-move-to-library" (click)="onMoveToLibraryClick()">
           📖 Mover a Biblioteca (Por leer)
+        </button>
+      </div>
+      } @else {
+      <div class="book-details__row">
+        <button class="btn-move-to-wishlist" (click)="onMoveToWishlistClick()">
+          ✨ Mover a Lista de Deseados
         </button>
       </div>
       }

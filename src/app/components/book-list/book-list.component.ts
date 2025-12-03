@@ -116,6 +116,12 @@ export class BookListComponent implements OnInit {
     });
   }
 
+  onMoveToWishlist(book: Book): void {
+    this.bookService.updateBook(book.id, {
+      collection: 'wishlist'
+    });
+  }
+
   onEditBook(book: Book): void {
     this.editingBookId.set(book.id);
     this.editBook.emit(book);
