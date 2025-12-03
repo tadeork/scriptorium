@@ -1,53 +1,18 @@
 <div class="book-card" [class]="'status-' + book.status" [class.is-wishlist]="book.collection === 'wishlist'"
-  (click)="onCardClick()">
-  <div class="book-card__header">
-    <div class="book-card__title-section">
+  [class.has-cover]="!!book.coverImageUrl" (click)="onCardClick()"
+  [style.--cover-image]="book.coverImageUrl ? 'url(' + book.coverImageUrl + ')' : null">
+
+  <div class="book-card__overlay">
+    <div class="book-card__info">
       <h3 class="book-card__title">{{ book.title }}</h3>
       <p class="book-card__author">{{ book.author }}</p>
-      @if (book.collection === 'wishlist') {
-      <p class="book-card__wishlist-date">Agregado a lista de deseados el {{ book.createdAt | date:'shortDate' }}</p>
-      }
     </div>
-    @if (book.coverImageUrl) {
-    <div class="book-card__cover-thumb">
-      <img [src]="book.coverImageUrl" [alt]="book.title" />
+
+    @if (book.collection === 'wishlist') {
+    <div class="book-card__badges">
+      <span class="badge badge--wishlist">Deseado</span>
     </div>
     }
-  </div>
-
-  <div class="book-card__body">
-    <div class="book-card__meta">
-      @if (book.pages) {
-      <span class="book-card__meta-item">{{ book.pages }} págs</span>
-      }
-      @if (book.isbn) {
-      <span class="book-card__meta-item">ISBN: {{ book.isbn }}</span>
-      }
-    </div>
-
-    <div (click)="$event.stopPropagation()">
-      @if (book.collection !== 'wishlist') {
-      <app-status-selector [status]="book.status" [id]="'status-' + book.id" [label]="'Estado:'"
-        (statusChange)="updateStatus.emit({ id: book.id, status: $event })"></app-status-selector>
-      }
-    </div>
-
-    <div (click)="$event.stopPropagation()">
-      @if (book.status === 'read' || book.status === 'reading') {
-      <app-progress-bar [progress]="getProgressPercentage()" [pages]="book.pages || 0" [pagesRead]="book.pagesRead || 0"
-        [disabled]="isBookRead()" variant="editable" (increment)="incrementProgress()"
-        (decrement)="decrementProgress()"></app-progress-bar>
-      }
-    </div>
-
-    <div class="book-card__actions">
-      <button class="book-card__edit-btn" (click)="onEditClick(); $event.stopPropagation()" title="Editar libro">
-        ✎
-      </button>
-      <button class="book-card__delete-btn" (click)="onDeleteClick(); $event.stopPropagation()" title="Eliminar libro">
-        ✕
-      </button>
-    </div>
   </div>
 </div>
 
@@ -82,13 +47,16 @@
 
       <div class="book-details__row">
         <label>Estado:</label>
-        <p>{{ statusLabels[book.status] }}</p>
+        <app-status-selector [status]="book.status" [id]="'modal-status-' + book.id" [label]="''"
+          (statusChange)="updateStatus.emit({ id: book.id, status: $event })"></app-status-selector>
       </div>
 
       @if (book.status === 'read' || book.status === 'reading') {
       <div class="book-details__row">
         <label>Progreso:</label>
-        <p>{{ calculatePagesRead() }} / {{ book.pages }} páginas ({{ getProgressPercentage() }}%)</p>
+        <app-progress-bar [progress]="getProgressPercentage()" [pages]="book.pages || 0"
+          [pagesRead]="book.pagesRead || 0" [disabled]="isBookRead()" variant="editable"
+          (increment)="incrementProgress()" (decrement)="decrementProgress()"></app-progress-bar>
       </div>
       }
 
@@ -105,13 +73,15 @@
         <p>{{ (book.createdAt | date: 'short') }}</p>
       </div>
       }
+    </div>
 
-      @if (book.updatedAt && book.updatedAt !== book.createdAt) {
-      <div class="book-details__row">
-        <label>Actualizado:</label>
-        <p>{{ (book.updatedAt | date: 'short') }}</p>
-      </div>
-      }
+    <div class="book-details__actions">
+      <button class="btn btn--edit" (click)="onEditClick()">
+        ✎ Editar Libro
+      </button>
+      <button class="btn btn--delete" (click)="onDeleteClick()">
+        ✕ Eliminar Libro
+      </button>
     </div>
   </div>
 </app-modal-overlay>

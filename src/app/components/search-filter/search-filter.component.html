@@ -1,26 +1,23 @@
 <div class="search-filter">
   <div class="search-filter__search">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange($event.target.value)"
-      placeholder="Buscar por título, autor o ISBN..."
-      class="search-input"
-    />
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange($event.target.value)"
+      placeholder="Buscar por título, autor o ISBN..." class="search-input" />
+    <button class="filter-toggle-btn" (click)="toggleFilters()" [class.active]="filtersVisible"
+      title="Mostrar/Ocultar filtros">
+      <span class="filter-icon">▿</span>
+    </button>
   </div>
 
+  @if (filtersVisible) {
   <div class="search-filter__filters">
     <div class="filter-group">
       <label class="filter-label">Filtrar por estado:</label>
       <div class="filter-buttons">
         @for (status of statuses; track status.value) {
-          <button
-            [class.active]="selectedStatus === status.value"
-            (click)="onStatusChange(status.value)"
-            class="filter-btn"
-          >
-            {{ status.label }}
-          </button>
+        <button [class.active]="selectedStatus === status.value" (click)="onStatusChange(status.value)"
+          class="filter-btn">
+          {{ status.label }}
+        </button>
         }
       </div>
     </div>
@@ -29,9 +26,10 @@
       <label class="filter-label">Ordenar por:</label>
       <select class="sort-select" [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
         @for (option of sortOptions; track option.value) {
-          <option [value]="option.value">{{ option.label }}</option>
+        <option [value]="option.value">{{ option.label }}</option>
         }
       </select>
     </div>
   </div>
+  }
 </div>

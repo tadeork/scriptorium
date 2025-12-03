@@ -17,6 +17,12 @@ export class SearchFilterComponent {
   @Output() statusFilterChange = new EventEmitter<BookStatus | 'all'>();
   @Output() sortByChange = new EventEmitter<'newest' | 'oldest' | 'title' | 'author'>();
 
+  filtersVisible = false;
+
+  toggleFilters(): void {
+    this.filtersVisible = !this.filtersVisible;
+  }
+
   readonly statuses: Array<{ value: BookStatus | 'all'; label: string }> = [
     { value: 'all', label: 'Todos' },
     { value: 'read', label: 'Leído' },
