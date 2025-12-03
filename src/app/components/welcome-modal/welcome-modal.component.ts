@@ -26,4 +26,8 @@ export class WelcomeModalComponent implements OnInit {
         this.isOpen = false;
         localStorage.setItem('hasSeenWelcome', 'true');
     }
+
+    open(): void {
+        this.isOpen = true;
+    }
 }

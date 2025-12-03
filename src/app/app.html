@@ -48,7 +48,7 @@
   <div class="form-modal-overlay" (click)="toggleAdminModal()">
     <div class="form-modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="toggleAdminModal()">✕</button>
-      <app-library-admin (close)="toggleAdminModal()"></app-library-admin>
+      <app-library-admin (close)="toggleAdminModal()" (showWelcome)="onShowWelcome()"></app-library-admin>
     </div>
   </div>
   }

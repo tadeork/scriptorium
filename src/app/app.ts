@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, effect, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BookFormComponent } from './components/book-form/book-form.component';
@@ -29,6 +29,8 @@ export class App {
 
   showUpdateNotification = false;
 
+  @ViewChild(WelcomeModalComponent) welcomeModal!: WelcomeModalComponent;
+
   constructor(
     private bookService: BookService,
     private swUpdate: SwUpdate
@@ -44,6 +46,11 @@ export class App {
         this.showUpdateNotification = true;
       });
     }
+  }
+
+  onShowWelcome(): void {
+    this.showAdminModal = false;
+    this.welcomeModal.open();
   }
 
   reloadPage(): void {

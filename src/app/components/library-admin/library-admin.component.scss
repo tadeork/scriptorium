@@ -8,18 +8,42 @@
 }
 
 .admin-header {
+  margin-bottom: 2rem;
   text-align: center;
-}
 
-.admin-title {
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 
-.admin-description {
-  margin: 0;
-  color: var(--text-muted);
+  .admin-title {
+    font-size: 1.5rem;
+    color: #2d5016;
+    margin: 0;
+  }
+
+  .help-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    border-radius: 50%;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .admin-description {
+    color: #666;
+    margin: 0;
+  }
 }
 
 .admin-content {

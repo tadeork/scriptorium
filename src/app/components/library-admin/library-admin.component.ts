@@ -12,6 +12,7 @@ import { Book } from '../../models/book';
 })
 export class LibraryAdminComponent {
     @Output() close = new EventEmitter<void>();
+    @Output() showWelcome = new EventEmitter<void>();
 
     constructor(private bookService: BookService) { }
 

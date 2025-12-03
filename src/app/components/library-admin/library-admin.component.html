@@ -1,6 +1,11 @@
 <div class="admin-container">
     <div class="admin-header">
-        <h2 class="admin-title">Administrar biblioteca</h2>
+        <div class="title-row">
+            <h2 class="admin-title">Administrar biblioteca</h2>
+            <button class="help-btn" (click)="showWelcome.emit()" title="Ver guía de bienvenida">
+                ❓
+            </button>
+        </div>
         <p class="admin-description">
             Aquí puedes guardar una copia de seguridad de tu biblioteca o cargar una existente.
         </p>
