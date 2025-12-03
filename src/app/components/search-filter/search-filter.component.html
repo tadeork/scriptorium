@@ -2,13 +2,15 @@
   <div class="search-filter__search">
     <input type="text" [(ngModel)]="searchQuery" (input)="onSearchChange($event.target.value)"
       placeholder="Buscar por título, autor o ISBN..." class="search-input" />
+    @if (showFilters) {
     <button class="filter-toggle-btn" (click)="toggleFilters()" [class.active]="filtersVisible"
       title="Mostrar/Ocultar filtros">
       <span class="filter-icon">▿</span>
     </button>
+    }
   </div>
 
-  @if (filtersVisible) {
+  @if (showFilters && filtersVisible) {
   <div class="search-filter__filters">
     <div class="filter-group">
       <label class="filter-label">Filtrar por estado:</label>

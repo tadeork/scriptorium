@@ -13,6 +13,7 @@ export class SearchFilterComponent {
   @Input() searchQuery = '';
   @Input() selectedStatus: BookStatus | 'all' = 'all';
   @Input() sortBy: 'newest' | 'oldest' | 'title' | 'author' = 'newest';
+  @Input() showFilters = true;
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() statusFilterChange = new EventEmitter<BookStatus | 'all'>();
   @Output() sortByChange = new EventEmitter<'newest' | 'oldest' | 'title' | 'author'>();
