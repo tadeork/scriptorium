@@ -104,7 +104,7 @@ export class BookService {
         book.createdAt = Date.now();
       }
       book.updatedAt = Date.now();
-      
+
       bookMap.set(book.id, book);
     });
 

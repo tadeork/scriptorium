@@ -86,7 +86,6 @@ export class BookFormComponent implements OnInit, OnChanges {
           const resultsWithoutImages = results.filter(r => !r.coverImageUrl);
 
           this.suggestions = [...resultsWithImages, ...resultsWithoutImages];
-          console.log(this.suggestions);
 
           this.searchError = false;
           this.noResultsMessage = '';

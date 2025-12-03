@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of, from } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 
 export interface GoogleBooksVolume {
   id: string;
@@ -34,37 +34,36 @@ export interface BookSearchResult {
   publishedDate?: string;
 }
 
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleBooksService {
-  private readonly API_BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
-  private readonly API_KEY = environment.googleBooksApiKey;
+  private readonly FUNCTION_NAME = 'searchBooks';
+  private functions: Functions = inject(Functions);
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   searchBooks(query: string): Observable<BookSearchResult[]> {
     if (!query || query.trim().length === 0) {
       return of([]);
     }
 
-    const params = {
-      q: query,
-      maxResults: '10',
-      key: this.API_KEY
-    };
+    const searchBooksFn = httpsCallable(this.functions, this.FUNCTION_NAME);
 
-    return this.http.get<GoogleBooksResponse>(this.API_BASE_URL, { params }).pipe(
-      map((response) => {
+    // httpsCallable returns a Promise, so we convert it to an Observable with from()
+    // The Cloud Function expects { query } in request.data
+    return from(searchBooksFn({ query })).pipe(
+      map((result: any) => {
+        // The Cloud Function returns the Google Books API response in result.data
+        const response = result.data;
         if (!response.items) {
           return [];
         }
-        return response.items.map((item) => this.mapVolumeToResult(item));
+        return response.items.map((item: any) => this.mapVolumeToResult(item));
       }),
-      catchError(() => {
-        console.error('Error searching Google Books API');
+      catchError((error) => {
+        console.error('Error searching Google Books via Firebase Function', error);
         return of([]);
       })
     );
