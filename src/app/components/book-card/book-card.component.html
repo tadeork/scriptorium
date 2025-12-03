@@ -20,6 +20,12 @@
     </div>
     }
   </div>
+
+  @if (book.status === 'reading' || book.status === 'read') {
+  <div class="book-card__progress-bar">
+    <div class="book-card__progress-fill" [style.width.%]="getProgressPercentage()"></div>
+  </div>
+  }
 </div>
 
 <!-- Modal de detalles completos -->
