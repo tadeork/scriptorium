@@ -2,6 +2,10 @@
   [class.has-cover]="!!book.coverImageUrl" (click)="onCardClick()"
   [style.--cover-image]="book.coverImageUrl ? 'url(' + book.coverImageUrl + ')' : null">
 
+  <div class="book-card__status-tag" [class]="'status-' + book.status">
+    {{ statusLabels[book.status] }}
+  </div>
+
   <div class="book-card__overlay">
     <div class="book-card__info">
       <h3 class="book-card__title">{{ book.title }}</h3>
