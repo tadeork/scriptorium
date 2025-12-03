@@ -37,6 +37,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   pages = '';
   description = '';
   coverImageUrl = '';
+  format: 'physical' | 'digital' = 'physical';
   collection: 'library' | 'wishlist' = 'library';
   status: 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed' = 'to-read';
   pagesRead = 0;
@@ -123,6 +124,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.coverImageUrl = this.editingBook.coverImageUrl || '';
     this.collection = this.editingBook.collection || 'library';
     this.status = this.editingBook.status;
+    this.format = this.editingBook.format || 'physical';
     this.pagesRead = this.editingBook.pagesRead || 0;
   }
 
@@ -202,6 +204,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         description: this.description.trim() || undefined,
         collection: this.collection,
         status: this.status,
+        format: this.format,
         pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
         updatedAt: Date.now()
       };
@@ -217,6 +220,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         description: this.description.trim() || undefined,
         collection: this.collection,
         status: this.status,
+        format: this.format,
         pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined)
       };
       this.bookAdded.emit(newBook);
@@ -233,6 +237,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.coverImageUrl = '';
     this.collection = this.defaultCollection;
     this.status = 'to-read';
+    this.format = 'physical';
     this.pagesRead = 0;
     this.suggestions = [];
     this.showSuggestions = false;

@@ -13,6 +13,20 @@
       </label>
     </div>
 
+    <div class="form-group format-selector">
+      <label class="form-label">Formato:</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="format" [(ngModel)]="format" value="physical">
+          Físico
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="format" [(ngModel)]="format" value="digital">
+          Digital
+        </label>
+      </div>
+    </div>
+
     <div class="form-group">
       <label for="title" class="form-label">Título *</label>
       <input type="text" id="title" [(ngModel)]="title" name="title" placeholder="Ej: Cien años de soledad"

@@ -12,6 +12,7 @@ export interface Book {
   pages?: number;
   publishedDate?: string;
   description?: string;
+  format?: 'physical' | 'digital';
   createdAt: number;
   updatedAt: number;
 }
