@@ -1,4 +1,5 @@
-<div class="progress-bar-container" [class]="'progress-' + variant" [class.disabled]="disabled">
+<div class="progress-bar-container" [class]="'progress-' + variant" [class.disabled]="disabled"
+  (click)="$event.stopPropagation()">
   <div class="progress-info">
     <span class="progress-percentage">{{ displayProgress }}%</span>
     @if (pages > 0) {

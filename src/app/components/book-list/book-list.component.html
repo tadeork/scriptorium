@@ -1,6 +1,7 @@
-<app-search-filter [searchQuery]="searchQuery()" [selectedStatus]="selectedStatus()" [sortBy]="sortBy()"
-  [showFilters]="collection() === 'library'" (searchQueryChange)="onSearchQueryChange($event)"
-  (statusFilterChange)="onStatusFilterChange($event)" (sortByChange)="onSortByChange($event)"></app-search-filter>
+<app-search-filter [searchQuery]="searchQuery()" (searchQueryChange)="onSearchQueryChange($event)"
+  [selectedStatus]="selectedStatus()" (statusFilterChange)="onStatusFilterChange($event)" [sortBy]="sortBy()"
+  (sortByChange)="onSortByChange($event)" [showFilters]="collection() === 'library'"
+  [statusCounts]="statusCounts()"></app-search-filter>
 
 @if (filteredBooks().length > 0) {
 <div class="book-list">

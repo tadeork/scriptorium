@@ -58,6 +58,29 @@ export class BookListComponent implements OnInit {
     return books;
   });
 
+  statusCounts = computed(() => {
+    const books = this.bookService.books$();
+    const currentCollection = this.collection();
+    const collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
+
+    const counts: Record<string, number> = {
+      'all': collectionBooks.length,
+      'read': 0,
+      'reading': 0,
+      'to-read': 0,
+      'borrowed': 0,
+      'not-interested': 0
+    };
+
+    collectionBooks.forEach(book => {
+      if (counts[book.status] !== undefined) {
+        counts[book.status]++;
+      }
+    });
+
+    return counts;
+  });
+
   constructor(private bookService: BookService) { }
 
   ngOnInit(): void { }

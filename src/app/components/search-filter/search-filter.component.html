@@ -19,6 +19,9 @@
         <button [class.active]="selectedStatus === status.value" (click)="onStatusChange(status.value)"
           class="filter-btn">
           {{ status.label }}
+          @if (statusCounts[status.value] !== undefined) {
+          <span class="count-badge">({{ statusCounts[status.value] }})</span>
+          }
         </button>
         }
       </div>

@@ -2,16 +2,7 @@
   <fieldset class="book-form__fieldset">
     <legend class="book-form__legend">{{ editingBook ? 'Editar libro' : 'Agregar nuevo libro' }}</legend>
 
-    <div class="form-group collection-selector">
-      <label class="radio-label">
-        <input type="radio" name="collection" [(ngModel)]="collection" value="library">
-        Biblioteca
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="collection" [(ngModel)]="collection" value="wishlist">
-        Lista de Deseados
-      </label>
-    </div>
+
 
     <div class="form-group format-selector">
       <label class="form-label">Formato:</label>
@@ -97,6 +88,15 @@
     </div>
     }
 
-    <button type="submit" class="submit-btn">{{ editingBook ? 'Guardar cambios' : 'Agregar libro' }}</button>
+    @if (!editingBook) {
+    <div class="form-actions">
+      <button type="submit" class="submit-btn btn-library" (click)="collection = 'library'">Agregar a
+        Biblioteca</button>
+      <button type="button" class="submit-btn btn-wishlist" (click)="onSubmit('wishlist')">Agregar a Lista de
+        Deseados</button>
+    </div>
+    } @else {
+    <button type="submit" class="submit-btn">Guardar cambios</button>
+    }
   </fieldset>
 </form>

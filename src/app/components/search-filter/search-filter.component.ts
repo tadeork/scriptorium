@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book, BookStatus } from '../../models/book';
 
 @Component({
   selector: 'app-search-filter',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './search-filter.component.html',
   styleUrl: './search-filter.component.scss'
 })
@@ -14,6 +15,7 @@ export class SearchFilterComponent {
   @Input() selectedStatus: BookStatus | 'all' = 'all';
   @Input() sortBy: 'newest' | 'oldest' | 'title' | 'author' = 'newest';
   @Input() showFilters = true;
+  @Input() statusCounts: Record<string, number> = {};
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() statusFilterChange = new EventEmitter<BookStatus | 'all'>();
   @Output() sortByChange = new EventEmitter<'newest' | 'oldest' | 'title' | 'author'>();

@@ -1,0 +1,48 @@
+<app-modal-overlay [isOpen]="isOpen" title="¡Bienvenido a Scriptorium!" size="medium" (close)="closeModal()">
+    <div class="welcome-content">
+        <p class="welcome-intro">
+            Tu espacio personal para organizar tu vida literaria. Aquí tienes una guía rápida para empezar:
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">
+                <div class="feature-icon">📚</div>
+                <div class="feature-text">
+                    <h4>Tu Biblioteca</h4>
+                    <p>Guarda los libros que ya tienes o has leído. Organízalos por estado: leídos, leyendo, por leer.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">✨</div>
+                <div class="feature-text">
+                    <h4>Lista de Deseados</h4>
+                    <p>¿Encontraste un libro interesante? Agrégalo a tu lista de deseados para no olvidarlo.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">➕</div>
+                <div class="feature-text">
+                    <h4>Agregar Libros</h4>
+                    <p>Usa el formulario para agregar libros manualmente o búscalos en nuestra base de datos integrada.
+                    </p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon">💾</div>
+                <div class="feature-text">
+                    <h4>Guarda tus datos</h4>
+                    <p>Tus datos se guardan en tu navegador. <strong>Recomendamos descargar una copia de
+                            seguridad</strong> regularmente desde el menú de administración (⚙️).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome-actions">
+            <button class="start-btn" (click)="closeModal()">¡Entendido, empezar!</button>
+        </div>
+    </div>
+</app-modal-overlay>

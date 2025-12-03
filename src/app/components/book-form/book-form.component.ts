@@ -186,7 +186,11 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.pagesRead = Math.max(0, this.pagesRead - 1);
   }
 
-  onSubmit(): void {
+  onSubmit(targetCollection?: 'library' | 'wishlist'): void {
+    if (targetCollection) {
+      this.collection = targetCollection;
+    }
+
     if (!this.title.trim() || !this.author.trim()) {
       alert('Por favor completa al menos el título y el autor');
       return;

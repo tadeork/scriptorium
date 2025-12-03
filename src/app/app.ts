@@ -10,10 +10,12 @@ import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter } from 'rxjs';
 import { UpdateNotificationComponent } from './components/update-notification/update-notification.component';
 
+import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BookListComponent, BookFormComponent, LibraryAdminComponent, UpdateNotificationComponent],
+  imports: [CommonModule, BookListComponent, BookFormComponent, LibraryAdminComponent, UpdateNotificationComponent, WelcomeModalComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
