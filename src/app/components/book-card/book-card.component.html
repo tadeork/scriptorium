@@ -2,9 +2,11 @@
   [class.has-cover]="!!book.coverImageUrl" (click)="onCardClick()"
   [style.--cover-image]="book.coverImageUrl ? 'url(' + book.coverImageUrl + ')' : null">
 
+  @if (book.collection !== 'wishlist') {
   <div class="book-card__status-tag" [class]="'status-' + book.status">
     {{ statusLabels[book.status] }}
   </div>
+  }
 
   <div class="book-card__overlay">
     <div class="book-card__info">
@@ -49,11 +51,13 @@
       </div>
       }
 
+      @if (book.collection !== 'wishlist') {
       <div class="book-details__row">
         <label>Estado:</label>
         <app-status-selector [status]="book.status" [id]="'modal-status-' + book.id" [label]="''"
           (statusChange)="updateStatus.emit({ id: book.id, status: $event })"></app-status-selector>
       </div>
+      }
 
       @if (book.status === 'read' || book.status === 'reading') {
       <div class="book-details__row">

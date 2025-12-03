@@ -318,22 +318,3 @@
     }
   }
 }
-
-@media (min-width: 768px) {
-  .book-details {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .book-details__image {
-    flex: 0 0 200px;
-
-    img {
-      max-width: 100%;
-    }
-  }
-
-  .book-details__content {
-    flex: 1;
-  }
-}
