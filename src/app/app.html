@@ -28,7 +28,8 @@
   <div class="form-modal-overlay" (click)="toggleFormModal()">
     <div class="form-modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="toggleFormModal()">✕</button>
-      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"></app-book-form>
+      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"
+        [defaultCollection]="currentView()"></app-book-form>
     </div>
   </div>
   }

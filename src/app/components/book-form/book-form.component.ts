@@ -23,6 +23,7 @@ import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 })
 export class BookFormComponent implements OnInit, OnChanges {
   @Input() editingBook: Book | null = null;
+  @Input() defaultCollection: 'library' | 'wishlist' = 'library';
   @Output() bookAdded = new EventEmitter<Omit<Book, 'id' | 'createdAt' | 'updatedAt'>>();
   @Output() bookUpdated = new EventEmitter<Book>();
 
@@ -55,6 +56,8 @@ export class BookFormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.editingBook) {
       this.loadBookData();
+    } else {
+      this.collection = this.defaultCollection;
     }
 
     this.searchQuery$
@@ -101,6 +104,11 @@ export class BookFormComponent implements OnInit, OnChanges {
         this.loadBookData();
       } else {
         this.resetForm();
+      }
+    }
+    if (changes['defaultCollection']) {
+      if (!this.editingBook) {
+        this.collection = this.defaultCollection;
       }
     }
   }
@@ -223,7 +231,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.pages = '';
     this.description = '';
     this.coverImageUrl = '';
-    this.collection = 'library';
+    this.collection = this.defaultCollection;
     this.status = 'to-read';
     this.pagesRead = 0;
     this.suggestions = [];
