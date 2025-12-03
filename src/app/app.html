@@ -55,4 +55,8 @@
   <main class="app-main">
     <app-book-list [collection]="currentView()" (editBook)="openEditModal($event)"></app-book-list>
   </main>
+
+  @if (showUpdateNotification) {
+  <app-update-notification (reload)="reloadPage()"></app-update-notification>
+  }
 </div>

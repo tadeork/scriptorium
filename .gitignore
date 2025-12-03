@@ -44,5 +44,6 @@ __screenshots__/
 
 # Environment variables
 .env
+firebase-debug.log
 
 

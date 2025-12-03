@@ -6,10 +6,14 @@ import { LibraryAdminComponent } from './components/library-admin/library-admin.
 import { Book } from './models/book';
 import { BookService } from './services/book.service';
 
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { filter } from 'rxjs';
+import { UpdateNotificationComponent } from './components/update-notification/update-notification.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BookListComponent, BookFormComponent, LibraryAdminComponent],
+  imports: [CommonModule, BookListComponent, BookFormComponent, LibraryAdminComponent, UpdateNotificationComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
@@ -21,7 +25,28 @@ export class App {
   showAdminModal = false;
   editingBook: Book | null = null;
 
-  constructor(private bookService: BookService) { }
+  showUpdateNotification = false;
+
+  constructor(
+    private bookService: BookService,
+    private swUpdate: SwUpdate
+  ) {
+    this.checkForUpdates();
+  }
+
+  checkForUpdates(): void {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.pipe(
+        filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY')
+      ).subscribe(() => {
+        this.showUpdateNotification = true;
+      });
+    }
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
 
   onBookAdded(book: Omit<Book, 'id' | 'createdAt' | 'updatedAt'>): void {
     this.bookService.addBook(book);
