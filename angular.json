@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "bookyman": {
+    "scriptorium": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -59,10 +59,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "bookyman:build:production"
+              "buildTarget": "scriptorium:build:production"
             },
             "development": {
-              "buildTarget": "bookyman:build:development"
+              "buildTarget": "scriptorium:build:development"
             }
           },
           "defaultConfiguration": "development"

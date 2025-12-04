@@ -6,7 +6,7 @@ import { Book } from '../models/book';
   providedIn: 'root'
 })
 export class LocalStorageService {
-  private readonly BOOKS_KEY = 'bookyman_books';
+  private readonly BOOKS_KEY = 'scriptorium_books';
 
   saveBooks(books: Book[]): void {
     try {

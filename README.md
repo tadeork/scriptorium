@@ -68,7 +68,7 @@ Una aplicación Angular moderna y responsiva para gestionar tu colección de lib
 
 # Clonar repositorio
 git clone <repo-url>
-cd bookyman
+cd scriptorium
 
 # Instalar dependencias
 npm install

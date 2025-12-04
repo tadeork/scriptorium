@@ -88,7 +88,7 @@ Crear una aplicación Angular para gestionar una biblioteca personal con un dise
     - Detección de cambios forzada para evitar lag en la UI.
 
 ### 7. Persistencia
-- localStorage con clave "bookyman_library"
+- localStorage con clave "scriptorium_library"
 - Estructura de datos: Array de libros con id único, timestamp de creación/actualización
 
 ### 8. Importación y Exportación
@@ -372,7 +372,7 @@ $error: #d32f2f;
 
 ```bash
 # Crear proyecto
-ng new bookyman --skip-git --style=scss --standalone
+ng new scriptorium --skip-git --style=scss --standalone
 
 # Instalar dependencias
 npm install
