@@ -1,23 +1,30 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-update-notification',
-    standalone: true,
-    template: `
-    <div class="update-notification">
+  selector: 'app-update-notification',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="update-notification" [class.collapsed]="!isExpanded">
       <div class="update-content">
         <span class="update-icon">🚀</span>
-        <div class="update-text">
+        <div class="update-text" [class.hidden]="!isExpanded">
           <p class="update-title">¡Nueva versión disponible!</p>
           <p class="update-message">Actualiza para ver los cambios.</p>
         </div>
       </div>
-      <button class="update-btn" (click)="reload.emit()">
-        ACTUALIZAR
-      </button>
+      <div class="actions">
+        <button class="update-btn" (click)="reload.emit()">
+          {{ isExpanded ? 'ACTUALIZAR' : '↻' }}
+        </button>
+        <button class="toggle-btn" (click)="toggle()" [attr.aria-label]="isExpanded ? 'Colapsar' : 'Expandir'">
+          <span class="chevron" [class.rotated]="!isExpanded">▼</span>
+        </button>
+      </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .update-notification {
       position: fixed;
       bottom: 20px;
@@ -36,6 +43,15 @@ import { Component, EventEmitter, Output } from '@angular/core';
       border: 2px solid #fbc02d;
       min-width: 300px;
       justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .update-notification.collapsed {
+      min-width: auto;
+      padding: 0.75rem 1rem;
+      gap: 1rem;
+      border-radius: 50px;
     }
 
     .update-content {
@@ -51,6 +67,17 @@ import { Component, EventEmitter, Output } from '@angular/core';
     .update-text {
       display: flex;
       flex-direction: column;
+      transition: opacity 0.2s ease, width 0.3s ease;
+      white-space: nowrap;
+      opacity: 1;
+      width: auto;
+    }
+
+    .update-text.hidden {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+      margin: 0;
     }
 
     .update-title {
@@ -67,6 +94,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
       opacity: 0.9;
     }
 
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
     .update-btn {
       background-color: #fbc02d;
       color: #2d5016;
@@ -79,6 +112,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
       transition: all 0.2s ease;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      white-space: nowrap;
 
       &:hover {
         background-color: #fff;
@@ -88,6 +122,34 @@ import { Component, EventEmitter, Output } from '@angular/core';
       &:active {
         transform: scale(0.95);
       }
+    }
+
+    .toggle-btn {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+    }
+
+    .chevron {
+        display: inline-block;
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+
+    .chevron.rotated {
+        transform: rotate(180deg);
     }
 
     @keyframes slideUp {
@@ -110,17 +172,44 @@ import { Component, EventEmitter, Output } from '@angular/core';
         text-align: center;
       }
 
+      .update-notification.collapsed {
+        width: auto;
+        flex-direction: row;
+      }
+
       .update-content {
         flex-direction: column;
         gap: 0.5rem;
+      }
+      
+      .update-notification.collapsed .update-content {
+        flex-direction: row;
       }
 
       .update-btn {
         width: 100%;
       }
+      
+      .update-notification.collapsed .update-btn {
+        width: auto;
+      }
+
+      .actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .update-notification.collapsed .actions {
+        width: auto;
+      }
     }
   `]
 })
 export class UpdateNotificationComponent {
-    @Output() reload = new EventEmitter<void>();
+  @Output() reload = new EventEmitter<void>();
+  isExpanded = true;
+
+  toggle() {
+    this.isExpanded = !this.isExpanded;
+  }
 }
