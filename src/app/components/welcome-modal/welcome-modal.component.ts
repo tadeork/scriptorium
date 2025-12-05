@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component';
 
@@ -10,6 +10,7 @@ import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component'
     styleUrl: './welcome-modal.component.scss'
 })
 export class WelcomeModalComponent implements OnInit {
+    @Output() closed = new EventEmitter<void>();
     isOpen = false;
 
     ngOnInit(): void {
@@ -25,6 +26,7 @@ export class WelcomeModalComponent implements OnInit {
     closeModal(): void {
         this.isOpen = false;
         localStorage.setItem('hasSeenWelcome', 'true');
+        this.closed.emit();
     }
 
     open(): void {

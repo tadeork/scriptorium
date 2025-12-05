@@ -17,9 +17,7 @@
         <button class="icon-btn" (click)="toggleAdminModal()" title="Administrar biblioteca">
           ⚙️
         </button>
-        <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
-          +
-        </button>
+
       </div>
     </div>
   </header>
@@ -61,5 +59,15 @@
   <app-update-notification (reload)="reloadPage()"></app-update-notification>
   }
 
-  <app-welcome-modal></app-welcome-modal>
+  <app-welcome-modal (closed)="onWelcomeClosed()"></app-welcome-modal>
+
+  @if (showAddBookTooltip) {
+  <div class="fab-tooltip">
+    ¡Empieza agregando un libro!
+  </div>
+  }
+
+  <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
+    +
+  </button>
 </div>

@@ -28,6 +28,7 @@ export class App {
   editingBook: Book | null = null;
 
   showUpdateNotification = false;
+  showAddBookTooltip = false;
 
   @ViewChild(WelcomeModalComponent) welcomeModal!: WelcomeModalComponent;
 
@@ -51,6 +52,13 @@ export class App {
   onShowWelcome(): void {
     this.showAdminModal = false;
     this.welcomeModal.open();
+  }
+
+  onWelcomeClosed(): void {
+    this.showAddBookTooltip = true;
+    setTimeout(() => {
+      this.showAddBookTooltip = false;
+    }, 5000);
   }
 
   reloadPage(): void {
