@@ -3,13 +3,15 @@
   <div class="progress-info">
     <span class="progress-percentage">{{ displayProgress }}%</span>
     @if (pages > 0) {
-    <span class="progress-pages">
-      @if (disabled) {
-      {{ pages }} / {{ pages }} páginas
+    <div class="progress-pages-container">
+      @if (variant === 'editable' && !disabled) {
+      <input type="number" class="progress-input" [ngModel]="pagesReadDisplay" (ngModelChange)="onPagesInput($event)"
+        (click)="$event.stopPropagation()" min="0" [max]="pages">
       } @else {
-      {{ pagesReadDisplay }} / {{ pages }} páginas
+      <span class="progress-pages-text">{{ pagesReadDisplay }}</span>
       }
-    </span>
+      <span class="progress-total"> / {{ pages }} páginas</span>
+    </div>
     }
   </div>
 

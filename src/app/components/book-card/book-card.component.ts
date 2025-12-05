@@ -85,6 +85,12 @@ export class BookCardComponent {
     this.updateProgress.emit({ id: this.book.id, progress: newPages });
   }
 
+  onProgressChange(newPages: number): void {
+    if (!this.book.pages) return;
+    const validatedPages = Math.min(Math.max(0, newPages), this.book.pages);
+    this.updateProgress.emit({ id: this.book.id, progress: validatedPages });
+  }
+
   calculatePagesRead(): number {
     return this.book.pagesRead || 0;
   }

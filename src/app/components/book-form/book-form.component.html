@@ -94,8 +94,9 @@
 
     @if (status === 'reading') {
     <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
-      [pages]="pages ? parseInt(pages) : 0" variant="editable" (increment)="onProgressIncrement()"
-      (decrement)="onProgressDecrement()"></app-progress-bar>
+      [pages]="pages ? parseInt(pages) : 0" [pagesRead]="pagesRead" variant="editable"
+      (increment)="onProgressIncrement()" (decrement)="onProgressDecrement()"
+      (pagesReadChange)="pagesRead = $event"></app-progress-bar>
     }
 
     @if (status === 'read') {

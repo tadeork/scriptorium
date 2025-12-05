@@ -1,9 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-progress-bar',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './progress-bar.component.html',
   styleUrl: './progress-bar.component.scss'
 })
@@ -15,6 +16,7 @@ export class ProgressBarComponent {
   @Input() disabled = false; // deshabilitar cuando el libro está leído
   @Output() increment = new EventEmitter<void>();
   @Output() decrement = new EventEmitter<void>();
+  @Output() pagesReadChange = new EventEmitter<number>();
 
   private intervalId: any;
   private timeoutId: any;
@@ -84,5 +86,10 @@ export class ProgressBarComponent {
     if (!this.disabled) {
       this.decrement.emit();
     }
+  }
+
+  onPagesInput(value: number): void {
+    if (this.disabled) return;
+    this.pagesReadChange.emit(value);
   }
 }

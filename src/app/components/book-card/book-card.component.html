@@ -90,7 +90,8 @@
         <label>Progreso:</label>
         <app-progress-bar [progress]="getProgressPercentage()" [pages]="book.pages || 0"
           [pagesRead]="book.pagesRead || 0" [disabled]="isBookRead()" variant="editable"
-          (increment)="incrementProgress()" (decrement)="decrementProgress()"></app-progress-bar>
+          (increment)="incrementProgress()" (decrement)="decrementProgress()"
+          (pagesReadChange)="onProgressChange($event)"></app-progress-bar>
       </div>
       }
 
