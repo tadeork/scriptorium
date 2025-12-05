@@ -84,6 +84,14 @@
     <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
     }
 
+    @if (status === 'borrowed') {
+    <div class="form-group">
+      <label for="borrowedBy" class="form-label">Prestado a:</label>
+      <input type="text" id="borrowedBy" [(ngModel)]="borrowedBy" name="borrowedBy" placeholder="Nombre de la persona"
+        class="form-input" />
+    </div>
+    }
+
     @if (status === 'reading') {
     <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
       [pages]="pages ? parseInt(pages) : 0" variant="editable" (increment)="onProgressIncrement()"

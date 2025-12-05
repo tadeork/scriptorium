@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { StatusSelectorComponent } from '../status-selector/status-selector.component';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
@@ -8,7 +9,7 @@ import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component'
 @Component({
   selector: 'app-book-card',
   standalone: true,
-  imports: [StatusSelectorComponent, ProgressBarComponent, ModalOverlayComponent, DatePipe],
+  imports: [StatusSelectorComponent, ProgressBarComponent, ModalOverlayComponent, DatePipe, FormsModule],
   templateUrl: './book-card.component.html',
   styleUrl: './book-card.component.scss'
 })
@@ -18,6 +19,7 @@ export class BookCardComponent {
   @Output() updateStatus = new EventEmitter<{ id: string; status: string }>();
   @Output() updateProgress = new EventEmitter<{ id: string; progress: number }>();
   @Output() editBook = new EventEmitter<Book>();
+  @Output() updateBook = new EventEmitter<Book>();
   @Output() moveToLibrary = new EventEmitter<Book>();
   @Output() moveToWishlist = new EventEmitter<Book>();
 
@@ -53,6 +55,14 @@ export class BookCardComponent {
     if (target instanceof HTMLSelectElement) {
       this.updateStatus.emit({ id: this.book.id, status: target.value });
     }
+  }
+
+  onBorrowedByChange(name: string): void {
+    const updatedBook: Book = {
+      ...this.book,
+      borrowedBy: name
+    };
+    this.updateBook.emit(updatedBook);
   }
 
   incrementProgress(): void {

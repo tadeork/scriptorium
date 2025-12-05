@@ -7,7 +7,7 @@
 <div class="book-list">
   @for (book of filteredBooks(); track book.id) {
   <app-book-card [book]="book" (deleteBook)="onDeleteBook($event)" (updateStatus)="onUpdateStatus($event)"
-    (updateProgress)="onUpdateProgress($event)" (editBook)="onEditBook($event)"
+    (updateProgress)="onUpdateProgress($event)" (editBook)="editBook.emit($event)" (updateBook)="onBookUpdated($event)"
     (moveToLibrary)="onMoveToLibrary($event)" (moveToWishlist)="onMoveToWishlist($event)"></app-book-card>
   }
 </div>

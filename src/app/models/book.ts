@@ -13,6 +13,7 @@ export interface Book {
   publishedDate?: string;
   description?: string;
   format?: 'physical' | 'digital';
+  borrowedBy?: string;
   createdAt: number;
   updatedAt: number;
 }

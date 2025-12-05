@@ -394,3 +394,20 @@
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
   }
 }
+
+.borrowed-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #2d5016;
+  background-color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #fbc02d;
+    box-shadow: 0 0 0 3px rgba(251, 192, 45, 0.3);
+  }
+}

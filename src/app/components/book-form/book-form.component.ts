@@ -43,6 +43,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   collection: 'library' | 'wishlist' = 'library';
   status: 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed' = 'to-read';
   pagesRead = 0;
+  borrowedBy = '';
 
   suggestions: CombinedSearchResult[] = [];
   showSuggestions = false;
@@ -135,6 +136,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.status = this.editingBook.status;
     this.format = this.editingBook.format || 'physical';
     this.pagesRead = this.editingBook.pagesRead || 0;
+    this.borrowedBy = this.editingBook.borrowedBy || '';
   }
 
   get isSearchButtonDisabled(): boolean {
@@ -238,6 +240,7 @@ export class BookFormComponent implements OnInit, OnChanges {
         status: this.status,
         format: this.format,
         pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
+        borrowedBy: this.status === 'borrowed' ? this.borrowedBy.trim() : undefined,
         updatedAt: Date.now()
       };
       this.bookUpdated.emit(updatedBook);
@@ -253,7 +256,8 @@ export class BookFormComponent implements OnInit, OnChanges {
         collection: this.collection,
         status: this.status,
         format: this.format,
-        pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined)
+        pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
+        borrowedBy: this.status === 'borrowed' ? this.borrowedBy.trim() : undefined
       };
       this.bookAdded.emit(newBook);
     }
@@ -271,6 +275,7 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.status = 'to-read';
     this.format = 'physical';
     this.pagesRead = 0;
+    this.borrowedBy = '';
     this.suggestions = [];
     this.showSuggestions = false;
   }

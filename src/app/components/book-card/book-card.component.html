@@ -70,6 +70,14 @@
       </div>
       }
 
+      @if (book.status === 'borrowed') {
+      <div class="book-details__row">
+        <label>Prestado a:</label>
+        <input type="text" [ngModel]="book.borrowedBy" (ngModelChange)="onBorrowedByChange($event)"
+          placeholder="Nombre de la persona" class="borrowed-input" />
+      </div>
+      }
+
       @if (book.status === 'read' || book.status === 'reading') {
       <div class="book-details__row">
         <label>Progreso:</label>
