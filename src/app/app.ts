@@ -29,6 +29,7 @@ export class App {
 
   showUpdateNotification = false;
   showAddBookTooltip = false;
+  initialFormTitle = '';
 
   @ViewChild(WelcomeModalComponent) welcomeModal!: WelcomeModalComponent;
 
@@ -55,10 +56,14 @@ export class App {
   }
 
   onWelcomeClosed(): void {
+    const hasBooks = this.bookService.books$().length > 0;
     this.showAddBookTooltip = true;
-    setTimeout(() => {
-      this.showAddBookTooltip = false;
-    }, 5000);
+
+    if (hasBooks) {
+      setTimeout(() => {
+        this.showAddBookTooltip = false;
+      }, 5000);
+    }
   }
 
   reloadPage(): void {
@@ -67,6 +72,13 @@ export class App {
 
   onBookAdded(book: Omit<Book, 'id' | 'createdAt' | 'updatedAt'>): void {
     this.bookService.addBook(book);
+    this.showAddBookTooltip = false;
+  }
+
+  onAddBookFromSearch(query: string): void {
+    this.initialFormTitle = query;
+    this.showFormModal = true;
+    this.showAddBookTooltip = false;
   }
 
   setView(view: 'library' | 'wishlist'): void {
@@ -74,6 +86,13 @@ export class App {
   }
 
   toggleFormModal(): void {
+    if (!this.showFormModal) {
+      // Opening the modal
+      this.showAddBookTooltip = false;
+    } else {
+      // Closing the modal
+      this.initialFormTitle = '';
+    }
     this.showFormModal = !this.showFormModal;
   }
 

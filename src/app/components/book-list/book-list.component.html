@@ -17,5 +17,10 @@
 <div class="empty-state">
   <div class="empty-icon">📚</div>
   <p class="empty-message">{{ emptyMessage }}</p>
+  @if (searchQuery().trim()) {
+  <button class="add-search-btn" (click)="onAddFromSearch()">
+    Agregar "{{ searchQuery() }}"
+  </button>
+  }
 </div>
 }

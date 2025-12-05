@@ -21,6 +21,7 @@ export class BookListComponent implements OnInit {
     this.collection.set(value);
   }
   @Output() editBook = new EventEmitter<Book>();
+  @Output() addBookFromSearch = new EventEmitter<string>();
 
   filteredBooks = computed(() => {
     let books = this.bookService.books$();
@@ -130,6 +131,10 @@ export class BookListComponent implements OnInit {
   onBookUpdated(book: Book): void {
     this.bookService.updateBook(book.id, book);
     this.editingBookId.set(null);
+  }
+
+  onAddFromSearch(): void {
+    this.addBookFromSearch.emit(this.searchQuery());
   }
 
   get emptyMessage(): string {

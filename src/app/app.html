@@ -26,8 +26,8 @@
   <div class="form-modal-overlay" (click)="toggleFormModal()">
     <div class="form-modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="toggleFormModal()">✕</button>
-      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()"
-        [defaultCollection]="currentView()"></app-book-form>
+      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()" [defaultCollection]="currentView()"
+        [initialTitle]="initialFormTitle"></app-book-form>
     </div>
   </div>
   }
@@ -52,7 +52,8 @@
   }
 
   <main class="app-main">
-    <app-book-list [collection]="currentView()" (editBook)="openEditModal($event)"></app-book-list>
+    <app-book-list [collection]="currentView()" (editBook)="openEditModal($event)"
+      (addBookFromSearch)="onAddBookFromSearch($event)"></app-book-list>
   </main>
 
   @if (showUpdateNotification) {
