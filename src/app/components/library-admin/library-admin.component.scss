@@ -86,19 +86,20 @@
 }
 
 /* Button styles matching search-button */
+/* Button styles matching welcome modal start-btn */
 .btn-primary,
 .btn-secondary {
-  background-color: #d32f2f;
+  background-color: #212121;
   color: #fff;
-  border: 3px solid #b71c1c;
-  padding: 0.875rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 700;
+  border: 3px solid #212121;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 3px 3px 0 rgba(45, 80, 22, 0.2);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,15 +107,15 @@
   font-family: inherit;
 
   &:hover {
-    background-color: #c62828;
-    border-color: #b71c1c;
+    background-color: #484848;
+    border-color: #484848;
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
   }
 
   &:active {
     transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -131,13 +132,28 @@
 
 .btn-secondary {
   background-color: #212121;
-  /* Dark Gray */
+  /* Dark Gray (Primary) */
   color: #fff;
 
   &:hover {
-    background-color: #000000;
-    border-color: #000000;
-    /* Keep dark border */
+    background-color: #484848;
+    border-color: #484848;
+  }
+}
+
+.btn-primary {
+  /* Red (Secondary/Action) to differentiate "Save" vs "Load"? 
+     Or user wants match? 
+     Welcome modal only has one button (Dark Gray).
+     Let's make "Guardar" (Primary) Dark Gray to match "Empezar".
+     And "Cargar" (Secondary) Red to stand out as alternative action.
+  */
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+
+  &:hover {
+    background-color: #b71c1c;
+    border-color: #b71c1c;
   }
 }
 
