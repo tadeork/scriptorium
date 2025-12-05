@@ -1,50 +1,21 @@
 .book-card {
   border: 4px solid #2d5016;
-  background-color: #e0e0e0;
-  /* Fallback color */
-  box-shadow: 6px 6px 0 rgba(45, 80, 22, 0.2);
+  background-color: #fff;
+  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
-  height: 100%;
-  min-height: 300px;
+  height: 140px;
+  /* Fixed smaller height */
   overflow: hidden;
   z-index: 0;
-
-  /* Layer 1: Blurred Background (Fill) */
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: var(--cover-image);
-    background-size: cover;
-    background-position: center;
-    filter: blur(20px) brightness(0.7) saturate(1.2);
-    transform: scale(1.1);
-    /* Prevent blur edges */
-    z-index: -1;
-    opacity: 0.8;
-  }
-
-  /* Layer 2: Sharp Image (Contain) */
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: var(--cover-image);
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 0;
-  }
+  display: flex;
+  /* Horizontal layout */
+  flex-direction: row;
 
   &:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0 rgba(45, 80, 22, 0.3);
-
-    .book-card__overlay {
-      background: linear-gradient(to top, rgba(45, 80, 22, 0.95) 0%, rgba(45, 80, 22, 0.6) 100%);
-    }
+    box-shadow: 7px 7px 0 rgba(45, 80, 22, 0.3);
   }
 
   /* Status borders */
@@ -73,46 +44,97 @@
     border-style: dashed;
   }
 
-  /* Fallback pattern if no cover */
-  &:not(.has-cover) {
-    background-image: linear-gradient(45deg, #f5f5f5 25%, #e8f5e9 25%, #e8f5e9 50%, #f5f5f5 50%, #f5f5f5 75%, #e8f5e9 75%, #e8f5e9 100%);
-    background-size: 20px 20px;
+  .book-card__content {
+    flex: 1;
+    padding: 1rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    gap: 0.5rem;
+    min-width: 0;
+    /* For truncation to work */
+  }
 
-    &::before,
-    &::after {
-      display: none;
+  .book-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .book-card__title {
+    margin: 0;
+    font-size: 1.1rem;
+    /* Smaller title */
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1b5e20;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: none;
+    /* Removed shadow for cleaner look */
+  }
+
+  .book-card__author {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #558b2f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: none;
+  }
+
+  .book-card__image {
+    width: 100px;
+    flex-shrink: 0;
+    background-color: #e0e0e0;
+    position: relative;
+    border-right: 2px solid #2d5016;
+    /* Changed from border-left */
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    &::before {
-      /* Re-enable for text content if needed, but here we use pseudo for text in fallback */
-      content: 'Sin Portada';
-      display: block;
-      font-weight: 900;
-      color: rgba(45, 80, 22, 0.3);
-      font-size: 1.5rem;
+    .no-cover {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: rgba(45, 80, 22, 0.4);
+      text-align: center;
+      padding: 0.5rem;
       text-transform: uppercase;
       transform: rotate(-45deg);
-      position: static;
-      filter: none;
-      background: none;
     }
   }
 
+  /* Status tag on top right (over image) */
   .book-card__status-tag {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
     font-weight: 800;
     text-transform: uppercase;
     color: #fff;
     background-color: #2d5016;
-    border: 2px solid #fff;
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+    border: 1px solid #fff;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
     z-index: 2;
     letter-spacing: 0.05em;
 
@@ -140,13 +162,29 @@
     }
   }
 
+  .book-card__badges {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid #1b5e20;
+    background-color: #fbc02d;
+    color: #2d5016;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  }
+
   .book-card__progress-bar {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 6px;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.1);
     z-index: 3;
   }
 
@@ -154,80 +192,10 @@
     height: 100%;
     background-color: #fbc02d;
     transition: width 0.3s ease;
-    box-shadow: 0 0 4px rgba(251, 192, 45, 0.5);
   }
 }
 
-.book-card__overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem 1rem 1rem 1rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  transition: background 0.3s ease;
-  z-index: 1;
-}
-
-.book-card__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.book-card__title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 900;
-  line-height: 1.1;
-  color: #fff;
-  text-shadow: 3px 3px 0 #000;
-  letter-spacing: -0.5px;
-  /* Limit lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.book-card__author {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fbc02d;
-  /* Yellow accent for author */
-  font-style: normal;
-  text-shadow: 2px 2px 0 #000;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.book-card__badges {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.badge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
-  border: 2px solid white;
-  background-color: #fbc02d;
-  color: #2d5016;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-
-  &--wishlist {
-    background-color: #fbc02d;
-  }
-}
+/* Modal Styles */
 
 /* Modal Styles */
 .book-details {

@@ -1,12 +1,15 @@
 .search-filter {
   background-color: #f5f5f5;
   border: 3px solid #2d5016;
-  padding: 1.5rem;
+  padding: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 80;
 }
 
 .search-filter__search {

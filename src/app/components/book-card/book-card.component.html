@@ -1,14 +1,15 @@
 <div class="book-card" [class]="'status-' + book.status" [class.is-wishlist]="book.collection === 'wishlist'"
-  [class.has-cover]="!!book.coverImageUrl" (click)="onCardClick()"
-  [style.--cover-image]="book.coverImageUrl ? 'url(' + book.coverImageUrl + ')' : null">
+  (click)="onCardClick()">
 
-  @if (book.collection !== 'wishlist') {
-  <div class="book-card__status-tag" [class]="'status-' + book.status">
-    {{ statusLabels[book.status] }}
+  <div class="book-card__image">
+    @if (book.coverImageUrl) {
+    <img [src]="book.coverImageUrl" [alt]="book.title">
+    } @else {
+    <div class="no-cover">Sin Portada</div>
+    }
   </div>
-  }
 
-  <div class="book-card__overlay">
+  <div class="book-card__content">
     <div class="book-card__info">
       <h3 class="book-card__title">{{ book.title }}</h3>
       <p class="book-card__author">{{ book.author }}</p>
@@ -20,6 +21,12 @@
     </div>
     }
   </div>
+
+  @if (book.collection !== 'wishlist') {
+  <div class="book-card__status-tag" [class]="'status-' + book.status">
+    {{ statusLabels[book.status] }}
+  </div>
+  }
 
   @if (book.status === 'reading') {
   <div class="book-card__progress-bar">
