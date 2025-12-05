@@ -1,9 +1,9 @@
 .book-form {
   background-color: #f5f5f5;
-  border: 3px solid #2d5016;
+  border: 3px solid #212121;
   padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 6px 6px 0 rgba(45, 80, 22, 0.2);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .book-form__fieldset {
@@ -18,12 +18,12 @@
 .book-form__legend {
   font-size: 1.25rem;
   font-weight: 900;
-  color: #1b5e20;
+  color: #212121;
   padding: 0;
   margin: 0 0 0.75rem 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 3px solid #2d5016;
+  border-bottom: 3px solid #212121;
   padding-bottom: 0.5rem;
 }
 
@@ -41,13 +41,13 @@
   gap: 0.5rem;
   font-weight: 700;
   font-size: 0.9rem;
-  color: #1b5e20;
+  color: #212121;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 
   input[type="radio"] {
-    accent-color: #2d5016;
+    accent-color: #212121;
     width: 1.2rem;
     height: 1.2rem;
     cursor: pointer;
@@ -63,7 +63,7 @@
 .form-label {
   font-weight: 700;
   font-size: 0.85rem;
-  color: #1b5e20;
+  color: #212121;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -73,7 +73,7 @@
 }
 
 .form-input {
-  border: 2px solid #2d5016;
+  border: 2px solid #212121;
   background-color: #fff;
   padding: 0.75rem 1rem;
   font-size: 1rem;
@@ -83,15 +83,15 @@
   box-sizing: border-box;
 
   &:hover {
-    background-color: #f1f8e9;
-    border-color: #558b2f;
+    background-color: #f5f5f5;
+    border-color: #d32f2f;
   }
 
   &:focus {
     outline: none;
-    background-color: #f1f8e9;
-    border-color: #558b2f;
-    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.15);
+    background-color: #fff;
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
   }
 
   &::placeholder {
@@ -126,9 +126,9 @@
 }
 
 .submit-btn {
-  background-color: #2d5016;
+  background-color: #212121;
   color: #fff;
-  border: 3px solid #2d5016;
+  border: 3px solid #212121;
   padding: 0.875rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 900;
@@ -136,19 +136,19 @@
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.3);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
   width: 100%;
 
   &:hover {
-    background-color: #558b2f;
-    border-color: #558b2f;
+    background-color: #484848;
+    border-color: #484848;
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 rgba(45, 80, 22, 0.4);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
   }
 
   &:active {
     transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0 rgba(45, 80, 22, 0.3);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -184,7 +184,7 @@
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #2d5016;
+    color: #212121;
     text-transform: uppercase;
   }
 
@@ -196,16 +196,16 @@
 
 .inline-results-list {
   background-color: #fff;
-  border: 2px solid #2d5016;
+  border: 2px solid #212121;
   padding: 1rem;
   margin-top: 0.5rem;
-  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.1);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .results-title {
   font-size: 1rem;
   font-weight: 800;
-  color: #1b5e20;
+  color: #212121;
   margin: 0 0 0.75rem 0;
   text-transform: uppercase;
 }
@@ -225,11 +225,11 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f8e9;
+    background: #f5f5f5;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #2d5016;
+    background: #212121;
     border-radius: 4px;
   }
 }
@@ -301,13 +301,13 @@
 }
 
 .btn-wishlist {
-  background-color: #fbc02d;
-  color: #1b5e20;
-  border-color: #fbc02d;
+  background-color: #d32f2f;
+  color: #fff;
+  border-color: #d32f2f;
 
   &:hover {
-    background-color: #f9a825;
-    border-color: #f9a825;
+    background-color: #b71c1c;
+    border-color: #b71c1c;
   }
 }
 
@@ -329,10 +329,10 @@
     width: 1.2rem;
     height: 1.2rem;
     cursor: pointer;
-    accent-color: #2d5016;
+    accent-color: #212121;
   }
 
   &:hover {
-    color: #2d5016;
+    color: #212121;
   }
 }

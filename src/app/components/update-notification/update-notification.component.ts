@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: #2d5016;
+      background-color: #212121;
       color: white;
       padding: 1rem 1.5rem;
       border-radius: 12px;
@@ -40,7 +40,7 @@ import { CommonModule } from '@angular/common';
       gap: 1.5rem;
       z-index: 2000;
       animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 2px solid #fbc02d;
+      border: 2px solid #d32f2f;
       min-width: 300px;
       justify-content: space-between;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -85,7 +85,7 @@ import { CommonModule } from '@angular/common';
       font-weight: 800;
       font-size: 0.95rem;
       text-transform: uppercase;
-      color: #fbc02d;
+      color: #d32f2f;
     }
 
     .update-message {
@@ -101,8 +101,8 @@ import { CommonModule } from '@angular/common';
     }
 
     .update-btn {
-      background-color: #fbc02d;
-      color: #2d5016;
+      background-color: #d32f2f;
+      color: #fff;
       border: none;
       padding: 0.5rem 1rem;
       border-radius: 6px;

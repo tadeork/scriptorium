@@ -2,19 +2,19 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border: 2px solid #2d5016;
+  border: 2px solid #212121;
   background-color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f1f8e9;
-    box-shadow: 3px 3px 0 rgba(45, 80, 22, 0.2);
+    background-color: #f5f5f5;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
     transform: translate(-2px, -2px);
   }
 
   &.has-image {
-    border-left: 4px solid #7cb342;
+    border-left: 4px solid #757575;
   }
 }
 
@@ -59,7 +59,7 @@
 .book-item__title {
   font-weight: 900;
   font-size: 0.95rem;
-  color: #1b5e20;
+  color: #212121;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

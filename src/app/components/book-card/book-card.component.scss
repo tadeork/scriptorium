@@ -1,7 +1,7 @@
 .book-card {
-  border: 4px solid #2d5016;
+  border: 4px solid #212121;
   background-color: #fff;
-  box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.2);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
@@ -15,29 +15,29 @@
 
   &:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 rgba(45, 80, 22, 0.3);
+    box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.3);
   }
 
   /* Status borders */
   &.status-read {
-    border-color: #558b2f;
+    border-color: #757575;
   }
 
   &.status-reading {
-    border-color: #9ccc65;
+    border-color: #d32f2f;
   }
 
   &.status-to-read {
-    border-color: #7cb342;
+    border-color: #bdbdbd;
   }
 
   &.status-borrowed {
-    border-color: #fbc02d;
+    border-color: #424242;
   }
 
   &.status-not-interested {
-    border-color: #9e9e9e;
-    filter: grayscale(0.8);
+    border-color: #eeeeee;
+    filter: grayscale(1);
   }
 
   &.is-wishlist {
@@ -67,7 +67,7 @@
     /* Reduced from 1.1rem */
     font-weight: 800;
     line-height: 1.2;
-    color: #1b5e20;
+    color: #212121;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -83,7 +83,7 @@
     font-size: 0.75rem;
     /* Reduced from 0.85rem */
     font-weight: 700;
-    color: #558b2f;
+    color: #d32f2f;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     white-space: nowrap;
@@ -97,7 +97,7 @@
     flex-shrink: 0;
     background-color: #e0e0e0;
     position: relative;
-    border-right: 2px solid #2d5016;
+    border-right: 2px solid #212121;
     /* Changed from border-left */
 
     img {
@@ -115,7 +115,7 @@
       justify-content: center;
       font-size: 0.7rem;
       font-weight: 800;
-      color: rgba(45, 80, 22, 0.4);
+      color: rgba(33, 33, 33, 0.4);
       text-align: center;
       padding: 0.5rem;
       text-transform: uppercase;
@@ -133,33 +133,35 @@
     font-weight: 800;
     text-transform: uppercase;
     color: #fff;
-    background-color: #2d5016;
+    background-color: #212121;
     border: 1px solid #fff;
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
     z-index: 2;
     letter-spacing: 0.05em;
 
     &.status-read {
-      background-color: #1b5e20;
-      border-color: #4caf50;
+      background-color: #757575;
+      border-color: #757575;
     }
 
     &.status-reading {
-      background-color: #9ccc65;
-      color: #1b5e20;
+      background-color: #d32f2f;
+      color: #fff;
     }
 
     &.status-to-read {
-      background-color: #7cb342;
+      background-color: #bdbdbd;
+      color: #212121;
     }
 
     &.status-borrowed {
-      background-color: #fbc02d;
-      color: #2d5016;
+      background-color: #424242;
+      color: #fff;
     }
 
     &.status-not-interested {
-      background-color: #9e9e9e;
+      background-color: #eeeeee;
+      color: #999;
     }
   }
 
@@ -173,9 +175,9 @@
     font-weight: 700;
     text-transform: uppercase;
     padding: 0.15rem 0.4rem;
-    border: 1px solid #1b5e20;
-    background-color: #fbc02d;
-    color: #2d5016;
+    border: 1px solid #212121;
+    background-color: #d32f2f;
+    color: #fff;
     box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   }
 
@@ -191,7 +193,7 @@
 
   .book-card__progress-fill {
     height: 100%;
-    background-color: #fbc02d;
+    background-color: #d32f2f;
     transition: width 0.3s ease;
   }
 }
@@ -210,12 +212,12 @@
   justify-content: center;
   background-color: #f5f5f5;
   padding: 1rem;
-  border: 2px solid #2d5016;
+  border: 2px solid #212121;
 
   img {
     max-width: 150px;
     height: auto;
-    box-shadow: 4px 4px 0 rgba(45, 80, 22, 0.2);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -233,7 +235,7 @@
   label {
     font-weight: 900;
     font-size: 0.85rem;
-    color: #1b5e20;
+    color: #212121;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -249,7 +251,7 @@
 .book-details__description {
   background-color: #f9f9f9;
   padding: 1rem;
-  border-left: 4px solid #7cb342;
+  border-left: 4px solid #757575;
   font-size: 0.9rem !important;
   max-height: 150px;
   overflow-y: auto;
@@ -286,11 +288,11 @@
 
   &--edit {
     background-color: #fff;
-    border-color: #2d5016;
-    color: #2d5016;
+    border-color: #212121;
+    color: #212121;
 
     &:hover {
-      background-color: #2d5016;
+      background-color: #212121;
       color: #fff;
     }
   }
@@ -309,7 +311,7 @@
 .btn-move-to-library {
   width: 100%;
   padding: 0.75rem;
-  background-color: #2d5016;
+  background-color: #212121;
   color: #fff;
   border: none;
   font-weight: 800;
@@ -324,7 +326,7 @@
   margin-top: 0.5rem;
 
   &:hover {
-    background-color: #1b5e20;
+    background-color: #000000;
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
   }
@@ -338,8 +340,8 @@
 .btn-move-to-wishlist {
   width: 100%;
   padding: 0.75rem;
-  background-color: #fbc02d;
-  color: #2d5016;
+  background-color: #d32f2f;
+  color: #fff;
   border: none;
   font-weight: 800;
   text-transform: uppercase;
@@ -353,7 +355,7 @@
   margin-top: 0.5rem;
 
   &:hover {
-    background-color: #f9a825;
+    background-color: #b71c1c;
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
   }
@@ -367,7 +369,7 @@
 .borrowed-input {
   width: 100%;
   padding: 0.5rem;
-  border: 2px solid #2d5016;
+  border: 2px solid #212121;
   background-color: #fff;
   font-family: inherit;
   font-size: 1rem;
@@ -376,7 +378,7 @@
 
   &:focus {
     outline: none;
-    border-color: #fbc02d;
-    box-shadow: 0 0 0 3px rgba(251, 192, 45, 0.3);
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.3);
   }
 }
