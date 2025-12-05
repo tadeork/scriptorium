@@ -63,8 +63,8 @@
 
   .book-card__title {
     margin: 0;
-    font-size: 1.1rem;
-    /* Smaller title */
+    font-size: 1rem;
+    /* Reduced from 1.1rem */
     font-weight: 800;
     line-height: 1.2;
     color: #1b5e20;
@@ -73,14 +73,15 @@
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     text-shadow: none;
     /* Removed shadow for cleaner look */
   }
 
   .book-card__author {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    /* Reduced from 0.85rem */
     font-weight: 700;
     color: #558b2f;
     text-transform: uppercase;
