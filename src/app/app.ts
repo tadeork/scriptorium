@@ -1,4 +1,4 @@
-import { Component, computed, effect, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BookFormComponent } from './components/book-form/book-form.component';
@@ -19,7 +19,7 @@ import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('Scriptorium');
   protected readonly currentView = signal<'library' | 'wishlist'>('library');
   showFormModal = false;
@@ -40,6 +40,10 @@ export class App {
     this.checkForUpdates();
   }
 
+  ngOnInit(): void {
+    this.updateTitle();
+  }
+
   checkForUpdates(): void {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.pipe(
@@ -50,12 +54,22 @@ export class App {
     }
   }
 
+  updateTitle(): void {
+    const userName = localStorage.getItem('userName');
+    if (userName) {
+      this.title.set(`Scriptorium de ${userName}`);
+    } else {
+      this.title.set('Scriptorium');
+    }
+  }
+
   onShowWelcome(): void {
     this.showAdminModal = false;
     this.welcomeModal.open();
   }
 
   onWelcomeClosed(): void {
+    this.updateTitle();
     const hasBooks = this.bookService.books$().length > 0;
     this.showAddBookTooltip = true;
 
