@@ -41,6 +41,13 @@
             </div>
         </div>
 
+        <div class="user-input-section">
+            <label for="userName">¿Cómo te llamas?</label>
+            <input type="text" id="userName" [value]="userName" (input)="onNameInput($event)"
+                placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage">
+            <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
+        </div>
+
         <div class="welcome-actions">
             <button class="start-btn" (click)="closeModal()">¡Entendido, empezar!</button>
         </div>

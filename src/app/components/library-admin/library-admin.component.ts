@@ -28,8 +28,14 @@ export class LibraryAdminComponent {
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
 
+        const userName = localStorage.getItem('userName') || 'Usuario';
+        const now = new Date();
+        const dateString = now.toISOString().split('T')[0]; // YYYY-MM-DD
+        const timeString = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-mm-ss
+        const fileName = `${userName}_${dateString}_${timeString}.csv`;
+
         link.setAttribute('href', url);
-        link.setAttribute('download', 'library_export.csv');
+        link.setAttribute('download', fileName);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

@@ -12,6 +12,8 @@ import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component'
 export class WelcomeModalComponent implements OnInit {
     @Output() closed = new EventEmitter<void>();
     isOpen = false;
+    userName = '';
+    errorMessage = '';
 
     ngOnInit(): void {
         const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
@@ -24,12 +26,38 @@ export class WelcomeModalComponent implements OnInit {
     }
 
     closeModal(): void {
+        if (!this.validateName()) {
+            return;
+        }
         this.isOpen = false;
         localStorage.setItem('hasSeenWelcome', 'true');
+        localStorage.setItem('userName', this.userName.trim());
         this.closed.emit();
+    }
+
+    validateName(): boolean {
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        if (!this.userName || !this.userName.trim()) {
+            this.errorMessage = 'Por favor, ingresa tu nombre.';
+            return false;
+        }
+        if (!nameRegex.test(this.userName)) {
+            this.errorMessage = 'El nombre solo debe contener letras.';
+            return false;
+        }
+        this.errorMessage = '';
+        return true;
     }
 
     open(): void {
         this.isOpen = true;
+    }
+
+    onNameInput(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        this.userName = input.value;
+        if (this.errorMessage) {
+            this.validateName();
+        }
     }
 }
