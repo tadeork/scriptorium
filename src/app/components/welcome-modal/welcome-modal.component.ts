@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component';
 
@@ -12,11 +12,12 @@ import { ModalOverlayComponent } from '../modal-overlay/modal-overlay.component'
 export class WelcomeModalComponent implements OnInit {
     @Output() closed = new EventEmitter<void>();
     isOpen = false;
-    userName = '';
-    errorMessage = '';
+    userName = signal('');
+    errorMessage = signal('');
 
     ngOnInit(): void {
         const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+        this.userName.set(localStorage.getItem('userName') || '');
         if (!hasSeenWelcome) {
             // Small delay to ensure smooth entrance animation
             setTimeout(() => {
@@ -31,21 +32,21 @@ export class WelcomeModalComponent implements OnInit {
         }
         this.isOpen = false;
         localStorage.setItem('hasSeenWelcome', 'true');
-        localStorage.setItem('userName', this.userName.trim());
+        localStorage.setItem('userName', this.userName().trim());
         this.closed.emit();
     }
 
     validateName(): boolean {
         const nameRegex = /^[a-zA-Z\s]+$/;
-        if (!this.userName || !this.userName.trim()) {
-            this.errorMessage = 'Por favor, ingresa tu nombre.';
+        if (!this.userName() || !this.userName().trim()) {
+            this.errorMessage.set('Por favor, ingresa tu nombre.');
             return false;
         }
-        if (!nameRegex.test(this.userName)) {
-            this.errorMessage = 'El nombre solo debe contener letras.';
+        if (!nameRegex.test(this.userName())) {
+            this.errorMessage.set('El nombre solo debe contener letras.');
             return false;
         }
-        this.errorMessage = '';
+        this.errorMessage.set('');
         return true;
     }
 
@@ -55,8 +56,8 @@ export class WelcomeModalComponent implements OnInit {
 
     onNameInput(event: Event): void {
         const input = event.target as HTMLInputElement;
-        this.userName = input.value;
-        if (this.errorMessage) {
+        this.userName.set(input.value);
+        if (this.errorMessage()) {
             this.validateName();
         }
     }

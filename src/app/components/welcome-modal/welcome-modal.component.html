@@ -43,13 +43,20 @@
 
         <div class="user-input-section">
             <label for="userName">¿Cómo te llamas?</label>
-            <input type="text" id="userName" [value]="userName" (input)="onNameInput($event)"
-                placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage">
-            <span class="error-message" *ngIf="errorMessage">{{ errorMessage }}</span>
+            <input type="text" id="userName" [value]="userName()" (input)="onNameInput($event)"
+                placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage()">
+            @if (errorMessage()) {
+            <span class="error-message">{{ errorMessage() }}</span>
+            }
         </div>
 
         <div class="welcome-actions">
             <button class="start-btn" (click)="closeModal()">¡Entendido, empezar!</button>
+        </div>
+
+        <div class="developer-section">
+            <img src="/trk-dev-pic.png" alt="Tadeo RK" class="dev-image">
+            <span class="dev-text">Desarrollado por Tadeo RK</span>
         </div>
     </div>
 </app-modal-overlay>
