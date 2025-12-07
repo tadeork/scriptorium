@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, signal, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal, OnInit, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollectionService } from '../../services/collection.service';
@@ -15,7 +15,8 @@ import { Book } from '../../models/book';
     }
     <div class="form-group">
       <label class="form-label">Nombre *</label>
-      <input type="text" [(ngModel)]="collectionName" class="form-input" placeholder="Ej. Novelas, Terror, Favoritos..." (keyup.enter)="save()">
+      <input type="text" [(ngModel)]="collectionName" class="form-input" placeholder="Ej. Novelas, Terror, Favoritos..." (keyup.enter)="save()" maxlength="30">
+      <div class="char-counter">{{ collectionName.length }}/30</div>
       @if (errorMessage()) {
         <div class="error-message">{{ errorMessage() }}</div>
       }
@@ -101,6 +102,13 @@ import { Book } from '../../models/book';
       font-size: 0.85rem;
       margin-top: 0.5rem;
       font-weight: 600;
+    }
+
+    .char-counter {
+      text-align: right;
+      font-size: 0.75rem;
+      color: #757575;
+      margin-top: 0.25rem;
     }
 
     .books-selection-list {
@@ -236,8 +244,16 @@ export class CollectionFormComponent implements OnInit, OnChanges {
   private collectionService = inject(CollectionService);
   private bookService = inject(BookService);
 
+  constructor() {
+    effect(() => {
+      // Reactively update available books when the source signal changes
+      this.availableBooks = this.bookService.books$();
+      this.filterBooks();
+    });
+  }
+
   ngOnInit(): void {
-    this.loadAvailableBooks();
+    // Initial load handled by effect, but loadCollectionData needs to run once if editing
     if (this.editingCollectionName) {
       this.loadCollectionData();
     }

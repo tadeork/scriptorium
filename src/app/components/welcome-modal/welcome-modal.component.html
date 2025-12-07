@@ -6,8 +6,9 @@
 
         <div class="user-input-section">
             <label for="userName">¿Cómo te llamas?</label>
-            <input type="text" id="userName" [value]="userName()" (input)="onNameInput($event)"
+            <input type="text" id="userName" [value]="userName()" (input)="onNameInput($event)" maxlength="20"
                 placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage()">
+            <div class="char-counter">{{ userName().length }}/20</div>
             @if (errorMessage()) {
             <span class="error-message">{{ errorMessage() }}</span>
             }
