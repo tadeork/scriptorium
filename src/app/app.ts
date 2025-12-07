@@ -1,4 +1,4 @@
-import { Component, computed, effect, OnInit, signal, ViewChild, inject, Renderer2 } from '@angular/core';
+import { Component, computed, effect, OnInit, AfterViewInit, signal, ViewChild, inject, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
 import { CollectionsListComponent } from './components/collections-list/collections-list.component';
@@ -35,7 +35,7 @@ import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   protected readonly title = signal('Scriptorium');
   protected readonly currentView = signal<'library' | 'wishlist' | 'collections'>('library');
   showAddBookModal = false;
@@ -64,6 +64,17 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.updateTitle();
+  }
+
+  ngAfterViewInit(): void {
+    // Show welcome modal if no user name is set
+    const userName = this.storageService.getUserName();
+    if (!userName) {
+      // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+      setTimeout(() => {
+        this.welcomeModal.open();
+      });
+    }
   }
 
   checkForUpdates(): void {

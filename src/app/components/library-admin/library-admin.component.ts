@@ -28,11 +28,11 @@ export class LibraryAdminComponent {
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
 
-        const userName = localStorage.getItem('userName') || 'Usuario';
-        const now = new Date();
-        const dateString = now.toISOString().split('T')[0]; // YYYY-MM-DD
-        const timeString = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-mm-ss
-        const fileName = `${userName}_${dateString}_${timeString}.csv`;
+        const userName = localStorage.getItem('userName') || 'user';
+        // Sanitize username to be safe for filenames
+        const safeUserName = userName.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+
+        const fileName = `${safeUserName}-scriptorium-library.csv`;
 
         link.setAttribute('href', url);
         link.setAttribute('download', fileName);
