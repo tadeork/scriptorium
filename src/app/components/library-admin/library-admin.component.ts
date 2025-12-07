@@ -78,12 +78,20 @@ export class LibraryAdminComponent {
         const headers = [
             'id', 'title', 'author', 'isbn', 'coverImageUrl', 'collection',
             'status', 'pagesRead', 'pages', 'publishedDate', 'description',
+            'format', 'borrowedBy', 'category', 'owner', 'customCollections',
             'createdAt', 'updatedAt'
         ];
 
         const rows = books.map(book => {
             return headers.map(header => {
                 const value = (book as any)[header];
+
+                // Handle arrays (customCollections)
+                if (Array.isArray(value)) {
+                    const escaped = value.join(';').replace(/"/g, '""');
+                    return `"${escaped}"`;
+                }
+
                 // Handle strings that might contain commas or quotes
                 if (typeof value === 'string') {
                     const escaped = value.replace(/"/g, '""');
@@ -117,9 +125,12 @@ export class LibraryAdminComponent {
             const book: any = {};
             headers.forEach((header, index) => {
                 let value = values[index];
+
                 // Convert types
                 if (header === 'pages' || header === 'pagesRead' || header === 'createdAt' || header === 'updatedAt') {
                     book[header] = value ? Number(value) : undefined;
+                } else if (header === 'customCollections') {
+                    book[header] = value ? value.split(';').filter((s: string) => s.trim() !== '') : [];
                 } else {
                     book[header] = value;
                 }

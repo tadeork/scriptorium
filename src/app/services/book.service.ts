@@ -164,6 +164,16 @@ export class BookService {
 
     this.books.set(Array.from(bookMap.values()));
     this.saveBooksToStorage();
+
+    // Sync collections from imported books
+    newBooks.forEach(book => {
+      if (book.category) {
+        this.collectionService.addCollection(book.category);
+      }
+      if (book.customCollections) {
+        book.customCollections.forEach(c => this.collectionService.addCollection(c));
+      }
+    });
   }
 
   private saveBooksToStorage(): void {

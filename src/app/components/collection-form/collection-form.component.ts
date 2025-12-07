@@ -37,7 +37,12 @@ import { Book } from '../../models/book';
           <input type="checkbox" [checked]="isBookSelected(book.id)" (click)="$event.stopPropagation()"
             (change)="toggleBookSelection(book.id)" class="book-checkbox">
           <div class="book-info">
-            <span class="book-title">{{ book.title }}</span>
+            <span class="book-title">
+              {{ book.title }}
+              @if (book.collection === 'wishlist') {
+                <span class="tag-wishlist">Deseado</span>
+              }
+            </span>
             <span class="book-author">{{ book.author }}</span>
           </div>
         </div>
@@ -196,6 +201,21 @@ import { Book } from '../../models/book';
         cursor: not-allowed;
         box-shadow: none;
       }
+    }
+
+    .tag-wishlist {
+      display: inline-block;
+      background-color: #f5f5f5; /* Light gray background */
+      color: #757575; /* Gray text */
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid #e0e0e0;
+      align-self: flex-start;
     }
   `]
 })
