@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { BookListComponent } from '../book-list/book-list.component';
 
 @Component({
-    selector: 'app-collection-details',
-    standalone: true,
-    imports: [CommonModule, BookListComponent],
-    template: `
+  selector: 'app-collection-details',
+  standalone: true,
+  imports: [CommonModule, BookListComponent],
+  template: `
     <div class="modal-header">
       <h2 class="modal-title">{{ collectionName }}</h2>
       <button class="close-btn" (click)="close.emit()">×</button>
@@ -15,7 +15,7 @@ import { BookListComponent } from '../book-list/book-list.component';
       <app-book-list [collection]="'library'" [forcedCollection]="collectionName"></app-book-list>
     </div>
   `,
-    styles: [`
+  styles: [`
     :host {
       display: flex;
       flex-direction: column;
@@ -70,6 +70,6 @@ import { BookListComponent } from '../book-list/book-list.component';
   `]
 })
 export class CollectionDetailsComponent {
-    @Input() collectionName = '';
-    @Output() close = new EventEmitter<void>();
+  @Input() collectionName = '';
+  @Output() close = new EventEmitter<void>();
 }

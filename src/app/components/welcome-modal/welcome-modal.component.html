@@ -4,6 +4,15 @@
             Tu espacio personal para organizar tu vida literaria. Aquí tienes una guía rápida para empezar:
         </p>
 
+        <div class="user-input-section">
+            <label for="userName">¿Cómo te llamas?</label>
+            <input type="text" id="userName" [value]="userName()" (input)="onNameInput($event)"
+                placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage()">
+            @if (errorMessage()) {
+            <span class="error-message">{{ errorMessage() }}</span>
+            }
+        </div>
+
         <div class="feature-list">
             <div class="feature-item">
                 <div class="feature-icon">📚</div>
@@ -39,15 +48,6 @@
                             seguridad</strong> regularmente desde el menú de administración (⚙️).</p>
                 </div>
             </div>
-        </div>
-
-        <div class="user-input-section">
-            <label for="userName">¿Cómo te llamas?</label>
-            <input type="text" id="userName" [value]="userName()" (input)="onNameInput($event)"
-                placeholder="Tu nombre (solo letras)" class="name-input" [class.error]="errorMessage()">
-            @if (errorMessage()) {
-            <span class="error-message">{{ errorMessage() }}</span>
-            }
         </div>
 
         <div class="welcome-actions">
