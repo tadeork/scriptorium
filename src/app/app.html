@@ -76,12 +76,14 @@
       [initialTitle]="initialFormTitle" [showTitle]="false"></app-book-form>
   </app-modal-overlay>
 
-  <app-modal-overlay [isOpen]="showCollectionModal" (close)="toggleCollectionModal()" title="Nueva Categoría">
-    <app-collection-form (collectionCreated)="toggleCollectionModal()" [showTitle]="false"></app-collection-form>
+  <app-modal-overlay [isOpen]="showCollectionModal" (close)="toggleCollectionModal()"
+    [title]="editingCollection ? 'Editar Categoría' : 'Nueva Categoría'" [zIndex]="2200" size="large">
+    <app-collection-form (collectionCreated)="toggleCollectionModal()" (collectionUpdated)="onCollectionUpdated($event)"
+      [editingCollectionName]="editingCollection" [showTitle]="false"></app-collection-form>
   </app-modal-overlay>
 
   @if (selectedCollection) {
-  <app-collection-details [collectionName]="selectedCollection"
-    (close)="onCloseCollectionDetails()"></app-collection-details>
+  <app-collection-details [collectionName]="selectedCollection" (close)="onCloseCollectionDetails()"
+    (edit)="onEditCollection()"></app-collection-details>
   }
 </div>

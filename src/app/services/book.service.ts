@@ -158,4 +158,52 @@ export class BookService {
       return bookTitle === lowerTitle && bookAuthor === lowerAuthor;
     });
   }
+
+  renameCollection(oldName: string, newName: string): void {
+    const currentBooks = this.books();
+    const updatedBooks = currentBooks.map(book => {
+      if (book.customCollections?.includes(oldName)) {
+        const updatedCollections = book.customCollections.map(c => c === oldName ? newName : c);
+        return { ...book, customCollections: updatedCollections, updatedAt: Date.now() };
+      }
+      return book;
+    });
+
+    if (JSON.stringify(currentBooks) !== JSON.stringify(updatedBooks)) {
+      this.books.set(updatedBooks);
+      this.saveBooksToStorage();
+    }
+  }
+
+  updateCollectionMembership(collectionName: string, bookIds: string[]): void {
+    const currentBooks = this.books();
+    const targetIds = new Set(bookIds);
+
+    const updatedBooks = currentBooks.map(book => {
+      const isInCollection = book.customCollections?.includes(collectionName);
+      const shouldBeInCollection = targetIds.has(book.id);
+
+      if (isInCollection && !shouldBeInCollection) {
+        // Remove from collection
+        return {
+          ...book,
+          customCollections: book.customCollections?.filter(c => c !== collectionName) || [],
+          updatedAt: Date.now()
+        };
+      } else if (!isInCollection && shouldBeInCollection) {
+        // Add to collection
+        return {
+          ...book,
+          customCollections: [...(book.customCollections || []), collectionName],
+          updatedAt: Date.now()
+        };
+      }
+      return book;
+    });
+
+    if (JSON.stringify(currentBooks) !== JSON.stringify(updatedBooks)) {
+      this.books.set(updatedBooks);
+      this.saveBooksToStorage();
+    }
+  }
 }

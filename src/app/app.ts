@@ -166,13 +166,39 @@ export class App implements OnInit {
     this.updateScrollLock();
   }
 
+  editingCollection: string | null = null;
+  // selectedCollection is already defined above
+
+  // ...
+
   toggleCollectionModal(): void {
     this.showCollectionModal = !this.showCollectionModal;
+    if (!this.showCollectionModal) {
+      this.editingCollection = null;
+    }
     this.updateScrollLock();
   }
 
   onOpenAddCollection(): void {
+    this.editingCollection = null;
     this.showCollectionModal = true;
+    this.updateScrollLock();
+  }
+
+  onEditCollection(): void {
+    if (this.selectedCollection) {
+      this.editingCollection = this.selectedCollection;
+      this.showCollectionModal = true;
+      // The modal is on top of the details, so we might not want to close details yet
+      // or we could close details and reopen after? 
+      // Let's keep details open underneath.
+    }
+  }
+
+  onCollectionUpdated(newName: string): void {
+    this.selectedCollection = newName;
+    this.editingCollection = null;
+    this.showCollectionModal = false;
     this.updateScrollLock();
   }
 

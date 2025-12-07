@@ -9,7 +9,10 @@ import { BookListComponent } from '../book-list/book-list.component';
   template: `
     <div class="modal-header">
       <h2 class="modal-title">{{ collectionName }}</h2>
-      <button class="close-btn" (click)="close.emit()">×</button>
+      <div class="header-actions">
+        <button class="edit-btn" (click)="edit.emit()" title="Editar categoría">✎</button>
+        <button class="close-btn" (click)="close.emit()">×</button>
+      </div>
     </div>
     <div class="modal-body">
       <app-book-list [collection]="'library'" [forcedCollection]="collectionName"></app-book-list>
@@ -53,6 +56,40 @@ import { BookListComponent } from '../book-list/book-list.component';
       letter-spacing: 0.05em;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .edit-btn {
+      background: #212121;
+      border: 2px solid #000;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 40px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #424242;
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+      }
+      
+      &:active {
+        transform: translate(0, 0);
+        box-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+      }
+    }
+
     .close-btn {
       background: #d32f2f;
       border: 2px solid #b71c1c;
@@ -67,7 +104,7 @@ import { BookListComponent } from '../book-list/book-list.component';
       align-items: center;
       justify-content: center;
       padding: 0;
-      margin-left: 1rem;
+      margin-left: 0;
       border-radius: 50%;
       box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
       transition: all 0.2s ease;
@@ -81,6 +118,31 @@ import { BookListComponent } from '../book-list/book-list.component';
         transform: scale(0.95);
       }
     }
+    
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      .modal-header {
+        padding: 1rem;
+      }
+
+      .modal-title {
+        font-size: 1.5rem;
+      }
+      
+      .edit-btn, .close-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+      }
+      
+      .header-actions {
+        gap: 0.5rem;
+      }
+
+      .modal-body {
+        padding: 1rem;
+      }
+    }
 
     .modal-body {
       flex: 1;
@@ -92,31 +154,12 @@ import { BookListComponent } from '../book-list/book-list.component';
       width: 100%;
       box-sizing: border-box;
     }
-
-    @media (max-width: 768px) {
-      .modal-header {
-        padding: 1rem;
-      }
-
-      .modal-title {
-        font-size: 1.5rem;
-      }
-
-      .close-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.25rem;
-      }
-
-      .modal-body {
-        padding: 1rem;
-      }
-    }
   `]
 })
 export class CollectionDetailsComponent {
   @Input() collectionName = '';
   @Output() close = new EventEmitter<void>();
+  @Output() edit = new EventEmitter<void>();
 
   @HostListener('document:keydown.escape')
   onEscape(): void {

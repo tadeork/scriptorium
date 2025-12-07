@@ -40,21 +40,22 @@ export class BookListComponent implements OnInit {
     const currentCollection = this.collection();
     const forcedColl = this.forcedCollection();
 
-    // Filter by main collection (library vs wishlist)
-    books = books.filter(b => (b.collection || 'library') === currentCollection);
-
     // Filter by forced custom collection if present
     if (forcedColl) {
       books = books.filter(b => b.customCollections?.includes(forcedColl));
+    } else {
+      // Only filter by main collection (library vs wishlist) if NOT in a forced custom collection
+      books = books.filter(b => (b.collection || 'library') === currentCollection);
     }
 
     // Apply search filter
     if (query.trim()) {
       books = this.bookService.searchBooks(query);
       // Re-apply collection filters after search
-      books = books.filter(b => (b.collection || 'library') === currentCollection);
       if (forcedColl) {
         books = books.filter(b => b.customCollections?.includes(forcedColl));
+      } else {
+        books = books.filter(b => (b.collection || 'library') === currentCollection);
       }
     }
 
@@ -81,13 +82,14 @@ export class BookListComponent implements OnInit {
     const books = this.bookService.books$();
     const currentCollection = this.collection();
     const forcedColl = this.forcedCollection();
+    let collectionBooks: Book[] = [];
 
-    // Base filter: current main collection
-    let collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
-
-    // Filter by forced custom collection if present
     if (forcedColl) {
-      collectionBooks = collectionBooks.filter(b => b.customCollections?.includes(forcedColl));
+      // If forced collection, include ALL books in that collection (library + wishlist)
+      collectionBooks = books.filter(b => b.customCollections?.includes(forcedColl));
+    } else {
+      // Otherwise filter by main collection
+      collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
     }
 
     const counts: Record<string, number> = {

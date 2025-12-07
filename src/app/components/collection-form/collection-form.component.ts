@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, signal, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollectionService } from '../../services/collection.service';
@@ -11,11 +11,11 @@ import { Book } from '../../models/book';
   imports: [CommonModule, FormsModule],
   template: `
     @if (showTitle) {
-    <h2 class="form-title">Nueva Categoría</h2>
+    <h2 class="form-title">{{ editingCollectionName ? 'Editar Categoría' : 'Nueva Categoría' }}</h2>
     }
     <div class="form-group">
       <label class="form-label">Nombre *</label>
-      <input type="text" [(ngModel)]="collectionName" class="form-input" placeholder="Ej. Novelas, Terror, Favoritos..." (keyup.enter)="create()">
+      <input type="text" [(ngModel)]="collectionName" class="form-input" placeholder="Ej. Novelas, Terror, Favoritos..." (keyup.enter)="save()">
       @if (errorMessage()) {
         <div class="error-message">{{ errorMessage() }}</div>
       }
@@ -46,7 +46,7 @@ import { Book } from '../../models/book';
     </div>
 
     <div class="form-actions">
-      <button class="btn btn-primary" (click)="create()" [disabled]="!collectionName.trim()">CREAR</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="!collectionName.trim()">{{ editingCollectionName ? 'GUARDAR' : 'CREAR' }}</button>
     </div>
   `,
   styles: [`
@@ -99,7 +99,8 @@ import { Book } from '../../models/book';
     }
 
     .books-selection-list {
-      max-height: 200px;
+      max-height: 50vh;
+      min-height: 200px;
       overflow-y: auto;
       border: 1px solid #e0e0e0;
       padding: 0.5rem;
@@ -198,9 +199,11 @@ import { Book } from '../../models/book';
     }
   `]
 })
-export class CollectionFormComponent implements OnInit {
+export class CollectionFormComponent implements OnInit, OnChanges {
   @Input() showTitle = true;
+  @Input() editingCollectionName: string | null = null;
   @Output() collectionCreated = new EventEmitter<void>();
+  @Output() collectionUpdated = new EventEmitter<string>();
 
   collectionName = '';
   errorMessage = signal('');
@@ -215,6 +218,19 @@ export class CollectionFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAvailableBooks();
+    if (this.editingCollectionName) {
+      this.loadCollectionData();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['editingCollectionName']) {
+      if (this.editingCollectionName) {
+        this.loadCollectionData();
+      } else {
+        this.resetForm();
+      }
+    }
   }
 
   loadAvailableBooks(): void {
@@ -222,15 +238,47 @@ export class CollectionFormComponent implements OnInit {
     this.filterBooks();
   }
 
+  loadCollectionData(): void {
+    if (!this.editingCollectionName) return;
+    this.collectionName = this.editingCollectionName;
+
+    // Pre-select books in this collection
+    const booksInCollection = this.availableBooks.filter(b =>
+      b.customCollections?.includes(this.editingCollectionName!)
+    );
+    this.selectedBookIds = new Set(booksInCollection.map(b => b.id));
+    this.filterBooks();
+  }
+
+  resetForm(): void {
+    this.collectionName = '';
+    this.selectedBookIds.clear();
+    this.errorMessage.set('');
+    this.bookSearchQuery = '';
+    this.filterBooks();
+  }
+
   filterBooks(): void {
+    let matches: Book[] = [];
+
     if (!this.bookSearchQuery.trim()) {
-      this.filteredBooks = this.availableBooks;
+      matches = [...this.availableBooks];
     } else {
       const query = this.bookSearchQuery.toLowerCase();
-      this.filteredBooks = this.availableBooks.filter(book =>
+      matches = this.availableBooks.filter(book =>
         book.title.toLowerCase().includes(query)
       );
     }
+
+    // Sort: Selected first, then by title
+    this.filteredBooks = matches.sort((a, b) => {
+      const aSelected = this.isBookSelected(a.id);
+      const bSelected = this.isBookSelected(b.id);
+
+      if (aSelected && !bSelected) return -1;
+      if (!aSelected && bSelected) return 1;
+      return a.title.localeCompare(b.title);
+    });
   }
 
   toggleBookSelection(bookId: string): void {
@@ -245,24 +293,39 @@ export class CollectionFormComponent implements OnInit {
     return this.selectedBookIds.has(bookId);
   }
 
-  create(): void {
+  save(): void {
     if (!this.collectionName.trim()) return;
+    const newName = this.collectionName.trim();
+    const oldName = this.editingCollectionName;
 
-    const collectionName = this.collectionName.trim();
-    const success = this.collectionService.addCollection(collectionName);
+    if (oldName) {
+      // Editing existing collection
+      if (newName !== oldName) {
+        const renamed = this.collectionService.renameCollection(oldName, newName);
+        if (!renamed) {
+          this.errorMessage.set('Ya existe una categoría con este nombre.');
+          return;
+        }
+        this.bookService.renameCollection(oldName, newName);
+      }
 
-    if (success) {
-      // Add selected books to the new collection
-      this.selectedBookIds.forEach(bookId => {
-        this.bookService.addBookToCollection(bookId, collectionName);
-      });
+      // Update book membership
+      this.bookService.updateCollectionMembership(newName, Array.from(this.selectedBookIds));
+      this.collectionUpdated.emit(newName);
 
-      this.collectionCreated.emit();
-      this.collectionName = '';
-      this.selectedBookIds.clear();
-      this.errorMessage.set('');
     } else {
-      this.errorMessage.set('Esta categoría ya existe.');
+      // Creating new collection
+      const success = this.collectionService.addCollection(newName);
+
+      if (success) {
+        this.selectedBookIds.forEach(bookId => {
+          this.bookService.addBookToCollection(bookId, newName);
+        });
+        this.collectionCreated.emit();
+        this.resetForm();
+      } else {
+        this.errorMessage.set('Esta categoría ya existe.');
+      }
     }
   }
 }

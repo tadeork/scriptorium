@@ -34,4 +34,16 @@ export class CollectionService {
         this.collections.set(updated);
         this.storageService.saveCollections(updated);
     }
+
+    renameCollection(oldName: string, newName: string): boolean {
+        const current = this.collections();
+        if (current.includes(newName)) {
+            return false; // New name already exists
+        }
+
+        const updated = current.map(c => c === oldName ? newName : c);
+        this.collections.set(updated);
+        this.storageService.saveCollections(updated);
+        return true;
+    }
 }
