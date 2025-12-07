@@ -13,7 +13,7 @@ import { BookService } from '../../services/book.service';
       <div class="collection-card" (click)="onFunctionSelect(collection.name)">
         <div class="collection-info">
           <h3 class="collection-title">{{ collection.name }}</h3>
-          <span class="collection-count">{{ collection.count }} libros</span>
+          <span class="collection-count">{{ collection.count }} {{ collection.count === 1 ? 'libro' : 'libros' }}</span>
         </div>
       </div>
       }
