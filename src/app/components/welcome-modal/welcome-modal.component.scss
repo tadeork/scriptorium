@@ -1,3 +1,58 @@
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-intro {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    border: 2px solid #212121;
+    border-radius: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: #fff;
+}
+
+.feature-text {
+    h4 {
+        margin: 0 0 0.25rem 0;
+        font-size: 1.1rem;
+        color: #212121;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.4;
+    }
+}
+
 .user-input-section {
     margin: 2rem 0;
     display: flex;
@@ -14,7 +69,7 @@
 
     .name-input {
         padding: 0.75rem 1rem;
-        border: 2px solid #212121;
+        border: 1px solid #212121;
         background-color: #fff;
         font-size: 1rem;
         font-family: inherit;
@@ -53,9 +108,8 @@
 }
 
 .welcome-actions {
-    margin-top: 2rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .developer-section {
@@ -86,6 +140,7 @@
 }
 
 .start-btn {
+    width: 100%;
     background-color: #212121;
     color: #fff;
     border: 2px solid #212121;

@@ -79,7 +79,7 @@
   flex-direction: column;
   gap: 1rem;
   padding-top: 1rem;
-  border-top: 2px dashed rgba(33, 33, 33, 0.2);
+  border-top: 1px solid rgba(33, 33, 33, 0.2);
   animation: slideDown 0.3s ease-out;
 }
 
@@ -118,7 +118,7 @@
 .filter-btn {
   background-color: #fff;
   color: #212121;
-  border: 2px solid #212121;
+  border: 1px solid #212121;
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 0.9rem;
@@ -134,11 +134,6 @@
     background-color: #212121;
     color: white;
     border-color: #212121;
-
-    .count-badge {
-      color: #212121;
-      background-color: white;
-    }
   }
 
   &:hover:not(.active) {
@@ -153,7 +148,7 @@
 }
 
 .sort-select {
-  border: 2px solid #212121;
+  border: 1px solid #212121;
   background-color: #fff;
   padding: 0.75rem 1rem;
   font-size: 0.9rem;

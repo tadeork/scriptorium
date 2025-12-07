@@ -60,8 +60,8 @@ export class ProgressBarComponent {
     // Start delay before repeating
     this.timeoutId = setTimeout(() => {
       // Start repeating interval
-      this.intervalId = setInterval(performAction, 300);
-    }, 800);
+      this.intervalId = setInterval(performAction, 200);
+    }, 400);
   }
 
   stopRepeating(): void {

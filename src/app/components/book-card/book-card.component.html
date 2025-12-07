@@ -70,7 +70,7 @@
       </div>
 
       @if (book.collection !== 'wishlist') {
-      <div class="book-details__row">
+      <div class="book-details__row book-details__row--stacked">
         <label>Estado:</label>
         <app-status-selector [status]="book.status" [id]="'modal-status-' + book.id" [label]="''"
           (statusChange)="updateStatus.emit({ id: book.id, status: $event })"></app-status-selector>
@@ -86,7 +86,7 @@
       }
 
       @if (book.status === 'read' || book.status === 'reading') {
-      <div class="book-details__row">
+      <div class="book-details__row book-details__row--stacked">
         <label>Progreso:</label>
         <app-progress-bar [progress]="getProgressPercentage()" [pages]="book.pages || 0"
           [pagesRead]="book.pagesRead || 0" [disabled]="isBookRead()" variant="editable"
@@ -96,7 +96,7 @@
       }
 
       @if (book.description) {
-      <div class="book-details__row">
+      <div class="book-details__row book-details__row--stacked">
         <label>Descripción:</label>
         <p class="book-details__description">{{ book.description }}</p>
       </div>
@@ -119,7 +119,7 @@
       @if (book.createdAt) {
       <div class="book-details__row">
         <label>Agregado:</label>
-        <p>{{ (book.createdAt | date: 'short') }}</p>
+        <p>{{ (book.createdAt | date: 'dd/MM/yyyy') }}</p>
       </div>
       }
     </div>
