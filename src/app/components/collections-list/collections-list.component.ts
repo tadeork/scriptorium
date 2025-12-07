@@ -4,13 +4,13 @@ import { CollectionService } from '../../services/collection.service';
 import { BookService } from '../../services/book.service';
 
 @Component({
-    selector: 'app-collections-list',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-collections-list',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="collections-grid">
       @for (collection of collectionsWithCounts(); track collection.name) {
-      <div class="collection-card">
+      <div class="collection-card" (click)="onFunctionSelect(collection.name)">
         <div class="collection-info">
           <h3 class="collection-title">{{ collection.name }}</h3>
           <span class="collection-count">{{ collection.count }} libros</span>
@@ -27,7 +27,7 @@ import { BookService } from '../../services/book.service';
     </div>
     }
   `,
-    styles: [`
+  styles: [`
     .collections-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -117,22 +117,27 @@ import { BookService } from '../../services/book.service';
   `]
 })
 export class CollectionsListComponent {
-    @Output() createCollection = new EventEmitter<void>();
+  @Output() createCollection = new EventEmitter<void>();
+  @Output() collectionSelected = new EventEmitter<string>();
 
-    private collectionService = inject(CollectionService);
-    private bookService = inject(BookService);
+  private collectionService = inject(CollectionService);
+  private bookService = inject(BookService);
 
-    collectionsWithCounts = computed(() => {
-        const collections = this.collectionService.collections$();
-        const books = this.bookService.books$();
+  collectionsWithCounts = computed(() => {
+    const collections = this.collectionService.collections$();
+    const books = this.bookService.books$();
 
-        return collections.map(name => {
-            const count = books.filter(b => b.customCollections?.includes(name)).length;
-            return { name, count };
-        });
+    return collections.map(name => {
+      const count = books.filter(b => b.customCollections?.includes(name)).length;
+      return { name, count };
     });
+  });
 
-    onCreateFirst(): void {
-        this.createCollection.emit();
-    }
+  onCreateFirst(): void {
+    this.createCollection.emit();
+  }
+
+  onFunctionSelect(name: string): void {
+    this.collectionSelected.emit(name);
+  }
 }

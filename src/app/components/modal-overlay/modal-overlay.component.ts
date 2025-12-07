@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, SimpleChanges, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-modal-overlay',
@@ -26,6 +26,13 @@ export class ModalOverlayComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     document.body.style.overflow = '';
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.isOpen) {
+      this.close.emit();
+    }
   }
 
   onOverlayClick(): void {

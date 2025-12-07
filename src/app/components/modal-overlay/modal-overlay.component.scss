@@ -59,12 +59,19 @@
   max-width: 800px;
 }
 
+/* Header Styles */
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
   border-bottom: 1px solid #212121;
+
+  &.no-title {
+    justify-content: flex-end;
+    margin-bottom: 0;
+    /* Less margin if no title */
+  }
 }
 
 .modal-title {

@@ -2,7 +2,9 @@
 
 
   <fieldset class="book-form__fieldset">
+    @if (showTitle) {
     <legend class="book-form__legend">{{ editingBook ? 'Editar libro' : 'Agregar nuevo libro' }}</legend>
+    }
 
     <div class="form-group format-selector">
       <label class="form-label">Formato:</label>

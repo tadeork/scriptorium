@@ -1,12 +1,12 @@
 @if (isOpen) {
 <div class="modal-overlay" [class]="'modal-' + size" [style.z-index]="zIndex" (click)="onOverlayClick()">
   <div class="modal-content" (click)="onContentClick($event)">
-    @if (title) {
-    <div class="modal-header">
+    <div class="modal-header" [class.no-title]="!title">
+      @if (title) {
       <h3 class="modal-title">{{ title }}</h3>
+      }
       <button class="modal-close-btn" (click)="onCloseClick()" aria-label="Cerrar modal">✕</button>
     </div>
-    }
     <div class="modal-body">
       <ng-content></ng-content>
     </div>

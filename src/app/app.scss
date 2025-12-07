@@ -103,41 +103,46 @@
   }
 }
 
-.toggle-form-btn {
+.fab {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 2rem;
+  right: 2rem;
   background-color: #d32f2f;
   color: #fff;
   border: 2px solid #b71c1c;
-  width: 60px;
-  height: 60px;
+  width: 3.5rem;
+  height: 3.5rem;
   padding: 0;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 900;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
   border-radius: 50%;
-  z-index: 90;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
 
+  .icon {
+    margin-top: -4px;
+    /* Slight adjustment for visual centering of + */
+  }
+
   &:hover {
     background-color: #c62828;
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    transform: translate(-2px, -2px) scale(1.05);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
   }
 
   &:active {
-    transform: scale(0.95) rotate(90deg);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translate(0, 0) scale(0.95);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
   }
 
-  &.toggle-form-btn--collection {
+  &.fab--collection {
     background-color: #212121;
     border-color: #000;
 

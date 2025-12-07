@@ -21,6 +21,12 @@ export class BookListComponent implements OnInit {
   @Input('collection') set collectionInput(value: 'library' | 'wishlist') {
     this.collection.set(value);
   }
+
+  forcedCollection = signal<string | null>(null);
+  @Input('forcedCollection') set forcedCollectionInput(value: string | null) {
+    this.forcedCollection.set(value);
+  }
+
   @Output() editBook = new EventEmitter<Book>();
   @Output() addBookFromSearch = new EventEmitter<string>();
 
@@ -32,15 +38,24 @@ export class BookListComponent implements OnInit {
     const status = this.selectedStatus();
     const sort = this.sortBy();
     const currentCollection = this.collection();
+    const forcedColl = this.forcedCollection();
 
     // Filter by main collection (library vs wishlist)
     books = books.filter(b => (b.collection || 'library') === currentCollection);
+
+    // Filter by forced custom collection if present
+    if (forcedColl) {
+      books = books.filter(b => b.customCollections?.includes(forcedColl));
+    }
 
     // Apply search filter
     if (query.trim()) {
       books = this.bookService.searchBooks(query);
       // Re-apply collection filters after search
       books = books.filter(b => (b.collection || 'library') === currentCollection);
+      if (forcedColl) {
+        books = books.filter(b => b.customCollections?.includes(forcedColl));
+      }
     }
 
     // Apply status filter
@@ -65,9 +80,15 @@ export class BookListComponent implements OnInit {
   statusCounts = computed(() => {
     const books = this.bookService.books$();
     const currentCollection = this.collection();
+    const forcedColl = this.forcedCollection();
 
     // Base filter: current main collection
     let collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
+
+    // Filter by forced custom collection if present
+    if (forcedColl) {
+      collectionBooks = collectionBooks.filter(b => b.customCollections?.includes(forcedColl));
+    }
 
     const counts: Record<string, number> = {
       'all': collectionBooks.length,

@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" (click)="toggleAdminModal()" title="Administrar biblioteca">
+        <button class="icon-btn" (click)="toggleLibraryAdmin()" title="Administrar biblioteca">
           ⚙️
         </button>
 
@@ -25,50 +25,33 @@
     </div>
   </header>
 
-  @if (showFormModal) {
-  <div class="form-modal-overlay" (click)="toggleFormModal()">
-    <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleFormModal()">✕</button>
-      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()" [defaultCollection]="$any(currentView())"
-        [initialTitle]="initialFormTitle"></app-book-form>
-    </div>
-  </div>
-  }
+  <!-- showAddBookModal is handled by app-modal-overlay below -->
 
   @if (showEditModal) {
-  <div class="form-modal-overlay" (click)="toggleEditModal()">
-    <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleEditModal()">✕</button>
-      <app-book-form [editingBook]="editingBook"
-        (bookUpdated)="onBookUpdated($event); toggleEditModal()"></app-book-form>
-    </div>
-  </div>
+  <!-- Manual modal for editing books -->
+  <app-modal-overlay [isOpen]="showEditModal" (close)="toggleEditModal()" title="Editar libro">
+    <app-book-form [editingBook]="editingBook" (bookUpdated)="onBookUpdated($event); toggleEditModal()"
+      [showTitle]="false"></app-book-form>
+  </app-modal-overlay>
   }
 
   @if (showAdminModal) {
-  <div class="form-modal-overlay" (click)="toggleAdminModal()">
+  <div class="form-modal-overlay" (click)="toggleLibraryAdmin()">
     <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleAdminModal()">✕</button>
-      <app-library-admin (close)="toggleAdminModal()" (showWelcome)="onShowWelcome()"></app-library-admin>
+      <button class="close-btn" (click)="toggleLibraryAdmin()">✕</button>
+      <app-library-admin (close)="toggleLibraryAdmin()" (showWelcome)="onShowWelcome()"></app-library-admin>
     </div>
   </div>
   }
 
-  @if (showCollectionModal) {
-  <div class="form-modal-overlay" (click)="toggleCollectionModal()">
-    <div class="form-modal" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="toggleCollectionModal()">✕</button>
-      <app-collection-form (collectionCreated)="toggleCollectionModal()"></app-collection-form>
-    </div>
-  </div>
-  }
-
+  <!-- Removed duplicate collection modal block -->
   <main class="app-main">
     @if (currentView() === 'library' || currentView() === 'wishlist') {
     <app-book-list [collection]="$any(currentView())" (editBook)="openEditModal($event)"
       (addBookFromSearch)="onAddBookFromSearch($event)"></app-book-list>
     } @else if (currentView() === 'collections') {
-    <app-collections-list (createCollection)="onOpenAddCollection()"></app-collections-list>
+    <app-collections-list (createCollection)="onOpenAddCollection()"
+      (collectionSelected)="onSelectCollection($event)"></app-collections-list>
     }
   </main>
 
@@ -78,19 +61,29 @@
 
   <app-welcome-modal (closed)="onWelcomeClosed()"></app-welcome-modal>
 
-  @if (showAddBookTooltip && currentView() !== 'collections') {
-  <div class="fab-tooltip">
-    ¡Empieza agregando un libro!
-  </div>
+  <!-- Floating Action Button -->
+  <button class="fab" [class.fab--collection]="currentView() === 'collections'"
+    (click)="currentView() === 'collections' ? onOpenAddCollection() : toggleAddBookModal()">
+    <span class="icon">{{ currentView() === 'collections' ? '+' : '+' }}</span>
+  </button>
+  @if (currentView() !== 'collections') {
+  <div class="fab-tooltip">Agregar libro</div>
   }
 
-  @if (currentView() === 'collections') {
-  <button class="toggle-form-btn toggle-form-btn--collection" (click)="onOpenAddCollection()" title="Crear categoría">
-    +
-  </button>
-  } @else {
-  <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
-    +
-  </button>
-  }
+  <!-- Modal Overlays -->
+  <app-modal-overlay [isOpen]="showAddBookModal" (close)="toggleAddBookModal()" title="Agregar nuevo libro">
+    <app-book-form (bookAdded)="onBookAdded($event); toggleAddBookModal()" [defaultCollection]="$any(currentView())"
+      [initialTitle]="initialFormTitle" [showTitle]="false"></app-book-form>
+  </app-modal-overlay>
+
+  <app-modal-overlay [isOpen]="showCollectionModal" (close)="toggleCollectionModal()" title="Nueva Categoría">
+    <app-collection-form (collectionCreated)="toggleCollectionModal()" [showTitle]="false"></app-collection-form>
+  </app-modal-overlay>
+
+  <app-modal-overlay [isOpen]="!!selectedCollection" (close)="onCloseCollectionDetails()">
+    @if (selectedCollection) {
+    <app-collection-details [collectionName]="selectedCollection"
+      (close)="onCloseCollectionDetails()"></app-collection-details>
+    }
+  </app-modal-overlay>
 </div>

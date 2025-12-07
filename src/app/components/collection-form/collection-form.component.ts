@@ -1,14 +1,18 @@
-import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollectionService } from '../../services/collection.service';
+import { BookService } from '../../services/book.service';
+import { Book } from '../../models/book';
 
 @Component({
-    selector: 'app-collection-form',
-    standalone: true,
-    imports: [CommonModule, FormsModule],
-    template: `
+  selector: 'app-collection-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
+    @if (showTitle) {
     <h2 class="form-title">Nueva Categoría</h2>
+    }
     <div class="form-group">
       <label class="form-label">Nombre *</label>
       <input type="text" [(ngModel)]="collectionName" class="form-input" placeholder="Ej. Novelas, Terror, Favoritos..." (keyup.enter)="create()">
@@ -16,11 +20,36 @@ import { CollectionService } from '../../services/collection.service';
         <div class="error-message">{{ errorMessage() }}</div>
       }
     </div>
+
+    <div class="form-group">
+      <label class="form-label">Seleccionar Libros</label>
+      <input type="text" [(ngModel)]="bookSearchQuery" (input)="filterBooks()"
+        placeholder="Buscar libros para agregar..." class="form-input mb-2" />
+
+      <div class="books-selection-list">
+        @if (filteredBooks.length === 0) {
+        <p class="no-books-msg">No se encontraron libros.</p>
+        }
+
+        @for (book of filteredBooks; track book.id) {
+        <div class="book-select-item" [class.selected]="isBookSelected(book.id)"
+          (click)="toggleBookSelection(book.id)">
+          <input type="checkbox" [checked]="isBookSelected(book.id)" (click)="$event.stopPropagation()"
+            (change)="toggleBookSelection(book.id)" class="book-checkbox">
+          <div class="book-info">
+            <span class="book-title">{{ book.title }}</span>
+            <span class="book-author">{{ book.author }}</span>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
     <div class="form-actions">
       <button class="btn btn-primary" (click)="create()" [disabled]="!collectionName.trim()">CREAR</button>
     </div>
   `,
-    styles: [`
+  styles: [`
     .form-title {
       font-size: 1.5rem;
       font-weight: 900;
@@ -58,11 +87,76 @@ import { CollectionService } from '../../services/collection.service';
       }
     }
 
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
     .error-message {
       color: #d32f2f;
       font-size: 0.85rem;
       margin-top: 0.5rem;
       font-weight: 600;
+    }
+
+    .books-selection-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      padding: 0.5rem;
+      background-color: #f9f9f9;
+    }
+
+    .no-books-msg {
+      text-align: center;
+      color: #757575;
+      font-style: italic;
+      padding: 1rem;
+      margin: 0;
+    }
+
+    .book-select-item {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #eee;
+      }
+
+      &.selected {
+        background-color: #e3f2fd;
+      }
+    }
+
+    .book-checkbox {
+      margin-right: 0.75rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      cursor: pointer;
+      accent-color: #212121;
+    }
+
+    .book-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #212121;
+    }
+
+    .book-author {
+      font-size: 0.85rem;
+      color: #757575;
     }
 
     .form-actions {
@@ -104,24 +198,72 @@ import { CollectionService } from '../../services/collection.service';
     }
   `]
 })
-export class CollectionFormComponent {
-    @Output() collectionCreated = new EventEmitter<void>();
+export class CollectionFormComponent implements OnInit {
+  @Input() showTitle = true;
+  @Output() collectionCreated = new EventEmitter<void>();
 
-    collectionName = '';
-    errorMessage = signal('');
+  collectionName = '';
+  errorMessage = signal('');
 
-    private collectionService = inject(CollectionService);
+  bookSearchQuery = '';
+  availableBooks: Book[] = [];
+  filteredBooks: Book[] = [];
+  selectedBookIds: Set<string> = new Set();
 
-    create(): void {
-        if (!this.collectionName.trim()) return;
+  private collectionService = inject(CollectionService);
+  private bookService = inject(BookService);
 
-        const success = this.collectionService.addCollection(this.collectionName.trim());
-        if (success) {
-            this.collectionCreated.emit();
-            this.collectionName = '';
-            this.errorMessage.set('');
-        } else {
-            this.errorMessage.set('Esta categoría ya existe.');
-        }
+  ngOnInit(): void {
+    this.loadAvailableBooks();
+  }
+
+  loadAvailableBooks(): void {
+    this.availableBooks = this.bookService.books$();
+    this.filterBooks();
+  }
+
+  filterBooks(): void {
+    if (!this.bookSearchQuery.trim()) {
+      this.filteredBooks = this.availableBooks;
+    } else {
+      const query = this.bookSearchQuery.toLowerCase();
+      this.filteredBooks = this.availableBooks.filter(book =>
+        book.title.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query)
+      );
     }
+  }
+
+  toggleBookSelection(bookId: string): void {
+    if (this.selectedBookIds.has(bookId)) {
+      this.selectedBookIds.delete(bookId);
+    } else {
+      this.selectedBookIds.add(bookId);
+    }
+  }
+
+  isBookSelected(bookId: string): boolean {
+    return this.selectedBookIds.has(bookId);
+  }
+
+  create(): void {
+    if (!this.collectionName.trim()) return;
+
+    const collectionName = this.collectionName.trim();
+    const success = this.collectionService.addCollection(collectionName);
+
+    if (success) {
+      // Add selected books to the new collection
+      this.selectedBookIds.forEach(bookId => {
+        this.bookService.addBookToCollection(bookId, collectionName);
+      });
+
+      this.collectionCreated.emit();
+      this.collectionName = '';
+      this.selectedBookIds.clear();
+      this.errorMessage.set('');
+    } else {
+      this.errorMessage.set('Esta categoría ya existe.');
+    }
+  }
 }

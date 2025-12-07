@@ -29,6 +29,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   @Input() editingBook: Book | null = null;
   @Input() defaultCollection: 'library' | 'wishlist' = 'library';
   @Input() initialTitle = '';
+  @Input() showTitle = true;
   @Output() bookAdded = new EventEmitter<Omit<Book, 'id' | 'createdAt' | 'updatedAt'>>();
   @Output() bookUpdated = new EventEmitter<Book>();
 
