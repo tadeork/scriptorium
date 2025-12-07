@@ -36,9 +36,6 @@ export class BookFormComponent implements OnInit, OnChanges {
   parseInt = parseInt;
   Math = Math;
 
-  // Tabs
-  currentTab: 'book' | 'collection' = 'book';
-
   // Book Form Fields
   title = '';
   author = '';
@@ -52,13 +49,6 @@ export class BookFormComponent implements OnInit, OnChanges {
   pagesRead = 0;
   borrowedBy = '';
 
-  // Collection Form Fields
-  newCollectionName = '';
-  availableBooks: Book[] = [];
-  selectedBookIds: Set<string> = new Set();
-  filteredBooks: Book[] = [];
-  bookSearchQuery = '';
-
   suggestions: CombinedSearchResult[] = [];
   showSuggestions = false;
   searchQuery$ = new Subject<string>();
@@ -69,8 +59,7 @@ export class BookFormComponent implements OnInit, OnChanges {
   constructor(
     private combinedSearchService: CombinedSearchService,
     private cdr: ChangeDetectorRef,
-    private bookService: BookService,
-    private collectionService: CollectionService
+    private bookService: BookService
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +72,7 @@ export class BookFormComponent implements OnInit, OnChanges {
       }
     }
 
-    this.loadAvailableBooks();
+
 
     this.searchQuery$
       .pipe(
@@ -140,7 +129,6 @@ export class BookFormComponent implements OnInit, OnChanges {
       this.title = this.initialTitle;
     }
   }
-
   private loadBookData(): void {
     if (!this.editingBook) return;
     this.title = this.editingBook.title;
@@ -154,60 +142,6 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.format = this.editingBook.format || 'physical';
     this.pagesRead = this.editingBook.pagesRead || 0;
     this.borrowedBy = this.editingBook.borrowedBy || '';
-  }
-
-  loadAvailableBooks(): void {
-    // Load all books from library to show in collection tab
-    // We subscribe to the signal to get current value
-    this.availableBooks = this.bookService.books$();
-    this.filterBooks();
-  }
-
-  filterBooks(): void {
-    if (!this.bookSearchQuery.trim()) {
-      this.filteredBooks = this.availableBooks;
-    } else {
-      const query = this.bookSearchQuery.toLowerCase();
-      this.filteredBooks = this.availableBooks.filter(book =>
-        book.title.toLowerCase().includes(query) ||
-        book.author.toLowerCase().includes(query)
-      );
-    }
-  }
-
-  toggleBookSelection(bookId: string): void {
-    if (this.selectedBookIds.has(bookId)) {
-      this.selectedBookIds.delete(bookId);
-    } else {
-      this.selectedBookIds.add(bookId);
-    }
-  }
-
-  isBookSelected(bookId: string): boolean {
-    return this.selectedBookIds.has(bookId);
-  }
-
-  createCollection(): void {
-    if (!this.newCollectionName.trim()) {
-      alert('Por favor ingresa un nombre para la colección');
-      return;
-    }
-
-    const success = this.collectionService.addCollection(this.newCollectionName.trim());
-    if (!success) {
-      alert('Ya existe una colección con ese nombre');
-      return;
-    }
-
-    // Add selected books to the new collection
-    this.selectedBookIds.forEach(bookId => {
-      this.bookService.addBookToCollection(bookId, this.newCollectionName.trim());
-    });
-
-    alert(`Colección "${this.newCollectionName}" creada con éxito!`);
-    this.newCollectionName = '';
-    this.selectedBookIds.clear();
-    // Maybe switch back to book tab or close modal? For now stay here.
   }
 
   get isSearchButtonDisabled(): boolean {
@@ -349,7 +283,6 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.borrowedBy = '';
     this.suggestions = [];
     this.showSuggestions = false;
-    this.selectedBookIds.clear();
-    this.newCollectionName = '';
   }
 }
+

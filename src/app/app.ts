@@ -1,6 +1,8 @@
 import { Component, computed, effect, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookListComponent } from './components/book-list/book-list.component';
+import { CollectionsListComponent } from './components/collections-list/collections-list.component';
+import { CollectionFormComponent } from './components/collection-form/collection-form.component';
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { LibraryAdminComponent } from './components/library-admin/library-admin.component';
 import { Book } from './models/book';
@@ -15,14 +17,15 @@ import { WelcomeModalComponent } from './components/welcome-modal/welcome-modal.
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BookListComponent, BookFormComponent, LibraryAdminComponent, UpdateNotificationComponent, WelcomeModalComponent],
+  imports: [CommonModule, BookListComponent, CollectionsListComponent, BookFormComponent, CollectionFormComponent, LibraryAdminComponent, UpdateNotificationComponent, WelcomeModalComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
 export class App implements OnInit {
   protected readonly title = signal('Scriptorium');
-  protected readonly currentView = signal<'library' | 'wishlist'>('library');
+  protected readonly currentView = signal<'library' | 'wishlist' | 'collections'>('library');
   showFormModal = false;
+  showCollectionModal = false;
   showEditModal = false;
   showAdminModal = false;
   editingBook: Book | null = null;
@@ -95,7 +98,7 @@ export class App implements OnInit {
     this.showAddBookTooltip = false;
   }
 
-  setView(view: 'library' | 'wishlist'): void {
+  setView(view: 'library' | 'wishlist' | 'collections'): void {
     this.currentView.set(view);
   }
 
@@ -130,12 +133,21 @@ export class App implements OnInit {
     this.updateScrollLock();
   }
 
+  onOpenAddCollection(): void {
+    this.toggleCollectionModal();
+  }
+
+  toggleCollectionModal(): void {
+    this.showCollectionModal = !this.showCollectionModal;
+    this.updateScrollLock();
+  }
+
   onBookUpdated(book: Book): void {
     this.bookService.updateBook(book.id, book);
   }
 
   private updateScrollLock(): void {
-    const isAnyModalOpen = this.showFormModal || this.showEditModal || this.showAdminModal;
+    const isAnyModalOpen = this.showFormModal || this.showEditModal || this.showAdminModal || this.showCollectionModal;
     document.body.style.overflow = isAnyModalOpen ? 'hidden' : '';
   }
 }

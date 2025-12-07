@@ -11,6 +11,9 @@
             (click)="setView('wishlist')">
             Lista de Deseados
           </button>
+          <button class="nav-btn" [class.active]="currentView() === 'collections'" (click)="setView('collections')">
+            Categorías
+          </button>
         </div>
       </div>
       <div class="header-actions">
@@ -26,7 +29,7 @@
   <div class="form-modal-overlay" (click)="toggleFormModal()">
     <div class="form-modal" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="toggleFormModal()">✕</button>
-      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()" [defaultCollection]="currentView()"
+      <app-book-form (bookAdded)="onBookAdded($event); toggleFormModal()" [defaultCollection]="$any(currentView())"
         [initialTitle]="initialFormTitle"></app-book-form>
     </div>
   </div>
@@ -51,9 +54,22 @@
   </div>
   }
 
+  @if (showCollectionModal) {
+  <div class="form-modal-overlay" (click)="toggleCollectionModal()">
+    <div class="form-modal" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="toggleCollectionModal()">✕</button>
+      <app-collection-form (collectionCreated)="toggleCollectionModal()"></app-collection-form>
+    </div>
+  </div>
+  }
+
   <main class="app-main">
-    <app-book-list [collection]="currentView()" (editBook)="openEditModal($event)"
+    @if (currentView() === 'library' || currentView() === 'wishlist') {
+    <app-book-list [collection]="$any(currentView())" (editBook)="openEditModal($event)"
       (addBookFromSearch)="onAddBookFromSearch($event)"></app-book-list>
+    } @else if (currentView() === 'collections') {
+    <app-collections-list (createCollection)="onOpenAddCollection()"></app-collections-list>
+    }
   </main>
 
   @if (showUpdateNotification) {
@@ -62,13 +78,19 @@
 
   <app-welcome-modal (closed)="onWelcomeClosed()"></app-welcome-modal>
 
-  @if (showAddBookTooltip) {
+  @if (showAddBookTooltip && currentView() !== 'collections') {
   <div class="fab-tooltip">
     ¡Empieza agregando un libro!
   </div>
   }
 
+  @if (currentView() === 'collections') {
+  <button class="toggle-form-btn toggle-form-btn--collection" (click)="onOpenAddCollection()" title="Crear categoría">
+    +
+  </button>
+  } @else {
   <button class="toggle-form-btn" (click)="toggleFormModal()" title="Agregar libro">
     +
   </button>
+  }
 </div>

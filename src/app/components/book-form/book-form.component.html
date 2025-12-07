@@ -1,167 +1,120 @@
 <form class="book-form" (ngSubmit)="onSubmit()">
-  <div class="form-tabs">
-    <button class="tab-btn" [class.active]="currentTab === 'book'" (click)="currentTab = 'book'">
-      Agregar Libro
-    </button>
-    <button class="tab-btn" [class.active]="currentTab === 'collection'" (click)="currentTab = 'collection'">
-      Colecciones
-    </button>
-  </div>
 
-  <div class="tab-content" *ngIf="currentTab === 'book'">
-    <fieldset class="book-form__fieldset">
-      <legend class="book-form__legend">{{ editingBook ? 'Editar libro' : 'Agregar nuevo libro' }}</legend>
 
-      <div class="form-group format-selector">
-        <label class="form-label">Formato:</label>
-        <div class="radio-group">
-          <label class="radio-label">
-            <input type="radio" name="format" [(ngModel)]="format" value="physical">
-            Físico
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="format" [(ngModel)]="format" value="digital">
-            Digital
-          </label>
-        </div>
-      </div>
+  <fieldset class="book-form__fieldset">
+    <legend class="book-form__legend">{{ editingBook ? 'Editar libro' : 'Agregar nuevo libro' }}</legend>
 
-      <div class="form-group">
-        <label for="title" class="form-label">Título *</label>
-        <input type="text" id="title" [(ngModel)]="title" name="title" placeholder="Ej: Cien años de soledad"
-          class="form-input" autocomplete="off" />
-      </div>
-
-      <div class="form-group">
-        <label for="author" class="form-label">Autor *</label>
-        <input type="text" id="author" [(ngModel)]="author" name="author" placeholder="Ej: Gabriel García Márquez"
-          class="form-input" />
-      </div>
-
-      <app-search-button [isLoading]="isSearching" [isDisabled]="isSearchButtonDisabled"
-        [text]="isSearching ? 'Buscando...' : 'Buscar en librería'" (clicked)="searchLibrary()"></app-search-button>
-
-      @if (searchError && noResultsMessage) {
-      <div class="search-error-message">
-        {{ noResultsMessage }}
-      </div>
-      }
-
-      @if (showSuggestions) {
-      <div class="inline-results-list">
-        <h4 class="results-title">Resultados sugeridos:</h4>
-        <div class="results-scroll-container">
-          @for (suggestion of suggestions; track $index) {
-          <app-book-item [book]="suggestion" variant="compact" (selected)="selectSuggestion($event)"></app-book-item>
-          }
-        </div>
-        <button type="button" class="close-results-btn" (click)="clearSuggestions()">Cerrar resultados</button>
-      </div>
-      }
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="isbn" class="form-label">ISBN</label>
-          <input type="text" id="isbn" [(ngModel)]="isbn" name="isbn" placeholder="Ej: 978-0-123456-78-9"
-            class="form-input" />
-        </div>
-
-        <div class="form-group">
-          <label for="pages" class="form-label">Páginas</label>
-          <input type="number" id="pages" [(ngModel)]="pages" name="pages" placeholder="Ej: 428" class="form-input"
-            min="0" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="description" class="form-label">Descripción</label>
-        <textarea id="description" [(ngModel)]="description" name="description" placeholder="Opcional: Notas o sinopsis"
-          class="form-input form-textarea" rows="3"></textarea>
-      </div>
-
-      @if (editingBook && collection === 'wishlist') {
-      <div class="form-group checkbox-group">
-        <label class="checkbox-label">
-          <input type="checkbox" [ngModel]="false" (change)="moveToLibrary()">
-          Ya tengo este libro (Mover a Biblioteca)
+    <div class="form-group format-selector">
+      <label class="form-label">Formato:</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="format" [(ngModel)]="format" value="physical">
+          Físico
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="format" [(ngModel)]="format" value="digital">
+          Digital
         </label>
       </div>
-      }
+    </div>
 
-      @if (!editingBook || collection === 'library') {
-      <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
-      }
+    <div class="form-group">
+      <label for="title" class="form-label">Título *</label>
+      <input type="text" id="title" [(ngModel)]="title" name="title" placeholder="Ej: Cien años de soledad"
+        class="form-input" autocomplete="off" />
+    </div>
 
-      @if (status === 'borrowed') {
+    <div class="form-group">
+      <label for="author" class="form-label">Autor *</label>
+      <input type="text" id="author" [(ngModel)]="author" name="author" placeholder="Ej: Gabriel García Márquez"
+        class="form-input" />
+    </div>
+
+    <app-search-button [isLoading]="isSearching" [isDisabled]="isSearchButtonDisabled"
+      [text]="isSearching ? 'Buscando...' : 'Buscar en librería'" (clicked)="searchLibrary()"></app-search-button>
+
+    @if (searchError && noResultsMessage) {
+    <div class="search-error-message">
+      {{ noResultsMessage }}
+    </div>
+    }
+
+    @if (showSuggestions) {
+    <div class="inline-results-list">
+      <h4 class="results-title">Resultados sugeridos:</h4>
+      <div class="results-scroll-container">
+        @for (suggestion of suggestions; track $index) {
+        <app-book-item [book]="suggestion" variant="compact" (selected)="selectSuggestion($event)"></app-book-item>
+        }
+      </div>
+      <button type="button" class="close-results-btn" (click)="clearSuggestions()">Cerrar resultados</button>
+    </div>
+    }
+
+    <div class="form-row">
       <div class="form-group">
-        <label for="borrowedBy" class="form-label">Prestado a:</label>
-        <input type="text" id="borrowedBy" [(ngModel)]="borrowedBy" name="borrowedBy" placeholder="Nombre de la persona"
+        <label for="isbn" class="form-label">ISBN</label>
+        <input type="text" id="isbn" [(ngModel)]="isbn" name="isbn" placeholder="Ej: 978-0-123456-78-9"
           class="form-input" />
       </div>
-      }
-
-      @if (status === 'reading') {
-      <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
-        [pages]="pages ? parseInt(pages) : 0" [pagesRead]="pagesRead" variant="editable"
-        (increment)="onProgressIncrement()" (decrement)="onProgressDecrement()"
-        (pagesReadChange)="pagesRead = $event"></app-progress-bar>
-      }
-
-      @if (status === 'read') {
-      <div class="read-status-label">
-        <span class="read-status-icon">✓</span>
-        100% LEÍDO
-      </div>
-      }
-
-      @if (!editingBook) {
-      <div class="form-actions">
-        <button type="submit" class="submit-btn btn-library" (click)="collection = 'library'">Agregar a
-          Biblioteca</button>
-        <button type="button" class="submit-btn btn-wishlist" (click)="onSubmit('wishlist')">Agregar a Lista de
-          Deseados</button>
-      </div>
-      } @else {
-      <button type="submit" class="submit-btn">Guardar cambios</button>
-      }
-    </fieldset>
-  </div>
-
-  <div class="tab-content" *ngIf="currentTab === 'collection'">
-    <fieldset class="book-form__fieldset">
-      <legend class="book-form__legend">Crear Nueva Colección</legend>
 
       <div class="form-group">
-        <label for="collectionName" class="form-label">Nombre de la Colección *</label>
-        <input type="text" id="collectionName" [(ngModel)]="newCollectionName" name="collectionName"
-          placeholder="Ej: Favoritos de Verano" class="form-input" autocomplete="off" />
+        <label for="pages" class="form-label">Páginas</label>
+        <input type="number" id="pages" [(ngModel)]="pages" name="pages" placeholder="Ej: 428" class="form-input"
+          min="0" />
       </div>
+    </div>
 
-      <div class="form-group">
-        <label class="form-label">Seleccionar Libros</label>
-        <input type="text" [(ngModel)]="bookSearchQuery" name="bookSearch" (input)="filterBooks()"
-          placeholder="Buscar libros para agregar..." class="form-input mb-2" />
+    <div class="form-group">
+      <label for="description" class="form-label">Descripción</label>
+      <textarea id="description" [(ngModel)]="description" name="description" placeholder="Opcional: Notas o sinopsis"
+        class="form-input form-textarea" rows="3"></textarea>
+    </div>
 
-        <div class="books-selection-list">
-          @if (filteredBooks.length === 0) {
-          <p class="no-books-msg">No se encontraron libros.</p>
-          }
+    @if (editingBook && collection === 'wishlist') {
+    <div class="form-group checkbox-group">
+      <label class="checkbox-label">
+        <input type="checkbox" [ngModel]="false" (change)="moveToLibrary()">
+        Ya tengo este libro (Mover a Biblioteca)
+      </label>
+    </div>
+    }
 
-          @for (book of filteredBooks; track book.id) {
-          <div class="book-select-item" [class.selected]="isBookSelected(book.id)"
-            (click)="toggleBookSelection(book.id)">
-            <input type="checkbox" [checked]="isBookSelected(book.id)" (click)="$event.stopPropagation()"
-              (change)="toggleBookSelection(book.id)" class="book-checkbox">
-            <div class="book-info">
-              <span class="book-title">{{ book.title }}</span>
-              <span class="book-author">{{ book.author }}</span>
-            </div>
-          </div>
-          }
-        </div>
-      </div>
+    @if (!editingBook || collection === 'library') {
+    <app-status-selector [status]="status" id="book-status" (statusChange)="status = $event"></app-status-selector>
+    }
 
-      <button type="button" class="submit-btn" (click)="createCollection()">Crear Colección</button>
-    </fieldset>
-  </div>
+    @if (status === 'borrowed') {
+    <div class="form-group">
+      <label for="borrowedBy" class="form-label">Prestado a:</label>
+      <input type="text" id="borrowedBy" [(ngModel)]="borrowedBy" name="borrowedBy" placeholder="Nombre de la persona"
+        class="form-input" />
+    </div>
+    }
+
+    @if (status === 'reading') {
+    <app-progress-bar [progress]="pages ? Math.round((pagesRead / parseInt(pages)) * 100) : 0"
+      [pages]="pages ? parseInt(pages) : 0" [pagesRead]="pagesRead" variant="editable"
+      (increment)="onProgressIncrement()" (decrement)="onProgressDecrement()"
+      (pagesReadChange)="pagesRead = $event"></app-progress-bar>
+    }
+
+    @if (status === 'read') {
+    <div class="read-status-label">
+      <span class="read-status-icon">✓</span>
+      100% LEÍDO
+    </div>
+    }
+
+    @if (!editingBook) {
+    <div class="form-actions">
+      <button type="submit" class="submit-btn btn-library" (click)="collection = 'library'">Agregar a
+        Biblioteca</button>
+      <button type="button" class="submit-btn btn-wishlist" (click)="onSubmit('wishlist')">Agregar a Lista de
+        Deseados</button>
+    </div>
+    } @else {
+    <button type="submit" class="submit-btn">Guardar cambios</button>
+    }
+  </fieldset>
 </form>

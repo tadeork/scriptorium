@@ -40,27 +40,7 @@
       </div>
     </div>
 
-    <div class="filter-group">
-      <label class="filter-label">Colección:</label>
-      <div class="custom-select" [class.open]="isCollectionDropdownOpen">
-        <div class="select-trigger" (click)="toggleCollectionDropdown($event)">
-          <span>{{ selectedCollectionId || 'Todas las colecciones' }}</span>
-          <span class="select-arrow">▼</span>
-        </div>
-        @if (isCollectionDropdownOpen) {
-        <div class="options-list">
-          <div class="option-item" [class.selected]="selectedCollectionId === ''" (click)="selectCollection('')">
-            Todas las colecciones
-          </div>
-          @for (coll of customCollections; track coll) {
-          <div class="option-item" [class.selected]="selectedCollectionId === coll" (click)="selectCollection(coll)">
-            {{ coll }}
-          </div>
-          }
-        </div>
-        }
-      </div>
-    </div>
+
 
     <div class="filter-group">
       <label class="filter-label">Ordenar por:</label>

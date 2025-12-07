@@ -13,21 +13,18 @@ import { Book, BookStatus } from '../../models/book';
 export class SearchFilterComponent {
   @Input() searchQuery = '';
   @Input() selectedStatus: BookStatus | 'all' = 'all';
-  @Input() selectedCollectionId = '';
-  @Input() customCollections: string[] = [];
+
   @Input() sortBy: 'newest' | 'oldest' | 'title' | 'author' = 'newest';
   @Input() showFilters = true;
   @Input() statusCounts: Record<string, number> = {};
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() statusFilterChange = new EventEmitter<BookStatus | 'all'>();
-  @Output() collectionFilterChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<'newest' | 'oldest' | 'title' | 'author'>();
 
   filtersVisible = false;
 
   // Dropdown states
   isStatusDropdownOpen = false;
-  isCollectionDropdownOpen = false;
   isSortDropdownOpen = false;
 
   constructor(private elementRef: ElementRef) { }
@@ -49,12 +46,6 @@ export class SearchFilterComponent {
     this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
   }
 
-  toggleCollectionDropdown(event: Event): void {
-    event.stopPropagation();
-    this.closeAllDropdowns();
-    this.isCollectionDropdownOpen = !this.isCollectionDropdownOpen;
-  }
-
   toggleSortDropdown(event: Event): void {
     event.stopPropagation();
     this.closeAllDropdowns();
@@ -63,17 +54,11 @@ export class SearchFilterComponent {
 
   closeAllDropdowns(): void {
     this.isStatusDropdownOpen = false;
-    this.isCollectionDropdownOpen = false;
     this.isSortDropdownOpen = false;
   }
 
   selectStatus(status: BookStatus | 'all'): void {
     this.onStatusChange(status);
-    this.closeAllDropdowns();
-  }
-
-  selectCollection(collectionId: string): void {
-    this.onCollectionChange(collectionId);
     this.closeAllDropdowns();
   }
 
@@ -106,13 +91,11 @@ export class SearchFilterComponent {
     this.statusFilterChange.emit(status);
   }
 
-  onCollectionChange(collectionId: string): void {
-    this.collectionFilterChange.emit(collectionId);
-  }
-
   onSortChange(sort: 'newest' | 'oldest' | 'title' | 'author'): void {
     this.sortByChange.emit(sort);
   }
+
+
 
   getStatusLabel(value: string): string {
     return this.statuses.find(s => s.value === value)?.label || 'Todos';
