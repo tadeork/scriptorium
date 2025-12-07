@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Book, BookStatus } from '../models/book';
 import { LocalStorageService } from './local-storage.service';
+import { CollectionService } from './collection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,47 @@ export class BookService {
 
   readonly books$ = this.books.asReadonly();
 
-  constructor(private storageService: LocalStorageService) {
+  constructor(
+    private storageService: LocalStorageService,
+    private collectionService: CollectionService
+  ) {
     this.loadBooks();
   }
 
   private loadBooks(): void {
     const stored = this.storageService.loadBooks();
-    this.books.set(stored);
+
+    // Process categories and ownership
+    let hasChanges = false;
+    const updatedBooks = stored.map(book => {
+      let modifiedBook = { ...book };
+      let changed = false;
+
+      // Sync category to customCollections
+      if (book.category) {
+        // Ensure category exists as a collection
+        this.collectionService.addCollection(book.category);
+
+        // Add to customCollections if not present
+        if (!book.customCollections?.includes(book.category)) {
+          modifiedBook.customCollections = [...(book.customCollections || []), book.category];
+          changed = true;
+        }
+      }
+
+      if (changed) {
+        hasChanges = true;
+        return modifiedBook;
+      }
+      return book;
+    });
+
+    if (hasChanges) {
+      this.books.set(updatedBooks);
+      this.saveBooksToStorage();
+    } else {
+      this.books.set(stored);
+    }
   }
 
   addBook(book: Omit<Book, 'id' | 'createdAt' | 'updatedAt'>): Book {

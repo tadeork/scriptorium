@@ -4,6 +4,7 @@ import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
 import { BookService } from '../../services/book.service';
 import { CollectionService } from '../../services/collection.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 import { debounceTime, Subject, switchMap, tap } from 'rxjs';
 import { SearchButtonComponent } from '../search-button/search-button.component';
 import { BookItemComponent } from '../book-item/book-item.component';
@@ -49,6 +50,8 @@ export class BookFormComponent implements OnInit, OnChanges {
   status: 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed' = 'to-read';
   pagesRead = 0;
   borrowedBy = '';
+  category = '';
+  owner = '';
 
   suggestions: CombinedSearchResult[] = [];
   showSuggestions = false;
@@ -60,7 +63,8 @@ export class BookFormComponent implements OnInit, OnChanges {
   constructor(
     private combinedSearchService: CombinedSearchService,
     private cdr: ChangeDetectorRef,
-    private bookService: BookService
+    private bookService: BookService,
+    private storageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +74,10 @@ export class BookFormComponent implements OnInit, OnChanges {
       this.collection = this.defaultCollection;
       if (this.initialTitle) {
         this.title = this.initialTitle;
+      }
+      const existingUser = this.storageService.getUserName();
+      if (existingUser) {
+        this.owner = existingUser;
       }
     }
 
@@ -143,6 +151,8 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.format = this.editingBook.format || 'physical';
     this.pagesRead = this.editingBook.pagesRead || 0;
     this.borrowedBy = this.editingBook.borrowedBy || '';
+    this.category = this.editingBook.category || '';
+    this.owner = this.editingBook.owner || '';
   }
 
   get isSearchButtonDisabled(): boolean {
@@ -247,6 +257,8 @@ export class BookFormComponent implements OnInit, OnChanges {
         format: this.format,
         pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
         borrowedBy: this.status === 'borrowed' ? this.borrowedBy.trim() : undefined,
+        category: this.category.trim() || undefined,
+        owner: this.owner.trim() || undefined,
         updatedAt: Date.now()
       };
       this.bookUpdated.emit(updatedBook);
@@ -263,7 +275,9 @@ export class BookFormComponent implements OnInit, OnChanges {
         status: this.status,
         format: this.format,
         pagesRead: this.status === 'read' ? (this.pages ? parseInt(this.pages) : undefined) : ((this.status === 'reading') ? this.pagesRead : undefined),
-        borrowedBy: this.status === 'borrowed' ? this.borrowedBy.trim() : undefined
+        borrowedBy: this.status === 'borrowed' ? this.borrowedBy.trim() : undefined,
+        category: this.category.trim() || undefined,
+        owner: this.owner.trim() || undefined
       };
       this.bookAdded.emit(newBook);
     }
@@ -282,6 +296,8 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.format = 'physical';
     this.pagesRead = 0;
     this.borrowedBy = '';
+    this.category = '';
+    this.owner = '';
     this.suggestions = [];
     this.showSuggestions = false;
   }

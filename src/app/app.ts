@@ -9,6 +9,7 @@ import { LibraryAdminComponent } from './components/library-admin/library-admin.
 import { ModalOverlayComponent } from './components/modal-overlay/modal-overlay.component';
 import { Book } from './models/book';
 import { BookService } from './services/book.service';
+import { LocalStorageService } from './services/local-storage.service';
 
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter } from 'rxjs';
@@ -54,6 +55,7 @@ export class App implements OnInit {
 
   constructor(
     private bookService: BookService,
+    private storageService: LocalStorageService,
     private swUpdate: SwUpdate,
     private renderer: Renderer2
   ) {
@@ -75,7 +77,7 @@ export class App implements OnInit {
   }
 
   updateTitle(): void {
-    const userName = localStorage.getItem('userName');
+    const userName = this.storageService.getUserName();
     if (userName) {
       this.title.set(`Scriptorium de ${userName}`);
     } else {

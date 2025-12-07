@@ -5,8 +5,8 @@
     @if (pages > 0) {
     <div class="progress-pages-container">
       @if (variant === 'editable' && !disabled) {
-      <input type="number" class="progress-input" [ngModel]="pagesReadDisplay" (ngModelChange)="onPagesInput($event)"
-        (click)="$event.stopPropagation()" min="0" [max]="pages">
+      <input #pagesInput type="number" class="progress-input" [ngModel]="pagesReadDisplay"
+        (ngModelChange)="onPagesInput($event)" (click)="$event.stopPropagation()" min="0" [max]="pages">
       } @else {
       <span class="progress-pages-text">{{ pagesReadDisplay }}</span>
       }

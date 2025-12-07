@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -88,8 +88,22 @@ export class ProgressBarComponent {
     }
   }
 
+  @ViewChild('pagesInput') pagesInput!: ElementRef<HTMLInputElement>;
+
   onPagesInput(value: number): void {
     if (this.disabled) return;
-    this.pagesReadChange.emit(value);
+
+    // Clamp value between 0 and total pages
+    let validValue = Math.max(0, value);
+    if (this.pages > 0) {
+      validValue = Math.min(validValue, this.pages);
+    }
+
+    // Force view update if the value was clamped (view value !== model value)
+    if (validValue !== value && this.pagesInput) {
+      this.pagesInput.nativeElement.value = validValue.toString();
+    }
+
+    this.pagesReadChange.emit(validValue);
   }
 }

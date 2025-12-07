@@ -15,6 +15,8 @@ export interface Book {
   description?: string;
   format?: 'physical' | 'digital';
   borrowedBy?: string;
+  category?: string;
+  owner?: string;
   createdAt: number;
   updatedAt: number;
 }

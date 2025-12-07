@@ -8,6 +8,24 @@ import { Book } from '../models/book';
 export class LocalStorageService {
   private readonly BOOKS_KEY = 'scriptorium_books';
   private readonly COLLECTIONS_KEY = 'scriptorium_collections';
+  private readonly USER_NAME_KEY = 'userName';
+
+  saveUserName(name: string): void {
+    try {
+      localStorage.setItem(this.USER_NAME_KEY, name);
+    } catch (error) {
+      console.error('Error saving user name to localStorage', error);
+    }
+  }
+
+  getUserName(): string | null {
+    try {
+      return localStorage.getItem(this.USER_NAME_KEY);
+    } catch (error) {
+      console.error('Error loading user name from localStorage', error);
+      return null;
+    }
+  }
 
 
   saveBooks(books: Book[]): void {
