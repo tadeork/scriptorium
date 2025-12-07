@@ -5,7 +5,10 @@
     @if (book.coverImageUrl) {
     <img [src]="book.coverImageUrl" [alt]="book.title">
     } @else {
-    <div class="no-cover">Sin Portada</div>
+    <div class="no-cover">
+      <span>Sin Portada</span>
+      <span class="brand">Scriptorium</span>
+    </div>
     }
   </div>
 

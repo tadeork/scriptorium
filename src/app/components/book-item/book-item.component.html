@@ -1,23 +1,30 @@
 <div class="book-item" [class]="'book-item--' + variant" (click)="onClick()" [class.has-image]="book.coverImageUrl">
   @if (book.coverImageUrl) {
-    <div class="book-item__image">
-      <img [src]="book.coverImageUrl" [alt]="book.title" />
+  <div class="book-item__image">
+    <img [src]="book.coverImageUrl" [alt]="book.title" />
+  </div>
+  } @else {
+  <div class="book-item__image no-cover-container">
+    <div class="no-cover">
+      <span>Sin Portada</span>
+      <span class="brand">Scriptorium</span>
     </div>
+  </div>
   }
   <div class="book-item__content">
     <div class="book-item__title">{{ book.title }}</div>
     @if (book.author) {
-      <div class="book-item__author">{{ book.author }}</div>
+    <div class="book-item__author">{{ book.author }}</div>
     }
     @if (book.pages || book.isbn) {
-      <div class="book-item__meta">
-        @if (book.pages) {
-          <span class="book-item__pages">{{ book.pages }} págs</span>
-        }
-        @if (book.isbn) {
-          <span class="book-item__isbn">ISBN: {{ book.isbn }}</span>
-        }
-      </div>
+    <div class="book-item__meta">
+      @if (book.pages) {
+      <span class="book-item__pages">{{ book.pages }} págs</span>
+      }
+      @if (book.isbn) {
+      <span class="book-item__isbn">ISBN: {{ book.isbn }}</span>
+      }
+    </div>
     }
   </div>
 </div>

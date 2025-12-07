@@ -24,7 +24,7 @@ import { Book } from '../../models/book';
     <div class="form-group">
       <label class="form-label">Seleccionar Libros</label>
       <input type="text" [(ngModel)]="bookSearchQuery" (input)="filterBooks()"
-        placeholder="Buscar libros para agregar..." class="form-input mb-2" />
+        placeholder="Buscar por título..." class="form-input mb-2" />
 
       <div class="books-selection-list">
         @if (filteredBooks.length === 0) {
@@ -228,8 +228,7 @@ export class CollectionFormComponent implements OnInit {
     } else {
       const query = this.bookSearchQuery.toLowerCase();
       this.filteredBooks = this.availableBooks.filter(book =>
-        book.title.toLowerCase().includes(query) ||
-        book.author.toLowerCase().includes(query)
+        book.title.toLowerCase().includes(query)
       );
     }
   }

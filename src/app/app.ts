@@ -93,11 +93,9 @@ export class App implements OnInit {
     const hasBooks = this.bookService.books$().length > 0;
     this.showAddBookTooltip = true;
 
-    if (hasBooks) {
-      setTimeout(() => {
-        this.showAddBookTooltip = false;
-      }, 5000);
-    }
+    setTimeout(() => {
+      this.showAddBookTooltip = false;
+    }, 8000);
   }
 
   reloadPage(): void {

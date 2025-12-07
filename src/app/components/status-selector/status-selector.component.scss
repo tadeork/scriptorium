@@ -25,7 +25,7 @@
 }
 
 .select-trigger {
-  border: 1px solid #212121;
+  border: 2px solid #212121;
   background-color: #fff;
   padding: 0.75rem 1rem;
   font-size: 1rem;
@@ -36,23 +36,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   user-select: none;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #fafafa;
     transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
   }
 }
 
 .custom-select.open .select-trigger {
   background-color: #212121;
   color: #fff;
-  border-bottom: 1px solid #212121;
+  border-bottom: 2px solid #212121;
   transform: translate(0, 0);
-  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 
   .select-arrow {
     transform: rotate(180deg);
@@ -70,7 +70,7 @@
   left: 0;
   right: 0;
   background-color: #fff;
-  border: 1px solid #212121;
+  border: 2px solid #212121;
   border-top: none;
   z-index: 1000;
   max-height: 250px;

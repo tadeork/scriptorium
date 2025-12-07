@@ -38,17 +38,24 @@ import { BookService } from '../../services/book.service';
       background-color: #fff;
       border: 2px solid #212121;
       padding: 1.5rem;
-      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-      transition: all 0.2s ease;
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       min-height: 120px;
+      position: relative;
 
       &:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+        transform: translate(-3px, -3px);
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+        background-color: #fafafa;
+      }
+      
+      &:active {
+        transform: translate(0, 0);
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
       }
     }
 

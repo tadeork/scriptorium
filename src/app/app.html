@@ -29,7 +29,7 @@
 
   @if (showEditModal) {
   <!-- Manual modal for editing books -->
-  <app-modal-overlay [isOpen]="showEditModal" (close)="toggleEditModal()" title="Editar libro">
+  <app-modal-overlay [isOpen]="showEditModal" (close)="toggleEditModal()" title="Editar libro" [zIndex]="1200">
     <app-book-form [editingBook]="editingBook" (bookUpdated)="onBookUpdated($event); toggleEditModal()"
       [showTitle]="false"></app-book-form>
   </app-modal-overlay>
@@ -80,10 +80,8 @@
     <app-collection-form (collectionCreated)="toggleCollectionModal()" [showTitle]="false"></app-collection-form>
   </app-modal-overlay>
 
-  <app-modal-overlay [isOpen]="!!selectedCollection" (close)="onCloseCollectionDetails()">
-    @if (selectedCollection) {
-    <app-collection-details [collectionName]="selectedCollection"
-      (close)="onCloseCollectionDetails()"></app-collection-details>
-    }
-  </app-modal-overlay>
+  @if (selectedCollection) {
+  <app-collection-details [collectionName]="selectedCollection"
+    (close)="onCloseCollectionDetails()"></app-collection-details>
+  }
 </div>

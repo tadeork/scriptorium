@@ -5,13 +5,18 @@ import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, SimpleCha
   standalone: true,
   imports: [],
   templateUrl: './modal-overlay.component.html',
-  styleUrl: './modal-overlay.component.scss'
+  styleUrl: './modal-overlay.component.scss',
+  styles: [`
+    :host {
+      display: contents;
+    }
+  `]
 })
 export class ModalOverlayComponent implements OnChanges, OnDestroy {
   @Input() isOpen = false;
   @Input() title: string | null = null;
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
-  @Input() zIndex = 1000;
+  @Input() zIndex: number = 1100;
   @Output() close = new EventEmitter<void>();
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -40,6 +45,7 @@ export class ModalOverlayComponent implements OnChanges, OnDestroy {
   }
 
   onContentClick(event: MouseEvent): void {
+    // Only stop propagation for clicks on the content itself
     event.stopPropagation();
   }
 
