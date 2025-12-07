@@ -1,10 +1,18 @@
 <div class="status-selector">
   <label [for]="id" class="status-label">{{ label }}</label>
-  <select [id]="id" [ngModel]="status" (ngModelChange)="onStatusChange($event)" class="status-select">
-    @for (opt of statusOptions; track opt.value) {
-    <option [value]="opt.value">
-      {{ opt.label }}
-    </option>
+  <div class="custom-select" [class.open]="isOpen">
+    <div class="select-trigger" (click)="toggleDropdown()">
+      <span>{{ getStatusLabel(status) }}</span>
+      <span class="select-arrow">▼</span>
+    </div>
+    @if (isOpen) {
+    <div class="options-list">
+      @for (opt of statusOptions; track opt.value) {
+      <div class="option-item" [class.selected]="status === opt.value" (click)="selectStatus(opt.value)">
+        {{ opt.label }}
+      </div>
+      }
+    </div>
     }
-  </select>
+  </div>
 </div>

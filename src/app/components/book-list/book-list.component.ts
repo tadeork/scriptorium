@@ -1,5 +1,6 @@
-import { Component, OnInit, signal, computed, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, signal, computed, Output, EventEmitter, Input, inject } from '@angular/core';
 import { BookService } from '../../services/book.service';
+import { CollectionService } from '../../services/collection.service';
 import { Book, BookStatus } from '../../models/book';
 import { BookCardComponent } from '../book-card/book-card.component';
 import { SearchFilterComponent } from '../search-filter/search-filter.component';
@@ -14,6 +15,7 @@ import { SearchFilterComponent } from '../search-filter/search-filter.component'
 export class BookListComponent implements OnInit {
   searchQuery = signal('');
   selectedStatus = signal<BookStatus | 'all'>('all');
+  selectedCollectionId = signal('');
   sortBy = signal<'newest' | 'oldest' | 'title' | 'author'>('newest');
   editingBookId = signal<string | null>(null);
   collection = signal<'library' | 'wishlist'>('library');
@@ -23,21 +25,35 @@ export class BookListComponent implements OnInit {
   @Output() editBook = new EventEmitter<Book>();
   @Output() addBookFromSearch = new EventEmitter<string>();
 
+  private bookService = inject(BookService);
+  private collectionService = inject(CollectionService);
+
+  collections = this.collectionService.collections$;
+
   filteredBooks = computed(() => {
     let books = this.bookService.books$();
     const query = this.searchQuery();
     const status = this.selectedStatus();
     const sort = this.sortBy();
     const currentCollection = this.collection();
+    const selectedColl = this.selectedCollectionId();
 
-    // Filter by collection
+    // Filter by main collection (library vs wishlist)
     books = books.filter(b => (b.collection || 'library') === currentCollection);
+
+    // Filter by custom collection
+    if (selectedColl && currentCollection === 'library') {
+      books = books.filter(b => b.customCollections?.includes(selectedColl));
+    }
 
     // Apply search filter
     if (query.trim()) {
       books = this.bookService.searchBooks(query);
-      // Re-apply collection filter after search (since searchBooks might return all matches)
+      // Re-apply collection filters after search
       books = books.filter(b => (b.collection || 'library') === currentCollection);
+      if (selectedColl && currentCollection === 'library') {
+        books = books.filter(b => b.customCollections?.includes(selectedColl));
+      }
     }
 
     // Apply status filter
@@ -62,7 +78,15 @@ export class BookListComponent implements OnInit {
   statusCounts = computed(() => {
     const books = this.bookService.books$();
     const currentCollection = this.collection();
-    const collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
+    const selectedColl = this.selectedCollectionId();
+
+    // Base filter: current main collection
+    let collectionBooks = books.filter(b => (b.collection || 'library') === currentCollection);
+
+    // Apply custom collection filter if selected
+    if (selectedColl && currentCollection === 'library') {
+      collectionBooks = collectionBooks.filter(b => b.customCollections?.includes(selectedColl));
+    }
 
     const counts: Record<string, number> = {
       'all': collectionBooks.length,
@@ -82,7 +106,7 @@ export class BookListComponent implements OnInit {
     return counts;
   });
 
-  constructor(private bookService: BookService) { }
+  constructor() { }
 
   ngOnInit(): void { }
 
@@ -92,6 +116,10 @@ export class BookListComponent implements OnInit {
 
   onStatusFilterChange(status: BookStatus | 'all'): void {
     this.selectedStatus.set(status);
+  }
+
+  onCollectionFilterChange(collectionId: string): void {
+    this.selectedCollectionId.set(collectionId);
   }
 
   onSortByChange(sort: 'newest' | 'oldest' | 'title' | 'author'): void {
@@ -140,6 +168,9 @@ export class BookListComponent implements OnInit {
   get emptyMessage(): string {
     if (this.searchQuery().trim()) {
       return 'No se encontraron libros que coincidan con tu búsqueda.';
+    }
+    if (this.selectedCollectionId()) {
+      return 'No hay libros en esta colección con el filtro seleccionado.';
     }
     if (this.selectedStatus() !== 'all') {
       return 'No tienes libros con este estado.';

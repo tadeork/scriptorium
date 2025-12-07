@@ -7,6 +7,7 @@ export interface Book {
   isbn?: string;
   coverImageUrl?: string;
   collection?: 'library' | 'wishlist';
+  customCollections?: string[];
   status: BookStatus;
   pagesRead?: number;
   pages?: number;

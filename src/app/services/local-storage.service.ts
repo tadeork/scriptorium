@@ -7,6 +7,8 @@ import { Book } from '../models/book';
 })
 export class LocalStorageService {
   private readonly BOOKS_KEY = 'scriptorium_books';
+  private readonly COLLECTIONS_KEY = 'scriptorium_collections';
+
 
   saveBooks(books: Book[]): void {
     try {
@@ -31,6 +33,24 @@ export class LocalStorageService {
       localStorage.removeItem(this.BOOKS_KEY);
     } catch (error) {
       console.error('Error clearing books from localStorage', error);
+    }
+  }
+
+  saveCollections(collections: string[]): void {
+    try {
+      localStorage.setItem(this.COLLECTIONS_KEY, JSON.stringify(collections));
+    } catch (error) {
+      console.error('Error saving collections to localStorage', error);
+    }
+  }
+
+  loadCollections(): string[] {
+    try {
+      const stored = localStorage.getItem(this.COLLECTIONS_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Error loading collections from localStorage', error);
+      return [];
     }
   }
 }

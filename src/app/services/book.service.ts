@@ -91,6 +91,25 @@ export class BookService {
     }
   }
 
+  addBookToCollection(bookId: string, collectionName: string): void {
+    const book = this.getBookById(bookId);
+    if (book) {
+      const currentCollections = book.customCollections || [];
+      if (!currentCollections.includes(collectionName)) {
+        this.updateBook(bookId, { customCollections: [...currentCollections, collectionName] });
+      }
+    }
+  }
+
+  removeBookFromCollection(bookId: string, collectionName: string): void {
+    const book = this.getBookById(bookId);
+    if (book && book.customCollections) {
+      const updatedCollections = book.customCollections.filter(c => c !== collectionName);
+      this.updateBook(bookId, { customCollections: updatedCollections });
+    }
+  }
+
+
   importBooks(newBooks: Book[]): void {
     const currentBooks = this.books();
     const bookMap = new Map(currentBooks.map((b) => [b.id, b]));

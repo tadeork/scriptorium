@@ -13,27 +13,72 @@
   @if (showFilters && filtersVisible) {
   <div class="search-filter__filters">
     <div class="filter-group">
-      <label class="filter-label">Filtrar por estado:</label>
-      <div class="filter-buttons">
-        @for (status of statuses; track status.value) {
-        <button [class.active]="selectedStatus === status.value" (click)="onStatusChange(status.value)"
-          class="filter-btn">
-          {{ status.label }}
-          @if (statusCounts[status.value] !== undefined) {
-          <span>({{ statusCounts[status.value] }})</span>
+      <label class="filter-label">Estado:</label>
+      <div class="custom-select" [class.open]="isStatusDropdownOpen">
+        <div class="select-trigger" (click)="toggleStatusDropdown($event)">
+          <span>
+            {{ getStatusLabel(selectedStatus) }}
+            @if (statusCounts[selectedStatus] !== undefined && selectedStatus !== 'all') {
+            ({{ statusCounts[selectedStatus] }})
+            }
+          </span>
+          <span class="select-arrow">▼</span>
+        </div>
+        @if (isStatusDropdownOpen) {
+        <div class="options-list">
+          @for (status of statuses; track status.value) {
+          <div class="option-item" [class.selected]="selectedStatus === status.value"
+            (click)="selectStatus(status.value)">
+            {{ status.label }}
+            @if (statusCounts[status.value] !== undefined) {
+            ({{ statusCounts[status.value] }})
+            }
+          </div>
           }
-        </button>
+        </div>
+        }
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">Colección:</label>
+      <div class="custom-select" [class.open]="isCollectionDropdownOpen">
+        <div class="select-trigger" (click)="toggleCollectionDropdown($event)">
+          <span>{{ selectedCollectionId || 'Todas las colecciones' }}</span>
+          <span class="select-arrow">▼</span>
+        </div>
+        @if (isCollectionDropdownOpen) {
+        <div class="options-list">
+          <div class="option-item" [class.selected]="selectedCollectionId === ''" (click)="selectCollection('')">
+            Todas las colecciones
+          </div>
+          @for (coll of customCollections; track coll) {
+          <div class="option-item" [class.selected]="selectedCollectionId === coll" (click)="selectCollection(coll)">
+            {{ coll }}
+          </div>
+          }
+        </div>
         }
       </div>
     </div>
 
     <div class="filter-group">
       <label class="filter-label">Ordenar por:</label>
-      <select class="sort-select" [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
-        @for (option of sortOptions; track option.value) {
-        <option [value]="option.value">{{ option.label }}</option>
+      <div class="custom-select" [class.open]="isSortDropdownOpen">
+        <div class="select-trigger" (click)="toggleSortDropdown($event)">
+          <span>{{ getSortLabel(sortBy) }}</span>
+          <span class="select-arrow">▼</span>
+        </div>
+        @if (isSortDropdownOpen) {
+        <div class="options-list">
+          @for (option of sortOptions; track option.value) {
+          <div class="option-item" [class.selected]="sortBy === option.value" (click)="selectSort(option.value)">
+            {{ option.label }}
+          </div>
+          }
+        </div>
         }
-      </select>
+      </div>
     </div>
   </div>
   }

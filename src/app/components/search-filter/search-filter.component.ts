@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book, BookStatus } from '../../models/book';
@@ -13,17 +13,73 @@ import { Book, BookStatus } from '../../models/book';
 export class SearchFilterComponent {
   @Input() searchQuery = '';
   @Input() selectedStatus: BookStatus | 'all' = 'all';
+  @Input() selectedCollectionId = '';
+  @Input() customCollections: string[] = [];
   @Input() sortBy: 'newest' | 'oldest' | 'title' | 'author' = 'newest';
   @Input() showFilters = true;
   @Input() statusCounts: Record<string, number> = {};
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() statusFilterChange = new EventEmitter<BookStatus | 'all'>();
+  @Output() collectionFilterChange = new EventEmitter<string>();
   @Output() sortByChange = new EventEmitter<'newest' | 'oldest' | 'title' | 'author'>();
 
   filtersVisible = false;
 
+  // Dropdown states
+  isStatusDropdownOpen = false;
+  isCollectionDropdownOpen = false;
+  isSortDropdownOpen = false;
+
+  constructor(private elementRef: ElementRef) { }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.closeAllDropdowns();
+    }
+  }
+
   toggleFilters(): void {
     this.filtersVisible = !this.filtersVisible;
+  }
+
+  toggleStatusDropdown(event: Event): void {
+    event.stopPropagation();
+    this.closeAllDropdowns();
+    this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+  }
+
+  toggleCollectionDropdown(event: Event): void {
+    event.stopPropagation();
+    this.closeAllDropdowns();
+    this.isCollectionDropdownOpen = !this.isCollectionDropdownOpen;
+  }
+
+  toggleSortDropdown(event: Event): void {
+    event.stopPropagation();
+    this.closeAllDropdowns();
+    this.isSortDropdownOpen = !this.isSortDropdownOpen;
+  }
+
+  closeAllDropdowns(): void {
+    this.isStatusDropdownOpen = false;
+    this.isCollectionDropdownOpen = false;
+    this.isSortDropdownOpen = false;
+  }
+
+  selectStatus(status: BookStatus | 'all'): void {
+    this.onStatusChange(status);
+    this.closeAllDropdowns();
+  }
+
+  selectCollection(collectionId: string): void {
+    this.onCollectionChange(collectionId);
+    this.closeAllDropdowns();
+  }
+
+  selectSort(sort: 'newest' | 'oldest' | 'title' | 'author'): void {
+    this.onSortChange(sort);
+    this.closeAllDropdowns();
   }
 
   readonly statuses: Array<{ value: BookStatus | 'all'; label: string }> = [
@@ -50,7 +106,19 @@ export class SearchFilterComponent {
     this.statusFilterChange.emit(status);
   }
 
+  onCollectionChange(collectionId: string): void {
+    this.collectionFilterChange.emit(collectionId);
+  }
+
   onSortChange(sort: 'newest' | 'oldest' | 'title' | 'author'): void {
     this.sortByChange.emit(sort);
+  }
+
+  getStatusLabel(value: string): string {
+    return this.statuses.find(s => s.value === value)?.label || 'Todos';
+  }
+
+  getSortLabel(value: string): string {
+    return this.sortOptions.find(s => s.value === value)?.label || 'Más recientes';
   }
 }

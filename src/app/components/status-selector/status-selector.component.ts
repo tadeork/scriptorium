@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 export type BookStatus = 'read' | 'reading' | 'to-read' | 'not-interested' | 'borrowed';
@@ -16,6 +16,8 @@ export class StatusSelectorComponent {
   @Input() label = 'Estado *';
   @Output() statusChange = new EventEmitter<BookStatus>();
 
+  isOpen = false;
+
   statusOptions = [
     { value: 'to-read', label: 'Por leer' },
     { value: 'reading', label: 'Leyendo' },
@@ -24,7 +26,29 @@ export class StatusSelectorComponent {
     { value: 'not-interested', label: 'No voy a leer' }
   ];
 
-  onStatusChange(value: string): void {
+  constructor(private elementRef: ElementRef) { }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.closeDropdown();
+    }
+  }
+
+  toggleDropdown(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  closeDropdown(): void {
+    this.isOpen = false;
+  }
+
+  selectStatus(value: string): void {
     this.statusChange.emit(value as BookStatus);
+    this.closeDropdown();
+  }
+
+  getStatusLabel(value: string): string {
+    return this.statusOptions.find(opt => opt.value === value)?.label || value;
   }
 }
