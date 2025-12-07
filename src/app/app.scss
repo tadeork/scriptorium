@@ -117,7 +117,7 @@
   font-weight: 900;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
   border-radius: 50%;
   z-index: 1000;
@@ -128,18 +128,26 @@
 
   .icon {
     margin-top: -4px;
-    /* Slight adjustment for visual centering of + */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   &:hover {
     background-color: #c62828;
     transform: translate(-2px, -2px) scale(1.05);
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
   }
 
   &:active {
     transform: translate(0, 0) scale(0.95);
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  &.open {
+    background-color: #b71c1c; // Darker red when open
+
+    .icon {
+      transform: rotate(45deg);
+    }
   }
 
   &.fab--collection {

@@ -62,11 +62,11 @@
   <app-welcome-modal (closed)="onWelcomeClosed()"></app-welcome-modal>
 
   <!-- Floating Action Button -->
-  <button class="fab" [class.fab--collection]="currentView() === 'collections'"
+  <button class="fab" [class.fab--collection]="currentView() === 'collections'" [class.open]="showAddBookModal"
     (click)="currentView() === 'collections' ? onOpenAddCollection() : toggleAddBookModal()">
     <span class="icon">{{ currentView() === 'collections' ? '+' : '+' }}</span>
   </button>
-  @if (currentView() !== 'collections') {
+  @if (currentView() !== 'collections' && showAddBookTooltip) {
   <div class="fab-tooltip">Agregar libro</div>
   }
 

@@ -91,11 +91,13 @@ export class App implements OnInit {
   onWelcomeClosed(): void {
     this.updateTitle();
     const hasBooks = this.bookService.books$().length > 0;
-    this.showAddBookTooltip = true;
 
-    setTimeout(() => {
-      this.showAddBookTooltip = false;
-    }, 8000);
+    if (!hasBooks) {
+      this.showAddBookTooltip = true;
+      setTimeout(() => {
+        this.showAddBookTooltip = false;
+      }, 8000);
+    }
   }
 
   reloadPage(): void {
