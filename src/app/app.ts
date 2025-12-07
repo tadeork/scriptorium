@@ -108,6 +108,7 @@ export class App implements OnInit {
       this.initialFormTitle = '';
     }
     this.showFormModal = !this.showFormModal;
+    this.updateScrollLock();
   }
 
   toggleEditModal(): void {
@@ -115,18 +116,26 @@ export class App implements OnInit {
     if (!this.showEditModal) {
       this.editingBook = null;
     }
+    this.updateScrollLock();
   }
 
   toggleAdminModal(): void {
     this.showAdminModal = !this.showAdminModal;
+    this.updateScrollLock();
   }
 
   openEditModal(book: Book): void {
     this.editingBook = book;
     this.showEditModal = true;
+    this.updateScrollLock();
   }
 
   onBookUpdated(book: Book): void {
     this.bookService.updateBook(book.id, book);
+  }
+
+  private updateScrollLock(): void {
+    const isAnyModalOpen = this.showFormModal || this.showEditModal || this.showAdminModal;
+    document.body.style.overflow = isAnyModalOpen ? 'hidden' : '';
   }
 }
