@@ -108,6 +108,15 @@ export class BookCardComponent {
     return `status-${this.book.status}`;
   }
 
+  get hasValidCover(): boolean {
+    if (!this.book.coverImageUrl) return false;
+    const url = this.book.coverImageUrl.trim();
+    // Check for empty string, quotes, or invalid patterns
+    if (url === '' || url === '""' || url === "''" || url.includes('&quot;')) return false;
+    // Basic check if it looks like a URL or data URI
+    return url.length > 5;
+  }
+
   onCardClick(): void {
     this.showDetails = true;
   }

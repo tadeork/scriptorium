@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../../models/book';
 import { CombinedSearchService, CombinedSearchResult } from '../../services/combined-search.service';
@@ -60,6 +60,9 @@ export class BookFormComponent implements OnInit, OnChanges {
   searchError = false;
   noResultsMessage = '';
 
+  private collectionService = inject(CollectionService);
+  collections = this.collectionService.collections$;
+
   constructor(
     private combinedSearchService: CombinedSearchService,
     private cdr: ChangeDetectorRef,
@@ -81,15 +84,12 @@ export class BookFormComponent implements OnInit, OnChanges {
       }
     }
 
-
-
     this.searchQuery$
       .pipe(
         debounceTime(300),
         tap(() => {
           this.searchError = false;
           this.noResultsMessage = '';
-          // Note: isSearching is already set to true in searchLibrary()
         }),
         switchMap((query) => {
           if (!query.trim()) {
@@ -107,7 +107,6 @@ export class BookFormComponent implements OnInit, OnChanges {
           this.suggestions = [];
           this.showSuggestions = false;
         } else {
-          // Priorizar resultados con imágenes
           const resultsWithImages = results.filter(r => r.coverImageUrl);
           const resultsWithoutImages = results.filter(r => !r.coverImageUrl);
 
@@ -116,7 +115,7 @@ export class BookFormComponent implements OnInit, OnChanges {
           this.searchError = false;
           this.noResultsMessage = '';
           this.showSuggestions = true;
-          this.cdr.detectChanges(); // Force view update
+          this.cdr.detectChanges();
         }
       });
   }
@@ -138,6 +137,7 @@ export class BookFormComponent implements OnInit, OnChanges {
       this.title = this.initialTitle;
     }
   }
+
   private loadBookData(): void {
     if (!this.editingBook) return;
     this.title = this.editingBook.title;
@@ -160,13 +160,12 @@ export class BookFormComponent implements OnInit, OnChanges {
   }
 
   searchLibrary(): void {
-    // Búsqueda manual con los valores actuales de título y autor
     if (!this.title.trim() || !this.author.trim()) {
       alert('Por favor ingresa el título y el autor para buscar');
       return;
     }
     const searchQuery = `${this.title.trim()} ${this.author.trim()}`;
-    this.isSearching = true; // Set loading state immediately
+    this.isSearching = true;
     this.searchQuery$.next(searchQuery);
   }
 
@@ -198,7 +197,6 @@ export class BookFormComponent implements OnInit, OnChanges {
   onProgressIncrement(): void {
     if (!this.pages) return;
 
-    // Cambiar estado automáticamente a "reading" si está en "to-read"
     if (this.status === 'to-read') {
       this.status = 'reading';
     }
@@ -215,7 +213,7 @@ export class BookFormComponent implements OnInit, OnChanges {
 
   moveToLibrary(): void {
     this.collection = 'library';
-    this.status = 'to-read'; // Default status when moving to library
+    this.status = 'to-read';
   }
 
   onSubmit(targetCollection?: 'library' | 'wishlist'): void {
@@ -240,6 +238,11 @@ export class BookFormComponent implements OnInit, OnChanges {
         alert('Este libro ya existe en tu biblioteca.');
         return;
       }
+    }
+
+    // Auto-create collection from category if it doesn't exist
+    if (this.category.trim()) {
+      this.collectionService.addCollection(this.category.trim());
     }
 
     if (this.editingBook) {
@@ -302,4 +305,3 @@ export class BookFormComponent implements OnInit, OnChanges {
     this.showSuggestions = false;
   }
 }
-

@@ -2,7 +2,7 @@
   (click)="onCardClick()">
 
   <div class="book-card__image">
-    @if (book.coverImageUrl) {
+    @if (hasValidCover) {
     <img [src]="book.coverImageUrl" [alt]="book.title">
     } @else {
     <div class="no-cover">
@@ -41,9 +41,16 @@
 <!-- Modal de detalles completos -->
 <app-modal-overlay [isOpen]="showDetails" [title]="book.title" size="medium" (close)="closeDetails()">
   <div class="book-details">
-    @if (book.coverImageUrl) {
+    @if (hasValidCover) {
     <div class="book-details__image">
       <img [src]="book.coverImageUrl" [alt]="book.title" />
+    </div>
+    } @else {
+    <div class="book-details__image">
+      <div class="no-cover">
+        <span>Sin Portada</span>
+        <span class="brand">Scriptorium</span>
+      </div>
     </div>
     }
 

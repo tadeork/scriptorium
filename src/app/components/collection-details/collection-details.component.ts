@@ -98,14 +98,13 @@ import { BookListComponent } from '../book-list/book-list.component';
       font-weight: 700;
       cursor: pointer;
       line-height: 1;
-      width: 48px;
-      height: 48px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0;
       margin-left: 0;
-      border-radius: 50%;
       box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
       transition: all 0.2s ease;
       
